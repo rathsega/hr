@@ -57,36 +57,31 @@ class AssessmentController extends Controller
 
     function assessment_rating_update($user_id, Request $request){
 
-
-        if(isset($request->date_time) && $request->date_time != ''){
-            $selected_timestamp_of_month = strtotime(date('1 M Y', strtotime($request->date_time)));
-        }else{
-            $selected_timestamp_of_month = strtotime(date('1 M Y'));
-        }
-
         $start_date = date('Y-m-1 H:i:s', strtotime($request->date_time));
         $end_day = date('t', strtotime($request->date_time));
         $end_date = date('Y-m-'.$end_day.' H:i:s', strtotime($request->date_time));
 
         $data['user_id'] = $user_id;
-        $data['type'] = $request->type;
         $data['date_time'] = strtotime($request->date_time);
         $data['created_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
         $data['updated_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
-        
-        $query = Staff_performance::where('user_id', $user_id)->where('type', $request->type)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
-        if($request->type == 'remarks'){
-            $data['description'] = $request->description;
-        }else{
-            $data['rating'] = $request->rating;
-        }
 
-        
-        if($query->get()->count() > 0){
-            Staff_performance::where('id', $query->first()->id)->update($data);
-        }else{
-            Staff_performance::insert($data);
+        foreach($request->rating as $type => $rating_value){
+            $query = Staff_performance::where('user_id', $user_id)->where('type', $type)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
+            $data['type'] = $type;
+            if($type == 'remarks'){
+                $data['description'] = $request->description;
+            }else{
+                $data['rating'] = $rating_value;
+            }
+            
+            if($query->get()->count() > 0){
+                Staff_performance::where('user_id', $user_id)->where('type', $type)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->update($data);
+            }else{
+                Staff_performance::insert($data);
+            }
         }
+        
         return redirect(route('admin.assessment.team.report', ['id' => $user_id, 'tab' => 'performance']))->with('success_message', __('Assessment rating updated successfully'));
     }
 
@@ -102,8 +97,6 @@ class AssessmentController extends Controller
         $data['user_id'] = $request->user_id;
         $data['date_time'] = strtotime($request->date_time);
         $data['description'] = $request->description;
-        print_r($data);
-        die;
         Assessment::insert($data);
         return redirect(route('admin.assessment.daily.report'))->with('success_message', __('Assessment added successfully'));
     }

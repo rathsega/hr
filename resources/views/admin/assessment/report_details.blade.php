@@ -183,6 +183,7 @@
                                                                 <i class="bi bi-star"></i>
                                                             @endif
                                                         </p>
+                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Performance Rate')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
 
                                                     <li class="d-flex my-3">
@@ -206,7 +207,6 @@
                                                                 <i class="bi bi-star"></i>
                                                             @endif
                                                         </p>
-                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'rating_type' => 'leadership', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Rate the Leadership')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
 
                                                     <li class="d-flex my-3">
@@ -229,7 +229,6 @@
                                                                 <i class="bi bi-star"></i>
                                                             @endif
                                                         </p>
-                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'rating_type' => 'performance', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Rate the Performance')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
 
                                                     <li class="d-flex my-3">
@@ -252,7 +251,6 @@
                                                                 <i class="bi bi-star"></i>
                                                             @endif
                                                         </p>
-                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'rating_type' => 'discipline', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Rate the Discipline')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
 
                                                     <li class="d-flex my-3">
@@ -275,7 +273,6 @@
                                                                 <i class="bi bi-star"></i>
                                                             @endif
                                                         </p>
-                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'rating_type' => 'punctuality', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Rate the Punctuality')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
                                                     <li class="d-flex my-3">
                                                         <p>Remarks:</p>
@@ -284,7 +281,6 @@
                                                                 <li>{{$remark->description}}</li>
                                                             @endforeach
                                                         </ul>
-                                                        <a onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.assessment.rating_update', 'rating_type' => 'remarks', 'user_id' => $staff->id, 'timestamp' => strtotime($selected_year . '-' . $month . '-'. date('d'))])}}', 'Remarks')" class="ms-auto" href="#"><i class="bi bi-pencil"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
