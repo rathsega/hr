@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->text('description')->nullable();
+            $table->string('status')->nullable();
+            $table->integer('is_completed')->nullable();
             $table->timestamp('created_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
         });

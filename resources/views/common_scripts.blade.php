@@ -9,6 +9,25 @@
 	<script>error_message("{{$message}}");</script>
 @endif
 
+
+@php $session_data = session(); @endphp
+@if(
+    is_array($session_data) && 
+    array_key_exists('table', $session_data) && $session_data['table'] != '' &&
+    array_key_exists('location', $session_data) && $session_data['location'] != '' &&
+    array_key_exists('id', $session_data) && $session_data['id'] != ''
+    )
+    <script>
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                actionTo("{{route('location.validity.check')}}?lat="+lat+"&lon="+lon);
+            });
+        }
+    </script>
+@endif
+
 <script>
 
     $(function() {
@@ -51,14 +70,9 @@
 
     //Server response distribute
     function distributeServerResponse(response) {
-        try {
-            JSON.parse(response);
-            var isValidJson = true;
-        } catch (error) {
-            var isValidJson = false;
-        }
-        if (isValidJson) {
+        if (response) {
             response = JSON.parse(response);
+
             //For reload after submission
             if (typeof response.reload != "undefined" && response.reload != 0) {
                 location.reload();
@@ -79,11 +93,11 @@
             }
             //for fade in a element
             if (typeof response.fadeIn != "undefined" && response.fadeIn != 0 && $(response.fadeIn).length) {
-                $(response.fadeIn).fadeIn();
+                $(response.fadeIn).fadeIn(300);
             }
             //for fade out a element
             if (typeof response.fadeOut != "undefined" && response.fadeOut != 0 && $(response.fadeOut).length) {
-                $(response.fadeOut).fadeOut();
+                $(response.fadeOut).fadeOut(300);
             }
 
             //For adding a class
@@ -103,15 +117,15 @@
 
             //For showing error message
             if (typeof response.error != "undefined" && response.error != 0) {
-                error(response.error);
+                error_message(response.error);
             }
             //For showing warning message
             if (typeof response.warning != "undefined" && response.warning != 0) {
-                warning(response.warning);
+                error_message(response.warning);
             }
             //For showing success message
             if (typeof response.success != "undefined" && response.success != 0) {
-                success(response.success);
+                success_message(response.success);
             }
 
             //For replace texts in a specific element

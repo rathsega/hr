@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminController, StaffController, ModalController};
-
+use App\Http\Controllers\{AdminController, StaffController, ModalController, AssessmentController};
 
 //Staff's routes
-Route::name('staff.')->middleware(['staff', 'auth', 'verified'])->group(function () {
+Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified'])->group(function () {
 
     Route::get('dashboard', [StaffController::class, 'dashboard'])->name('dashboard');
 

@@ -70,6 +70,7 @@
   <script src="{{asset('public/assets/js/select2.min.js')}}"></script>
 
   <script src="{{asset('public/assets/js/jquery-ui.js')}}"></script>
+  <script src="{{asset('public/assets/global/jquery-form/jquery.form.min.js')}}"></script>
 
   <!-- Toastr -->
   <script src="{{asset('public/assets/toastr/toastr.min.js')}}"></script>
@@ -80,5 +81,7 @@
 
   @include('modal')
   @include('common_scripts')
+  @include('init')
+  @stack('js')
 </body>
 </html>

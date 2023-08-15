@@ -10,12 +10,55 @@ use Carbon\Carbon;
 
 class AssessmentController extends Controller
 {
-    function __construct(){
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
+
+    function index(){
+        return view('admin.assessment.index');
+    }
+
+    function store(Request $request){
+        $this->validate($request,[
+            'user_id'=>'required',
+            'date_time'=>'required',
+            'description' => 'required'
+        ]);
+
+
+        $data['user_id'] = $request->user_id;
+        $data['date_time'] = strtotime($request->date_time);
+        $data['created_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
+        $data['updated_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
+        $data['description'] = $request->description;
+
+        Assessment::insert($data);
+        return redirect(route('admin.assessment'))->with('success_message', __('Assessment added successfully'));
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function team_report($id = 0){
         if($id > 0){
             $page_data['staff'] = User::find($id);
