@@ -23,7 +23,7 @@
                         $total_days_of_this_month = date('t', $timestamp_of_first_date);
                     @endphp
                     <div class="col-md-12">
-                        <form action="{{ route('admin.leave.report') }}" method="get" id="filterForm">
+                        <form action="{{ route('staff.leave.report') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Year</label>
@@ -63,6 +63,7 @@
                                     $staff_leave_reports = App\Models\Leave_application::join('users', 'users.id', '=', 'leave_applications.user_id')
                                         ->where('from_date', '>=', $start_timestamp)
                                         ->where('from_date', '<=', $end_timestamp)
+                                        ->where('users.id', auth()->user()->id)
                                         ->select('leave_applications.user_id', DB::raw('count(*) as user_total_leave'))
                                         ->groupBy('leave_applications.user_id')
                                         ->orderBy('users.sort');
@@ -143,49 +144,21 @@
                                                                         @php echo script_checker($leave_report->reason); @endphp
                                                                     </td>
                                                                     <td class="text-center" style="width: 80px;">
-                                                                        @if ($leave_report->status != 'approved')
-                                                                            <a href="#"
-                                                                                onclick="confirmModal('{{ route('admin.leave.report.status', ['id' => $leave_report->id, 'status' => 'approved']) }}')"
-                                                                                class="btn btn p-0 px-1" title="{{ get_phrase('Approve') }}" data-bs-toggle="tooltip">
-                                                                                <svg height="15" viewBox="0 0 520 520" width="15" xmlns="http://www.w3.org/2000/svg"
-                                                                                    id="fi_5291043">
-                                                                                    <g id="_7-Check" data-name="7-Check">
-                                                                                        <path
-                                                                                            d="m79.423 240.755a47.529 47.529 0 0 0 -36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515l250.787-403.892c.041-.067.084-.134.128-.2 2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0 -19.362 1.343q-.135.166-.278.327l-252.922 285.764a10.961 10.961 0 0 1 -15.585.843l-83.94-76.386a47.319 47.319 0 0 0 -31.939-12.438z">
-                                                                                        </path>
-                                                                                    </g>
+                                                                        @if ($leave_report->status == 'pending')
+                                                                            <a href="#" onclick="confirmModal('{{ route('staff.leave.report.delete', $leave_report->id) }}')"
+                                                                                class="btn btn p-0 px-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                                    </path>
+                                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                                    </path>
+                                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                                                 </svg>
                                                                             </a>
                                                                         @endif
-
-                                                                        @if ($leave_report->status != 'rejected')
-                                                                            <a href="#"
-                                                                                onclick="confirmModal('{{ route('admin.leave.report.status', ['id' => $leave_report->id, 'status' => 'rejected']) }}')"
-                                                                                class="btn btn p-0 px-1" title="{{ get_phrase('Reject') }}" data-bs-toggle="tooltip">
-                                                                                <svg id="fi_8867452" enable-background="new 0 0 512 512" height="15" viewBox="0 0 512 512"
-                                                                                    width="15" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <g>
-                                                                                        <path
-                                                                                            d="m256 0c-141.163 0-256 114.837-256 256s114.837 256 256 256 256-114.837 256-256-114.837-256-256-256zm111.963 331.762c10 10 10 26.212 0 36.212-5 4.988-11.55 7.487-18.1 7.487s-13.1-2.5-18.1-7.487l-75.763-75.774-75.762 75.775c-5 4.988-11.55 7.487-18.1 7.487s-13.1-2.5-18.1-7.487c-10-10-10-26.212 0-36.212l75.762-75.763-75.762-75.762c-10-10-10-26.213 0-36.213 10-9.988 26.2-9.988 36.2 0l75.762 75.775 75.762-75.775c10-9.988 26.2-9.988 36.2 0 10 10 10 26.213 0 36.213l-75.762 75.762z">
-                                                                                        </path>
-                                                                                    </g>
-                                                                                </svg>
-                                                                            </a>
-                                                                        @endif
-
-                                                                        <a href="#" onclick="confirmModal('{{ route('admin.leave.report.delete', $leave_report->id) }}')"
-                                                                            class="btn btn p-0 px-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15"
-                                                                                viewBox="0 0 24 24">
-                                                                                <path
-                                                                                    d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
-                                                                                </path>
-                                                                                <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
-                                                                                </path>
-                                                                                <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                                <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                            </svg>
-                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -214,7 +187,7 @@
                     <div class="col-md-12">
 
 
-                        <form action="{{ route('admin.leave.report.store') }}" method="post">
+                        <form action="{{ route('staff.leave.report.store') }}" method="post">
                             @Csrf
 
                             <div class="row">

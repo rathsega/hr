@@ -12,7 +12,7 @@ class TimesheetController extends Controller
 {
     function index(){
         $page_data['users'] = User::where('status', 'active')->orderBy('id', 'asc')->get();
-        return view('admin.timesheet.index', $page_data);
+        return view(auth()->user()->role.'.timesheet.index', $page_data);
     }
 
     function store(Request $request){

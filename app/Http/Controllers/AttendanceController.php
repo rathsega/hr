@@ -11,8 +11,13 @@ use Carbon\Carbon;
 class AttendanceController extends Controller
 {
     function index(){
-        $page_data['users'] = User::where('status', 'active')->orderBy('sort')->get();
-        return view('admin.attendance.index', $page_data);
+        if(auth()->user()->role == 'admin'){
+            $page_data['users'] = User::where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort')->get();
+        }elseif(auth()->user()->role == 'staff'){
+            $page_data['users'] = User::where('id', auth()->user()->id)->get();
+        }
+
+        return view(auth()->user()->role.'.attendance.index', $page_data);
     }
 
     function store(Request $request){
@@ -30,20 +35,24 @@ class AttendanceController extends Controller
 
 
         if($request->check_in_out == 'checkin'){
-            $data['location'] = json_encode(['in' => getCurrentLocation($request->lat, $request->lon)]);
+            if(auth()->user()->role == 'admin'){
+                $query = Attendance::where('user_id', $request->user_id);
+                $data['user_id'] = $request->user_id;
+            }elseif(auth()->user()->role == 'staff'){
+                $query = Attendance::where('user_id', auth()->user()->id);
+                $data['user_id'] = auth()->user()->id;
+            }
 
+            $data['location'] = json_encode(['in' => getCurrentLocation($request->lat, $request->lon)]);
+            $data['working_time'] = 0;
+            $data['checkin'] = strtotime($request->time);
             if(date('H', strtotime($request->time)) == 10 && date('i', strtotime($request->time)) > 30){
                 $data['late_entry'] = 1;
             }elseif(date('H', strtotime($request->time)) > 10){
                 $data['late_entry'] = 1;
             }
 
-            $data['working_time'] = 0;
-
-            $data['user_id'] = $request->user_id;
-            $data['checkin'] = strtotime($request->time);
-
-            $number_of_entry = Attendance::where('user_id', $request->user_id)->where('checkin', '>=', $start_timestamp_of_selected_date)->where('checkin', '<=', $end_timestamp_of_selected_date)->get()->count();
+            $number_of_entry = $query->where('checkin', '>=', $start_timestamp_of_selected_date)->where('checkin', '<=', $end_timestamp_of_selected_date)->get()->count();
             if($number_of_entry > 0){
                 return redirect()->back()->withInput()->with('error_message', __('There is already an entry for your selected date'));
             }
@@ -53,7 +62,11 @@ class AttendanceController extends Controller
             session(['table' => 'attendances', 'location' => base64_encode($data['location']), 'id' => $id]);
             return redirect()->back()->with('success_message', __('Attendance has been added'));
         }else{
-            $query = Attendance::where('user_id', $request->user_id)->where('checkin', '>=', $start_timestamp_of_selected_date)->where('checkin', '<=', $end_timestamp_of_selected_date);
+            if(auth()->user()->role == 'admin'){
+                $query = Attendance::where('user_id', $request->user_id)->where('checkin', '>=', $start_timestamp_of_selected_date)->where('checkin', '<=', $end_timestamp_of_selected_date);
+            }elseif(auth()->user()->role == 'staff'){
+                $query = Attendance::where('user_id', auth()->user()->id)->where('checkin', '>=', $start_timestamp_of_selected_date)->where('checkin', '<=', $end_timestamp_of_selected_date);
+            }
 
             $in_lat_lon = json_decode($query->value('location'), true);
             $in_lat_lon['out'] = getCurrentLocation($request->lat, $request->lon);

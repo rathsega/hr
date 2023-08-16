@@ -23,7 +23,7 @@
                         $total_days_of_this_month = date('t', $timestamp_of_first_date);
                     @endphp
                     <div class="col-md-12">
-                        <form action="{{ route('admin.attendance') }}" method="get" id="filterForm">
+                        <form action="{{ route('staff.attendance') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Year</label>
@@ -64,7 +64,7 @@
                                     $start_timestamp = strtotime($selected_year.'-'.$selected_month.'-'.$day.' 00:00:00');
                                     $end_timestamp = strtotime($selected_year.'-'.$selected_month.'-'.$day.' 23:59:59');
 
-                                    $attendance_staffs = App\Models\Attendance::join('users', 'users.id', '=', 'attendances.user_id')->where('checkin', '>=', $start_timestamp)->where('checkin', '<=', $end_timestamp)->select('attendances.user_id', DB::raw('count(*) as total_attendance'))->groupBy('attendances.user_id')->orderBy('users.sort');
+                                    $attendance_staffs = App\Models\Attendance::join('users', 'users.id', '=', 'attendances.user_id')->where('users.id', auth()->user()->id)->where('checkin', '>=', $start_timestamp)->where('checkin', '<=', $end_timestamp)->select('attendances.user_id', DB::raw('count(*) as total_attendance'))->groupBy('attendances.user_id')->orderBy('users.sort');
                                     if ($attendance_staffs->count() == 0) {
                                         continue;
                                     }else{
@@ -178,7 +178,7 @@
                     <div class="col-md-12">
 
 
-                        <form action="{{route('admin.attendance.store')}}" method="post" class="current-location-form">
+                        <form action="{{route('staff.attendance.store')}}" method="post" class="current-location-form">
                             @Csrf
                             <div class="row">
                                 <div class="col-md-12">

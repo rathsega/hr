@@ -12,22 +12,27 @@ class TasksController extends Controller
 {
 
     function index($tasks_type = "archive"){
-        $page_data['users'] = User::where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort')->get();
-        $page_data['tasks_type'] = $tasks_type;
+        if(auth()->user()->role == 'admin'){
+            $page_data['users'] = User::where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort')->get();
+        }elseif(auth()->user()->role == 'staff'){
+            $page_data['users'] = User::where('id', auth()->user()->id)->get();
+        }
 
-        return view('admin.tasks.index', $page_data);
+        $page_data['tasks_type'] = $tasks_type;
+        return view(auth()->user()->role.'.tasks.index', $page_data);
     }
 
     function store($user_id, Request $request){
-        $this->validate($request,[
-            'description'=>'required',
-        ]);
-
-        if($user_id){
+        if(auth()->user()->role == 'admin'){
             $data['user_id'] = $user_id;
         }else{
             $data['user_id'] = auth()->user()->id;
         }
+
+
+        $this->validate($request,[
+            'description'=>'required',
+        ]);
         $data['description'] = $request->description;
         $data['is_completed'] = 0;
         $data['status'] = 'running';
@@ -35,30 +40,37 @@ class TasksController extends Controller
         $id = Task::insertGetId($data);
         $page_data['task'] = Task::find($id);
         
-        $response['prepend'] = ['elem' => '#user-task-list'.$user_id, 'content' => view('admin.tasks.task', $page_data)->render()];
+        $response['prepend'] = ['elem' => '#user-task-list'.$user_id, 'content' => view(auth()->user()->role.'.tasks.task', $page_data)->render()];
         return json_encode($response);
     }
 
     function update($id, Request $request){
+        if(auth()->user()->role == 'admin'){
+            $query = Task::where('id', $request->id);;
+        }else{
+            $query = Task::where('id', $request->id)->where('user_id', auth()->user()->id);
+        }
+
         $this->validate($request,[
             'description'=>'required',
         ]);
-
         $data['description'] = $request->description;
-
-        Task::where('id', $id)->update($data);
-        Task::find($id);
+        $query->update($data);
     }
 
     function task_completion(Request $request){
-        $query = Task::where('id', $request->id);
+        if(auth()->user()->role == 'admin'){
+            $query = Task::where('id', $request->id);;
+        }else{
+            $query = Task::where('id', $request->id)->where('user_id', auth()->user()->id);
+        }
 
         if($query->value('is_completed') == 1){
-            Task::where('id', $request->id)->update(['is_completed' => 0]);
+            $query->update(['is_completed' => 0]);
             $response['removeClass'] = ['elem' => '#task-list'.$request->id, 'content' => 'completed'];
             $response['success'] = get_phrase('Marked as incompleted');
         }else{
-            Task::where('id', $request->id)->update(['is_completed' => 1]);
+            $query->update(['is_completed' => 1]);
             $response['addClass'] = ['elem' => '#task-list'.$request->id, 'content' => 'completed'];
             $response['success'] = get_phrase('Marked as completed');
         }
@@ -67,13 +79,17 @@ class TasksController extends Controller
     }
 
     function task_status(Request $request){
-        $query = Task::where('id', $request->id);
+        if(auth()->user()->role == 'admin'){
+            $query = Task::where('id', $request->id);;
+        }else{
+            $query = Task::where('id', $request->id)->where('user_id', auth()->user()->id);
+        }
 
         if($query->value('status') == 'running'){
-            Task::where('id', $request->id)->update(['status' => 'archive']);
+            $query->update(['status' => 'archive']);
             $response['success'] = get_phrase('Moved to archive');
         }else{
-            Task::where('id', $request->id)->update(['status' => 'running']);
+            $query->update(['status' => 'running']);
             $response['success'] = get_phrase('Removed from archive');
         }
         $response['fadeOut'] = '#task-list'.$request->id;

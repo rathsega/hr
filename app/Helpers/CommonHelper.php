@@ -27,7 +27,7 @@ if (! function_exists('get_image')) {
     }
 }
 
-if (! function_exists('remove_scripts')) {
+if (! function_exists('script_checker')) {
     function script_checker($string = '', $convert_string = true) {
 
         if($convert_string == true){

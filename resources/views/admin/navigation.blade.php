@@ -97,9 +97,9 @@
         </li>
 
         <!-- menu starts here -->
-        <li class="nav-links-li @if ($current_route == 'admin.leave') showMenu @endif">
+        <li class="nav-links-li @if ($current_route == 'admin.leave.report') showMenu @endif">
             <div class="iocn-link">
-                <a class="w-100" href="{{ route('admin.leave') }}">
+                <a class="w-100" href="{{ route('admin.leave.report') }}">
                     <div class="sidebar_icon">
                         <svg width="48" height="48" version="1.1" id="fi_198141" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-100 0 550 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                             <g>
@@ -137,7 +137,10 @@
                             </svg>
                     </div>
                     <span class="link_name">
-                        Leave
+                        Leave Report
+                    </span>
+                    <span class="badge bg-danger ms-auto me-4">
+                        {{App\models\Leave_application::where('status', 'pending')->count()}}
                     </span>
                 </a>
             </div>
@@ -166,9 +169,9 @@
         </li>
 
         <!-- menu starts here -->
-        <li class="nav-links-li @if ($current_route == 'admin.staff') showMenu @endif">
+        <li class="nav-links-li @if ($current_route == 'admin.staffs') showMenu @endif">
             <div class="iocn-link">
-                <a class="w-100" href="{{ route('admin.staff') }}">
+                <a class="w-100" href="{{ route('admin.staffs') }}">
                     <div class="sidebar_icon">
                         <svg id="fi_6462992" height="48" viewBox="0 0 32 32" width="48" xmlns="http://www.w3.org/2000/svg">
                             <g id="team">

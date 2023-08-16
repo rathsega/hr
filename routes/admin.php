@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminController, TimesheetController, StaffController, ModalController, AssessmentController, AttendanceController, TasksController};
+use App\Http\Controllers\{LeaveApplicationController, AdminController, TimesheetController, StaffController, ModalController, AssessmentController, AttendanceController, TasksController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
 
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('dashboard', function(){return view('admin.dashboard.index');})->name('dashboard');
 
     //Timesheet
     Route::get('timesheet',[TimesheetController::class, 'index'])->name('timesheet');
@@ -18,23 +18,25 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('task/update/{id}',[TasksController::class, 'update'])->name('task.update');
     Route::get('task/completion',[TasksController::class, 'task_completion'])->name('task.completion');
     Route::get('task/status',[TasksController::class, 'task_status'])->name('task.status');
-    //Route::post('task-manager/update/{user_id}', [AdminController::class, 'task_manager_update'])->name('task_manager.update');
 
     //Attendance
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance');
     Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 
     //Leave application
-    Route::get('leave', [LeaveApplicationController::class, 'index'])->name('leave');
+    Route::get('leave-report', [LeaveApplicationController::class, 'index'])->name('leave.report');
+    Route::post('leave-report/store', [LeaveApplicationController::class, 'store'])->name('leave.report.store');
+    Route::get('leave-report/status/{id}', [LeaveApplicationController::class, 'change_status'])->name('leave.report.status');
+    Route::get('leave-report/delete/{id}', [LeaveApplicationController::class, 'delete'])->name('leave.report.delete');
 
 
     //Staffs
-    Route::get('staff', [AdminController::class, 'staff'])->name('staff');
-    Route::post('staff/add', [AdminController::class, 'staff_add'])->name('staff.add');
-    Route::post('staff/update/{user_id}', [AdminController::class, 'staff_update'])->name('staff.update');
-    Route::get('staff/delete/{user_id}', [AdminController::class, 'staff_delete'])->name('staff.delete');
-    Route::get('staff/status/{status}/{user_id}', [AdminController::class, 'staff_status'])->name('staff.status');
-    Route::post('staff-sort/update', [AdminController::class, 'staff_sort'])->name('staff_sort.update');
+    Route::get('staffs', [StaffController::class, 'index'])->name('staffs');
+    Route::post('staff/store', [StaffController::class, 'store'])->name('staff.store');
+    Route::post('staff/update/{user_id}', [StaffController::class, 'update'])->name('staff.update');
+    Route::get('staff/delete/{user_id}', [StaffController::class, 'delete'])->name('staff.delete');
+    Route::get('staff/status/{status}/{user_id}', [StaffController::class, 'staff_status'])->name('staff.status');
+    Route::post('staff-sort/update', [StaffController::class, 'staff_sort'])->name('staff.sort.update');
 
     //Assessments
     Route::get('assessment', [AssessmentController::class, 'index'])->name('assessment');

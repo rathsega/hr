@@ -8,19 +8,19 @@
                 <p class="column-title">Employee Tasks</p>
                 <ul class="nav nav-tabs eNav-Tabs-custom" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link @if($tasks_type == 'running') active @endif" onclick="redirectTo('{{route('admin.tasks', 'running')}}')">
+                        <button class="nav-link @if($tasks_type == 'running') active @endif" onclick="redirectTo('{{route('staff.tasks', 'running')}}')">
                             Running Tasks
                             <span></span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link @if($tasks_type == 'archive') active @endif" onclick="redirectTo('{{route('admin.tasks', 'archive')}}')">
+                        <button class="nav-link @if($tasks_type == 'archive') active @endif" onclick="redirectTo('{{route('staff.tasks', 'archive')}}')">
                             Archive Tasks
                             <span></span>
                         </button>
                     </li>
                 </ul>
-                <div class="tab-content eNav-Tabs-content" id="myTabContent">
+                <div class="tab-content eNav-Tabs-content border-0" id="myTabContent">
                     <div class="tab-pane fade show active" id="cHome" role="tabpanel" aria-labelledby="cHome-tab">
                         <div class="accordion custom-accordion" id="accordionStaff">
 
@@ -38,23 +38,14 @@
                                             ->get();
                                     }
                                 @endphp
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading_{{ $key }}">
-                                        <button class="accordion-button @php echo (isset($_GET['expand-user']) && $user->id == $_GET['expand-user']) ? '' : 'collapsed'; @endphp"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $key }}"
-                                            aria-expanded="@php echo (isset($_GET['expand-user']) && $user->id == $_GET['expand-user']) ? 'true' : 'false'; @endphp"
-                                            aria-controls="collapse_{{ $key }}">
-                                            <img class="rounded-circle me-2" width="30px" src="{{ get_image('uploads/user-image/' . $user->photo) }}">
-                                            {{ $user->name }}
-                                        </button>
-                                    </h2>
+                                <div class="accordion-item border-0">
                                     <div id="collapse_{{ $key }}"
-                                        class="accordion-collapse collapse @php echo (isset($_GET['expand-user']) && $user->id == $_GET['expand-user']) ? 'show' : ''; @endphp"
+                                        class="accordion-collapse collapse show"
                                         aria-labelledby="heading_{{ $key }}" data-bs-parent="#accordionStaff" style="">
-                                        <div class="accordion-body py-3">
+                                        <div class="accordion-body py-3 px-0">
                                             <ul class="mb-2">
                                                 <li>
-                                                    <form action="{{ route('admin.task.store', $user->id) }}" method="post" class="ajaxForm resetable w-100">
+                                                    <form action="{{ route('staff.task.store', $user->id) }}" method="post" class="ajaxForm resetable w-100">
                                                         @Csrf
                                                         <div class="input-group">
                                                             <input type="text" name="description" class="form-control py-2 text-13px" placeholder="Enter a new task"
@@ -66,7 +57,7 @@
                                             </ul>
                                             <ul class="task-list" id="user-task-list{{ $user->id }}">
                                                 @foreach ($tasks as $task)
-                                                    @include('admin.tasks.task')
+                                                    @include('staff.tasks.task')
                                                 @endforeach
                                             </ul>
                                         </div>
