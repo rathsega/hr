@@ -330,3 +330,15 @@
 	margin-left: 15px;
 	padding-top: 8px;
 }
+.sidebar .nav-links > li .iocn-link:hover a i, .sidebar .nav-links > li .iocn-link:hover a svg path{
+	fill: #fff;
+}
+.sidebar .nav-links > li .icon-link svg, .sidebar .nav-links > li .sidebar_icon svg path{
+	fill: #797c8b;
+}
+.nav-links-li.showMenu svg, .nav-links-li.showMenu svg path{
+	fill: #fff !important;
+}
+.custom-accordion .accordion-item .accordion-header .accordion-button::after{
+	margin-left: unset;
+}

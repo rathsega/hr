@@ -191,7 +191,9 @@ function getCurrentLocation($lat = 0, $long = 0){
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => `https://nominatim.openstreetmap.org/reverse?format=json&lat=$lat&lon=$long&zoom=18`,
+    CURLOPT_URL => "https://nominatim.openstreetmap.org/reverse?format=json&lat=$lat&lon=$long&zoom=18",
+    CURLOPT_VERBOSE => true,
+    CURLOPT_SSL_VERIFYPEER => false,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -199,14 +201,29 @@ function getCurrentLocation($lat = 0, $long = 0){
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_HTTPHEADER => array(
+        'User-Agent: Creativeitem Workplace'
+    )
     ));
 
     $response = curl_exec($curl);
-
     curl_close($curl);
 
+
     if($response){
-        return json_decode($response, true)['display_name'];
+        $location = json_decode($response, true)['display_name'];
+        $location_arr = explode(",",$location);
+        $name = null;
+        foreach($location_arr as $key => $location_name){
+            if($key == 4) break;
+            if($key > 0){
+                $name .= ','.$location_name;
+            }else{
+                $name .= $location_name;
+            }
+            
+        }
+        return $name;
     }else{
         return null;
     }

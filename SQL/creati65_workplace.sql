@@ -2171,7 +2171,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '2022_11_16_002851_create_timesheets_table', 1),
 (9, '2022_11_16_003249_create_routes_table', 1),
 (10, '2022_11_21_155750_create_assessments_table', 1),
-(11, '2022_11_21_215345_create_staff_performances_table', 1);
+(11, '2022_11_21_215345_create_performances_table', 1);
 
 -- --------------------------------------------------------
 
@@ -2236,10 +2236,10 @@ INSERT INTO `routes` (`id`, `title`, `page_title`, `route_name`, `created_at`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `staff_performances`
+-- Table structure for table `performances`
 --
 
-CREATE TABLE `staff_performances` (
+CREATE TABLE `performances` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint DEFAULT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2251,10 +2251,10 @@ CREATE TABLE `staff_performances` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `staff_performances`
+-- Dumping data for table `performances`
 --
 
-INSERT INTO `staff_performances` (`id`, `user_id`, `type`, `rating`, `description`, `date_time`, `created_at`, `updated_at`) VALUES
+INSERT INTO `performances` (`id`, `user_id`, `type`, `rating`, `description`, `date_time`, `created_at`, `updated_at`) VALUES
 (1, 1, 'performance', 5, '', '1669485600', '2022-11-27 06:11:17', '2022-11-27 06:11:17'),
 (2, 17, 'discipline', 1, '', '1681927200', '2023-04-20 04:27:47', '2023-04-20 04:27:47'),
 (3, 17, 'performance', 3, '', '1681927200', '2023-04-20 04:28:00', '2023-04-20 04:28:00'),
@@ -6760,9 +6760,9 @@ ALTER TABLE `routes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `staff_performances`
+-- Indexes for table `performances`
 --
-ALTER TABLE `staff_performances`
+ALTER TABLE `performances`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -6831,9 +6831,9 @@ ALTER TABLE `routes`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `staff_performances`
+-- AUTO_INCREMENT for table `performances`
 --
-ALTER TABLE `staff_performances`
+ALTER TABLE `performances`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --

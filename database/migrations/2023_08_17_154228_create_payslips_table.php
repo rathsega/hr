@@ -13,19 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('payslips', function (Blueprint $table) {
             $table->id();
-
-            $table->bigInteger('user_id')->nullable();
-            $table->string('checkin')->nullable();
-            $table->string('checkout')->nullable();
-            $table->string('working_time')->nullable();
-            $table->bigInteger('late_entry')->nullable();
-            $table->string('early_leave')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->double('bonus', 10, 2)->nullable();
+            $table->double('penalty', 10, 2)->nullable();
+            $table->double('net_salary', 10, 2)->nullable();
+            $table->integer('status')->nullable();
+            $table->timestamp('month_of_salary')->nullable();
             $table->text('note')->nullable();
-            $table->text('location')->nullable();
+            $table->integer('email_sent')->nullable();
+            $table->string('invoice')->nullable();
             $table->timestamp('created_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->index('user_id');
         });
     }
 
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('payslips');
     }
 };

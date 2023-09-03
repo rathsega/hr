@@ -244,7 +244,7 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
-                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lat+'">');
+                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lon+'">');
                 $('.current-location-form [type=submit]').removeClass('disabled');
                 $('.current-location-form [type=submit]').prop('disabled', false);
 

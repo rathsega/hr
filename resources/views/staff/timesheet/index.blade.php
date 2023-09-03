@@ -115,7 +115,7 @@
                                                                         {{date('h:i a', $timesheet->from_date)}} - {{date('h:i a', $timesheet->to_date)}}
                                                                     </td>
                                                                     <td style="padding: 0px !important;">
-                                                                        {{$timesheet->description}}
+                                                                        {!!nl2br($timesheet->description)!!}
                                                                     </td>
                                                                     <td class="p-0" style="width: 100px; padding: 0px !important;">
                                                                         @if($timesheet->location)
@@ -219,7 +219,7 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
-                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lat+'">');
+                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lon+'">');
                 $('.current-location-form [type=submit]').removeClass('disabled');
                 $('.current-location-form [type=submit]').prop('disabled', false);
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{User, Task, Timesheet, Attendance, Leave_application};
 use Session;
 use Illuminate\Support\Facades\Hash;
-
+use Intervention\Image\Facades\Image;
 class StaffController extends Controller
 {
 
@@ -20,7 +20,7 @@ class StaffController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'email' => 'required|string|email|max:255|unique:App\Models\User,email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'required'
         ]);
@@ -59,10 +59,9 @@ class StaffController extends Controller
 
         $this->validate($request,[
             'name'=>'required',
-            'email' => 'required|email',
+            'email' => "required|email|unique:users,email,$user_id",
             'role' => 'required'
         ]);
-
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
@@ -127,6 +126,50 @@ class StaffController extends Controller
         return redirect()->back()->with('success_message', __('User sorted successfully'));
     }
 
+    function profile($tab = "", $user_id = "", Request $request){
+        $page_data['user'] = User::where('id', $user_id)->first();
+        $page_data['tab'] = $tab;
+        return view(auth()->user()->role.'.staff.profile', $page_data);
+    }
 
+    function profile_update($user_id = "", Request $request){
+        $this->validate($request,[
+            'name'=>'required',
+            'email' => "required|email|unique:users,email,$user_id",
+        ]);
+
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['designation'] = $request->designation;
+        $data['phone'] = $request->phone;
+        $data['alternative_phone'] = $request->alternative_phone;
+        $data['rel_of_alternative_phone'] = $request->rel_of_alternative_phone;
+        $data['blood_group'] = $request->blood_group;
+        $data['gender'] = $request->gender;
+        $data['birthday'] = date('Y-m-d H:i:s', strtotime($request->birthday));
+        $data['present_address'] = $request->present_address;
+        $data['permanent_address'] = $request->permanent_address;
+        $data['bio'] = $request->bio;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        if($request->photo){
+            removeFile('uploads/user-image/'.User::where('id', $user_id)->value('photo'));
+            $data['photo'] = random(20).'.'.$request->photo->extension();
+            //Image optimization
+            Image::make($request->photo->path())->orientate()->resize(200, null, function ($constraint) {
+                $constraint->upsize();
+                $constraint->aspectRatio();
+            })->save(public_path() . '/uploads/user-image/' . $data['photo']);
+        }
+        
+        $response = User::where('id', $user_id)->update($data);
+
+
+        if($response){
+            return redirect()->back()->with('success_message', __('User data updated successfully'));
+        }else{
+            return redirect()->back()->withInput()->with('error_message', __('Something is wrong!'));
+        }
+    }
 
 }

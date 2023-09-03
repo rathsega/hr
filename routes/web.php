@@ -51,19 +51,18 @@ Route::controller(ModalController::class)->group(function () {
 });
 
 
-Route::get('/location-validity-check', function (Request $request) {
-	$session_data = session();
-    if(
-        is_array($session_data) && 
-        array_key_exists('table', $session_data) && $session_data['table'] != '' &&
-        array_key_exists('location', $session_data) && $session_data['location'] != '' &&
-        array_key_exists('id', $session_data) && $session_data['id'] != ''
-    ){
-        \DB::table($session_data['table'])->where('id', $session_data['id'])->update(['location' => getCurrentLocation($request->lat, $request->lon)]);
-        session(['table' => '', 'location' => '', 'id' => '']);
-    }
-})->name('location.validity.check');
-
+// Route::get('/location-validity-check', function (Request $request) {
+// 	$session_data = session();
+//     if(
+//         is_array($session_data) && 
+//         array_key_exists('table', $session_data) && $session_data['table'] != '' &&
+//         array_key_exists('location', $session_data) && $session_data['location'] != '' &&
+//         array_key_exists('id', $session_data) && $session_data['id'] != ''
+//     ){
+//         \DB::table($session_data['table'])->where('id', $session_data['id'])->update(['location' => getCurrentLocation($request->lat, $request->lon)]);
+//         session(['table' => '', 'location' => '', 'id' => '']);
+//     }
+// })->name('location.validity.check');
 
 
 require __DIR__.'/auth.php';

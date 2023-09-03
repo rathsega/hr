@@ -115,7 +115,7 @@
                                                                         {{date('h:i a', $timesheet->from_date)}} - {{date('h:i a', $timesheet->to_date)}}
                                                                     </td>
                                                                     <td style="padding: 0px !important;">
-                                                                        {{$timesheet->description}}
+                                                                        {!!nl2br($timesheet->description)!!}
                                                                     </td>
                                                                     <td class="p-0" style="width: 100px; padding: 0px !important;">
                                                                         @if($timesheet->location)
@@ -161,7 +161,8 @@
                                         <div class="fpb-7">
                                             <label class="eForm-label">Select User</label>
                                             <select name="user_id"
-                                                class="form-select eForm-select eChoice-multiple-without-remove" required>
+                                                class="form-select eForm-select select2" required>
+                                                <option value="">Select a user</option>
                                                 @foreach ($users as $user)
                                                     <option value="{{ $user->id }}"
                                                         @if ($user->id == auth()->user()->id) selected @endif>
@@ -220,7 +221,7 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
-                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lat+'">');
+                $('.current-location-form').prepend('<input type="hidden" name="lat" value="'+lat+'"><input type="hidden" name="lon" value="'+lon+'">');
                 $('.current-location-form [type=submit]').removeClass('disabled');
                 $('.current-location-form [type=submit]').prop('disabled', false);
 

@@ -11,7 +11,7 @@
 <meta content="HR manager" name="description" />
 <meta content="Creativeitem" name="author" />
 <!-- all the css files -->
-<link rel="shortcut icon" href="{{asset('public/assets/images/logo.png')}}">
+<link rel="shortcut icon" href="{{ asset('public/assets/images/favicon.png') }}">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" href="{{asset('public/assets/vendors/bootstrap-5.1.3/css/bootstrap.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('public/assets/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css')}}">

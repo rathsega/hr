@@ -72,8 +72,8 @@
                                         $counter += 1;
                                     }
 
-                                    $pending_request = clone $staff_leave_reports;
-                                    $approved_request = clone $staff_leave_reports;
+                                    $pending_request = App\Models\Leave_application::where('from_date', '>=', $start_timestamp)->where('from_date', '<=', $end_timestamp)->where('leave_applications.status', 'pending');
+                                    $approved_request = App\Models\Leave_application::where('from_date', '>=', $start_timestamp)->where('from_date', '<=', $end_timestamp)->where('leave_applications.status', 'approved');
                                     
                                 @endphp
                                 <div class="accordion-item">
@@ -81,14 +81,15 @@
                                         <button class="accordion-button @if ($counter > 1) collapsed @endif" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseaccordion{{ $day }}" aria-expanded="@if ($counter == 1) true @else false @endif"
                                             aria-controls="collapseaccordion{{ $day }}">
-                                            @if ($pending_request->where('leave_applications.status', 'pending')->count() > 0)
+                                            
+                                            @if ($pending_request->count() > 0)
                                                 <span class="badge bg-danger me-3" title="{{ get_phrase('Pending request') }}" data-bs-toggle="tooltip">
-                                                    {{ $pending_request->where('leave_applications.status', 'pending')->first()->user_total_leave }}
+                                                    {{ $pending_request->count() }}
                                                 </span>
                                             @endif
-                                            @if ($approved_request->where('leave_applications.status', 'approved')->count() > 0)
+                                            @if ($approved_request->count() > 0)
                                                 <span class="badge bg-success me-3" title="{{ get_phrase('Approved request') }}" data-bs-toggle="tooltip">
-                                                    {{ $approved_request->where('leave_applications.status', 'approved')->first()->user_total_leave }}
+                                                    {{ $approved_request->count() }}
                                                 </span>
                                             @endif
                                             {{ date('d M - l', $start_timestamp) }}

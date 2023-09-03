@@ -10,12 +10,20 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link @if($tasks_type == 'running') active @endif" onclick="redirectTo('{{route('staff.tasks', 'running')}}')">
                             Running Tasks
+                            <div class="badge bg-secondary ms-2" title="{{get_phrase('Total task')}}" data-bs-toggle="tooltip">
+                                {{App\Models\Task::where('user_id', auth()->user()->id)
+                                    ->where('status', 'running')->count()}}
+                            </div>
                             <span></span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link @if($tasks_type == 'archive') active @endif" onclick="redirectTo('{{route('staff.tasks', 'archive')}}')">
                             Archive Tasks
+                            <div class="badge bg-secondary ms-2" title="{{get_phrase('Total task')}}" data-bs-toggle="tooltip">
+                                {{App\Models\Task::where('user_id', auth()->user()->id)
+                                    ->where('status', 'archive')->count()}}
+                            </div>
                             <span></span>
                         </button>
                     </li>

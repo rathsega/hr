@@ -8,15 +8,23 @@
                 <p class="column-title">Employee Tasks</p>
                 <ul class="nav nav-tabs eNav-Tabs-custom" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link @if($tasks_type == 'running') active @endif" onclick="redirectTo('{{route('admin.tasks', 'running')}}')">
+                        <button class="nav-link @if ($tasks_type == 'running') active @endif" onclick="redirectTo('{{ route('admin.tasks', 'running') }}')">
                             Running Tasks
                             <span></span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link @if($tasks_type == 'archive') active @endif" onclick="redirectTo('{{route('admin.tasks', 'archive')}}')">
+                        <button class="nav-link @if ($tasks_type == 'archive') active @endif" onclick="redirectTo('{{ route('admin.tasks', 'archive') }}')">
                             Archive Tasks
                             <span></span>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-auto" role="presentation">
+                        <button onclick="tab_toggle(this)" class="nav-link text-secondary expand-btn">
+                            Expand All
+                        </button>
+                        <button onclick="tab_toggle(this)" class="nav-link text-secondary collapse-btn d-hidden">
+                            Collapse All
                         </button>
                     </li>
                 </ul>
@@ -46,6 +54,7 @@
                                             aria-controls="collapse_{{ $key }}">
                                             <img class="rounded-circle me-2" width="30px" src="{{ get_image('uploads/user-image/' . $user->photo) }}">
                                             {{ $user->name }}
+                                            <span class="badge bg-secondary ms-auto me-3" title="{{ get_phrase('Total task') }}" data-bs-toggle="tooltip">{{ $tasks->count() }}</span>
                                         </button>
                                     </h2>
                                     <div id="collapse_{{ $key }}"
@@ -59,7 +68,8 @@
                                                         <div class="input-group">
                                                             <input type="text" name="description" class="form-control py-2 text-13px" placeholder="Enter a new task"
                                                                 aria-label="Enter a new task" style="border: 1px solid #e7e7e7;">
-                                                            <button class="input-group-text text-12px text-dark" style="    background-color: #f5f5f5; border: 1px solid #e7e7e7;">Add</button>
+                                                            <button class="input-group-text text-12px text-dark"
+                                                                style="    background-color: #f5f5f5; border: 1px solid #e7e7e7;">Add</button>
                                                         </div>
                                                     </form>
                                                 </li>
@@ -91,6 +101,22 @@
             time = setTimeout(() => {
                 $(e).parent().submit();
             }, 1000);
+        }
+
+        function tab_toggle(e) {
+            $('.expand-btn').removeClass('d-hidden');
+            $('.collapse-btn').removeClass('d-hidden');
+            $('.accordion-button').removeClass('collapsed');
+            $('.accordion-collapse').removeClass('show');
+
+            if($(e).hasClass('expand-btn')){
+                $('.accordion-button').addClass('collapsed');
+                $('.accordion-collapse').addClass('show');
+                $(e).addClass('d-hidden');
+            }else{
+                $('.collapse-btn').addClass('d-hidden');
+            }
+
         }
     </script>
 @endpush

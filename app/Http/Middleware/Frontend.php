@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AdminMiddleware
+class Frontend
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,6 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->role=='admin'){
-            return $next($request);
-        }else{
-            return redirect()->back()->with('error_message', 'Access denied!');
-        }
+        return $next($request);
     }
 }

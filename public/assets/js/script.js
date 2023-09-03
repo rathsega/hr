@@ -196,7 +196,7 @@ $(".nav-links-li").on("click", function () {
 // Date range picker
 // Default date picker
 $(function () {
-  $('input[name="eDefaultDateRange"]').daterangepicker(
+  $('input[name="eDefaultDateRange"], .date-range-picket').daterangepicker(
     {
       singleDatePicker: true,
       showDropdowns: true,
@@ -295,12 +295,7 @@ if (toastTriggerColor) {
   });
 }
 
-// Select2 js
-$(document).ready(function () {
-  $(".eChoice-multiple-without-remove").select2({
-    placeholder: "Select a state",
-  });
-});
 $(document).ready(function () {
   $(".eChoice-multiple-with-remove").select2();
+  $(".select2").select2();
 });

@@ -44,7 +44,7 @@ class TimesheetController extends Controller
         $id = Timesheet::insertGetId($data);
 
         session(['table' => 'timesheets', 'location' => base64_encode($data['location']), 'id' => $id]);
-        return redirect(route('admin.timesheet'))->with('success_message', __('New working log has been added'));
+        return redirect()->back()->with('success_message', __('New working log has been added'));
     }
     
 }
