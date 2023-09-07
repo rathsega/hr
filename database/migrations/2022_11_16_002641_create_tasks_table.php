@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('status')->nullable();
             $table->integer('is_completed')->nullable();
+            $table->integer('sort')->nullable();
             $table->timestamp('created_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
         });

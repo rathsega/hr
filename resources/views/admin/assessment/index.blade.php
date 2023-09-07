@@ -27,11 +27,9 @@
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Year</label>
-                                    <select onchange="$('#filterForm').submit();" name="year"
-                                        class="form-select eForm-select eChoice-multiple-without-remove">
+                                    <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
-                                            <option value="{{ $year }}"
-                                                @if ($selected_year == $year) selected @endif>
+                                            <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
                                                 {{ $year }}
                                             </option>
                                         @endfor
@@ -40,11 +38,9 @@
 
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Month</label>
-                                    <select onchange="$('#filterForm').submit();" name="month"
-                                        class="form-select eForm-select eChoice-multiple-without-remove">
+                                    <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
-                                            <option value="{{ $month }}"
-                                                @if ($selected_month == $month) selected @endif>
+                                            <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
                                                 {{ date('F', strtotime($year . '-' . $month . '-20')) }}
                                             </option>
                                         @endfor
@@ -59,48 +55,234 @@
                             @php
                                 $counter = 0;
                             @endphp
-                            @for ($day = $total_days_of_this_month; $day >= 1;  $day--)
+                            @for ($day = $total_days_of_this_month; $day >= 1; $day--)
                                 @php
                                     $selected_date = $selected_year . '-' . $selected_month . '-' . $day . ' 00:00:00';
-                                    $assessment_staffs = App\Models\Assessment::join('users', 'users.id', '=', 'assessments.user_id')->whereDate('assessments.created_at', $selected_date)->select('assessments.user_id', DB::raw('count(*) as total_incident'))->groupBy('assessments.user_id')->orderBy('users.sort');
+                                    $assessment_staffs = App\Models\Assessment::join('users', 'users.id', '=', 'assessments.user_id')
+                                        ->whereDate('assessments.created_at', $selected_date)
+                                        ->select('assessments.user_id', DB::raw('count(*) as total_incident'))
+                                        ->groupBy('assessments.user_id')
+                                        ->orderBy('users.sort');
                                     if ($assessment_staffs->count() == 0) {
                                         continue;
-                                    }else{
+                                    } else {
                                         $counter += 1;
                                     }
                                     
                                 @endphp
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button @if($counter > 1) collapsed @endif" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseaccordion{{ $day }}" aria-expanded="@if($counter == 1) true @else false @endif"
+                                        <button class="accordion-button @if ($counter > 1) collapsed @endif" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseaccordion{{ $day }}" aria-expanded="@if ($counter == 1) true @else false @endif"
                                             aria-controls="collapseaccordion{{ $day }}">
                                             {{ $day }} {{ date('M Y', $timestamp_of_first_date) }}
                                         </button>
                                     </h2>
-                                    <div id="collapseaccordion{{ $day }}" class="accordion-collapse collapse @if($counter == 1) show @endif"
+                                    <div id="collapseaccordion{{ $day }}" class="accordion-collapse collapse @if ($counter == 1) show @endif"
                                         data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            @foreach($assessment_staffs->get() as $key => $assessment_staff)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            <div class="table-responsive">
+                                                <table class="table eTable">
+                                                    <tbody>
+                                                        {{-- <thead>
+                                                            <th>{{get_phrase('User')}}</th>
+                                                            <th>{{get_phrase('Date')}}</th>
+                                                            <th>{{get_phrase('Assessment')}}</th>
+                                                            <th></th>
+                                                        </thead> --}}
+                                                        @foreach ($assessment_staffs->get() as $assessment_staff)
+                                                            @php
+                                                                $incidents = App\Models\Assessment::where('user_id', $assessment_staff->user_id)
+                                                                    ->whereDate('created_at', $selected_date)
+                                                                    ->get();
+                                                                $staff_details = App\Models\User::where('id', $assessment_staff->user_id)->first();
+                                                            @endphp
+                                                            @foreach ($incidents as $key => $incident)
+                                                                <tr>
+                                                                    @if ($key == 0)
+                                                                        <td class="text-13px text-dark text-center align-baseline w-200px" rowspan="{{ $incidents->count() }}">
+                                                                            <img class="rounded-circle mt-2" src="{{ get_image('uploads/user-image/' . $staff_details->photo) }}"
+                                                                                width="30px">
+                                                                            <p class="p-0 m-0 text-dark">{{ $staff_details->name }}</p>
+                                                                            <p class="text-13px p-0 text-center mb-2">
+                                                                                <span class="badge bg-secondary">
+                                                                                    {{$staff_details->designation}}
+                                                                                </span>
+                                                                            </p>
+                                                                        </td>
+                                                                    @endif
+                                                                    <td class="ps-3 align-baseline p-0">
+                                                                        {{date('d M Y', $incident->date_time)}}
+                                                                    </td>
+                                                                        <td class="ps-3 align-baseline p-0">
+                                                                        {!! nl2br($incident->description) !!}
+                                                                    </td>
+                                                                    <td class="p-0 ">
+                                                                        <div class="invisible-layout">
+                                                                            <a href="{{ route('admin.assessment', ['id' => $incident->id]) }}"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
+                                                                                    viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve"
+                                                                                    class="">
+                                                                                    <g>
+                                                                                        <path
+                                                                                            d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
+                                                                                            fill="#000000" data-original="#000000" class=""></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </a>
+
+                                                                            <a href="#"
+                                                                                onclick="confirmModal('{{ route('admin.assessment.delete',$incident->id) }}')"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
+                                                                                    height="15" viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                                    </path>
+                                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                                    </path>
+                                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                </svg>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            {{-- @foreach ($assessment_staffs->get() as $key => $assessment_staff)
                                                 @php
-                                                    $incidents = App\Models\Assessment::where('user_id', $assessment_staff->user_id)->whereDate('created_at', $selected_date)->get();
+                                                    $incidents = App\Models\Assessment::where('user_id', $assessment_staff->user_id)
+                                                        ->whereDate('created_at', $selected_date)
+                                                        ->get();
                                                     $staff_details = App\Models\User::where('id', $assessment_staff->user_id)->first();
                                                 @endphp
-                                                <div class="row @if($key > 0) border-top @endif mb-2 pt-2">
-                                                    <div class="col-md-6 text-13px text-dark">
-                                                        <img src="{{ get_image('uploads/user-image/' . $staff_details->photo) }}"
-                                                                class="rounded-circle" alt="" style="height: 50px;">
-                                                            {{ $staff_details->name }}
+                                                <div class="row @if ($key > 0) border-top @endif mb-2 pt-2 invisible-layout-parent">
+                                                    <div class="col-md-4 text-13px text-dark">
+                                                        <div class="d-flex align-items-center">
+                                                            <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $staff_details->photo) }}" width="40px">
+                                                            <div class="text-start ps-3">
+                                                                <p class="text-dark text-13px">{{ $staff_details->name }}</p>
+                                                                <small class="badge bg-secondary">{{ $staff_details->designation }}</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 text-13px text-dark">
-                                                        <ul>
+                                                    <div class="col-md-8 text-13px text-dark">
+                                                        <table class="w-100">
                                                             @foreach ($incidents as $key => $incident)
-                                                                <li>{{ ++$key }}. {{ $incident->description }}</li>
+                                                                <tr>
+                                                                    <td>
+                                                                        {{ $incident->description }}
+                                                                    </td>
+                                                                    <td class="p-0">
+                                                                        <div class="invisible-layout">
+                                                                            <a href="{{ route('admin.assessment', ['id' => $incident->id]) }}"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
+                                                                                    viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve"
+                                                                                    class="">
+                                                                                    <g>
+                                                                                        <path
+                                                                                            d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
+                                                                                            fill="#000000" data-original="#000000" class=""></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </a>
+
+                                                                            <a href="#"
+                                                                                onclick="confirmModal('{{ route('admin.assessment.delete',$incident->id) }}')"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
+                                                                                    height="15" viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                                    </path>
+                                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                                    </path>
+                                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                </svg>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
                                                             @endforeach
-                                                        </ul>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                            @endforeach --}}
                                         </div>
                                     </div>
                                 </div>
@@ -114,45 +296,11 @@
             <div class="eSection-wrap">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="{{ route('admin.assessment.store') }}" method="POST">
-                            @Csrf
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="fpb-7">
-                                        <label for="staffId" class="eForm-label">Select an employee</label>
-                                        <select name="user_id"
-                                            class="form-select eForm-select eChoice-multiple-without-remove" id="staffId"
-                                            required>
-                                            @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
-                                                <option value="{{ $staff->id }}">{{ $staff->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="fpb-7">
-                                        <label for="eInputText" class="eForm-label">Description of incident</label>
-                                        <textarea rows="2" class="form-control" name="description" required>{{ old('description') }}</textarea>
-                                        @if ($errors->has('description'))
-                                            <small class="text-danger">
-                                                {{ __($errors->first('description')) }}
-                                            </small>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="fpb-7">
-                                        <label for="toDate" class="eForm-label">Date</label>
-                                        <input type="datetime-local" value="{{ date('Y-m-d H:i') }}"
-                                            class="form-control eForm-control" name="date_time" id="toDate" />
-                                    </div>
-                                    <button type="submit" class="btn-form mt-2 mb-3">Add incident</button>
-                                </div>
-                            </div>
-                        </form>
-
+                        @if(isset($_GET['id']) && $_GET['id'] > 0)
+                            @include('admin.assessment.edit')
+                        @else
+                            @include('admin.assessment.add')
+                        @endif
                     </div>
                 </div>
             </div>

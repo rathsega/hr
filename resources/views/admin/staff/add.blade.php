@@ -24,7 +24,7 @@
 
 	<div class="fpb-7">
 		<label for="designation" class="eForm-label">Designation</label>
-		<input type="text" name="designation" class="form-control" id="designation">
+		<input type="text" name="designation" class="form-control eForm-control" id="designation">
 	</div>
 
 	<div class="fpb-7">

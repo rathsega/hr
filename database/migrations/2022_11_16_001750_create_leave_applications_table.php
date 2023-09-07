@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('working_day')->nullable()->default(0);
             $table->string('status')->nullable();
             $table->text('reason')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamp('created_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP'));
         });

@@ -29,7 +29,7 @@
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Year</label>
-                                    <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select eChoice-multiple-without-remove">
+                                    <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
                                                 {{ $year }}
@@ -40,7 +40,7 @@
 
                                 <div class="col-md-6">
                                     <label class="eForm-label">Selected Month</label>
-                                    <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select eChoice-multiple-without-remove">
+                                    <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
                                                 {{ date('F', strtotime($year . '-' . $month . '-20')) }}
@@ -64,7 +64,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         @php
-                                            $payslip = \App\Models\Payslip::where('user_id', $user->id);
+                                            $payslip = \App\Models\Payslip::where('user_id', $user->id)->whereDate('month_of_salary', $selected_year.'-'.$selected_month.'-1 00:00:00');
                                         @endphp
                                         <tr>
                                             <td class="text-center">
@@ -95,7 +95,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                @if ($payslip->count() > 0 && $payslip->value('status'))
+                                                @if ($payslip->value('status') == 1)
                                                     <span class="badge bg-success">Paid</span>
                                                 @else
                                                     <span class="badge bg-danger">Unpaid</span>
@@ -116,7 +116,13 @@
                                                         </svg>
                                                     </a>
                                                 @else
-                                                    <a href="#" onclick="confirmModal('{{ route('admin.payslip.send', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}')"
+                                                    <a href="{{ route('admin.payslip', ['id' => $payslip->value('id')]) }}"
+                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Edit Invoice') }}" data-bs-toggle="tooltip">
+                                                        <i class="fi-rr-blog-pencil"></i>
+                                                    </a>
+                                                    
+                                                    <a href="#"
+                                                        onclick="confirmModal('{{ route('admin.payslip.send', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}')"
                                                         class="btn btn p-0 px-1" title="{{ get_phrase('Send Invoice') }}" data-bs-toggle="tooltip">
                                                         <svg xmlns="http://www.w3.org/2000/svg" id="fi_2907795" data-name="Layer 1" viewBox="0 0 24 24" width="18" height="18">
                                                             <path
@@ -175,74 +181,11 @@
 
 
         <div class="col-md-4">
-            @if (isset($_GET['user_id']))
-                <div class="eSection-wrap">
-                    <div class="row">
-                        <div class="col-md-12">
-
-
-                            <form action="{{ route('admin.payslip.store') }}" method="post">
-                                @Csrf
-                                @php
-                                    $pay_to = \App\Models\User::where('id', $_GET['user_id'])->first();
-                                @endphp
-                                <input type="hidden" value="{{ $_GET['user_id'] }}" name="user_id">
-                                <input type="hidden" value="{{ date('Y-m-d H:i:s', $timestamp_of_first_date) }}" name="month_of_salary">
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="d-flex align-items-center mt-3">
-                                            <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $pay_to->photo) }}" width="40px">
-                                            <div class="text-start ps-3">
-                                                <p class="text-dark text-13px">{{ $pay_to->name }}</p>
-                                                <small class="">{{ $pay_to->email }}</small>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label for="net_salary" class="eForm-label">Net Salary (৳)</label>
-                                            <input type="number" name="net_salary" value="0" class="form-control eForm-control" id="net_salary" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="fpb-7">
-                                            <label for="bonus" class="eForm-label">Bonus (৳)</label>
-                                            <input type="number" name="bonus" value="0" class="form-control eForm-control" id="bonus" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="fpb-7">
-                                            <label for="penalty" class="eForm-label">Penalty (৳)</label>
-                                            <input type="number" name="penalty" value="0" class="form-control eForm-control" id="penalty" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label class="eForm-label">Brief of monthly salary</label>
-                                            <input type="text"
-                                                value="{{ date('1 M Y', $timestamp_of_first_date) }} - {{ date($total_days_of_this_month . ' M Y', $timestamp_of_first_date) }}"
-                                                class="eForm-control" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">Note <small class="text-muted">(Optional)</small></label>
-                                            <textarea name="note" class="form-control" rows="2">{{ old('note') }}</textarea>
-                                        </div>
-                                        <button type="submit" class="btn-form mt-2 mb-3 w-100">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
+            @if (isset($_GET['user_id']) && $_GET['user_id'] > 0)
+                @include('admin.payslip.add')
+            @endif
+            @if (isset($_GET['id']) && $_GET['id'] > 0)
+                @include('admin.payslip.edit')
             @endif
         </div>
     </div>

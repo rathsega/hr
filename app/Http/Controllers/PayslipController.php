@@ -34,19 +34,22 @@ class PayslipController extends Controller
 
         $this->validate($request, [
             'user_id' => 'required',
-            'month_of_salary' => 'required',
+            'brief_of_monthly_salary' => 'required',
             'net_salary' => 'required',
             'bonus' => 'required',
-            'penalty' => 'required'
+            'penalty' => 'required',
+            'status' => 'required|numeric|min:0|max:1'
         ]);
+
+        $brief_of_monthly_salary = strtotime(explode(' - ', $request->brief_of_monthly_salary)[0]);
 
 
         $data['user_id'] = $request->user_id;
         $data['net_salary'] = $request->net_salary;
         $data['bonus'] = $request->bonus;
         $data['penalty'] = $request->penalty;
-        $data['status'] = 1;
-        $data['month_of_salary'] = $request->month_of_salary;
+        $data['status'] = $request->status;
+        $data['month_of_salary'] = date('Y-m-d 00:00:00', $brief_of_monthly_salary);
         $data['note'] = $request->note;
 
         $invoice_id = Payslip::insertGetId($data);
@@ -54,9 +57,33 @@ class PayslipController extends Controller
         return redirect(route('admin.payslip'))->with('success_message', __('Invoice created successfully'));
     }
 
+    function update($id = "", Request $request)
+    {
+
+        $this->validate($request, [
+            'brief_of_monthly_salary' => 'required',
+            'net_salary' => 'required',
+            'bonus' => 'required',
+            'penalty' => 'required',
+            'status' => 'required|numeric|min:0|max:1'
+        ]);
+
+        $brief_of_monthly_salary = strtotime(explode(' - ', $request->brief_of_monthly_salary)[0]);
+
+        $data['net_salary'] = $request->net_salary;
+        $data['bonus'] = $request->bonus;
+        $data['penalty'] = $request->penalty;
+        $data['status'] = $request->status;
+        $data['month_of_salary'] = date('Y-m-d 00:00:00', $brief_of_monthly_salary);
+        $data['note'] = $request->note;
+
+        Payslip::where('id', $id)->update($data);
+
+        return redirect(route('admin.payslip'))->with('success_message', __('Invoice updated successfully'));
+    }
+
     function delete(Request $request)
     {
-        removeFile(Payslip::where('id', $request->id)->value('invoice'));
         Payslip::where('id', $request->id)->delete();
         return redirect(route('admin.payslip'))->with('success_message', get_phrase('Invoice deleted successfully'));
     }
@@ -86,8 +113,8 @@ class PayslipController extends Controller
         $dompdf->loadHtml($html_content); // Load the HTML content
         $dompdf->render(); // Render the PDF
 
-        config(['mail.from.name' => 'Creativeitem Workplace']);
-        config(['mail.from.address' => 'admin@example.com']);
+        config(['mail.from.name' => get_settings('system_name')]);
+        config(['mail.from.address' => get_settings('system_email')]);
         // Mail::send('admin.payslip.invoice_with_assessment', $page_data, function ($message) use ($payslip, $user, $dompdf) {
         //     $message->to($user->email, $user->name)
         //         ->subject('Monthly Salary of ' . date('1 M - t M, Y', strtotime($payslip->month_of_salary)) . ' - Creativeitem')

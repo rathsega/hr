@@ -210,7 +210,7 @@ $(function () {
 });
 // Date range
 $(function () {
-  $('input[name="eDateRange"]').daterangepicker(
+  $('input[name="eDateRange"], .date-range-picker').daterangepicker(
     {
       opens: "right",
     },
@@ -224,6 +224,7 @@ $(function () {
     }
   );
 });
+
 // Date Times
 $(function () {
   $('input[name="datetimes"]').daterangepicker({

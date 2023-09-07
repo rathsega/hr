@@ -30,12 +30,45 @@ class AssessmentController extends Controller
 
 
         $data['date_time'] = strtotime($request->date_time);
-        $data['created_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
-        $data['updated_at'] = date('Y-m-d H:i:s', strtotime($request->date_time));
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $data['description'] = $request->description;
 
         Assessment::insert($data);
         return redirect(route('admin.assessment'))->with('success_message', __('Assessment added successfully'));
+    }
+
+    function update($id = "", Request $request){
+        if(auth()->user()->role == 'admin'){
+            $data['user_id'] = $request->user_id;
+            $query = Assessment::where('id', $id);
+        }else{
+            $query = Assessment::where('id', $id)->where('user_id', auth()->user()->id);
+        }
+
+        $this->validate($request,[
+            'user_id'=>'required',
+            'date_time'=>'required',
+            'description' => 'required'
+        ]);
+
+        $data['date_time'] = strtotime($request->date_time);
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        $data['description'] = $request->description;
+
+        $query->update($data);
+        return redirect(route('admin.assessment'))->with('success_message', __('Assessment updated successfully'));
+    }
+
+    function delete($id = ""){
+        if(auth()->user()->role == 'admin'){
+            $query = Assessment::where('id', $id);
+        }else{
+            $query = Assessment::where('id', $id)->where('user_id', auth()->user()->id);
+        }
+
+        $query->delete();
+        return redirect(route('admin.assessment'))->with('success_message', __('Assessment deleted successfully'));
     }
     
 

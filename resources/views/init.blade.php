@@ -29,5 +29,7 @@
 			});
 			$('.ajaxForm:not(.inited)').addClass('inited');
 		}
+
+
     });
 </script>

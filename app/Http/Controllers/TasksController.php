@@ -96,6 +96,39 @@ class TasksController extends Controller
         return json_encode($response);
 
     }
+
+    function task_delete($id = ""){
+        if(auth()->user()->role == 'admin'){
+            $query = Task::where('id', $id);;
+        }else{
+            $query = Task::where('id', $id)->where('user_id', auth()->user()->id);
+        }
+        if($query->delete()){
+            $response['success'] = get_phrase('Task deleted successfully');
+            $response['fadeOut'] = '#task-list'.$id;
+        }else{
+            $response['success'] = get_phrase("Not authorised to delete this task for you");
+            $response['fadeOut'] = '#task-list'.$id;
+        }
+        return json_encode($response);
+
+    }
+
+    function sort(Request $request){
+        foreach(explode(',', $request->sort_value) as $key => $item_id){
+            if($item_id == '') continue;
+            
+            if(auth()->user()->role == 'admin'){
+                Task::where('id', $item_id)->update(['sort' => $key]);
+            }else{
+                Task::where('id', $item_id)->where('user_id', auth()->user()->id)->update(['sort' => $key]);
+            }
+
+        }
+
+        $response['success'] = get_phrase('Items has been sorted');
+        return json_encode($response);
+    }
     
 
 

@@ -29,7 +29,7 @@ class FileUploader extends Model
         $s3_keys = get_settings('amazon_s3', 'object');
         if (empty($s3_keys) || $s3_keys->active != 1) {
             if (is_dir($upload_to)) {
-                $file_name = time() . '-' . random(30) . '.' . $uploaded_file->extension();
+                $file_name = time() . '-' . random(25) . '.' . $uploaded_file->extension();
             } else {
                 $uploaded_path_arr = explode('/', $upload_to);
                 $file_name = end($uploaded_path_arr);
@@ -60,7 +60,7 @@ class FileUploader extends Model
                 }
             }
 
-            return $upload_to . '/' . $file_name;
+            return str_replace(public_path('/'), '', $upload_to . '/' . $file_name);
         } else {
             //upload to amazon s3
             ini_set('max_execution_time', '600');

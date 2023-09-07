@@ -42,6 +42,27 @@
                                     <p class="info">{{ $user->phone }}</p>
                                 </div>
                             @endif
+
+                            @if ($user->present_address)
+                                <div class="item">
+                                    <p class="title">{{ get_phrase('Present Address') }}</p>
+                                    <p class="info">{{ $user->present_address }}</p>
+                                </div>
+                            @endif
+
+                            @if ($user->gender)
+                                <div class="item">
+                                    <p class="title">{{ get_phrase('Gender') }}</p>
+                                    <p class="info">{{ ucfirst($user->gender) }}</p>
+                                </div>
+                            @endif
+
+                            @if ($user->blood_group)
+                                <div class="item">
+                                    <p class="title">{{ get_phrase('Blood group') }}</p>
+                                    <p class="info">{{ $user->blood_group }}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -72,11 +93,17 @@
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
+                            <button onclick="redirectTo('{{route('admin.staff.profile', ['timesheet', $user->id])}}');" class="nav-link @if($tab == 'timesheet') active @endif" type="button">
+                                Timesheet
+                                <span></span>
+                            </button>
+                        </li>
+                        {{-- <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['payslip', $user->id])}}');" class="nav-link @if($tab == 'payslip') active @endif" type="button">
                                 Payslip
                                 <span></span>
                             </button>
-                        </li>
+                        </li> --}}
                     </ul>
                     <!-- Tab content -->
                     <div class="tab-content eNav-Tabs-content" id="myTabContent">

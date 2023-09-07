@@ -3,7 +3,7 @@
 <div class="sidebar">
     <div class="logo-details mt-4">
         <div class="img_wrapper">
-            <img src="{{ asset('public/assets/images/favicon.png') }}" alt="" style="width: 37px;" />
+            <img src="{{ asset('assets/images/favicon.png') }}" alt="" style="width: 37px;" />
         </div>
         <span class="logo_name">WorkPlace</span>
     </div>

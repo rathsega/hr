@@ -3,7 +3,6 @@
   font-weight: $fw_SemiBold !important;
   color: $eColor_Blueish !important;
   > :not(caption) > * > * {
-    padding: 11px 16px !important;
     border-bottom-color: $table-light-bg !important;
     &:first-child {
       padding-left: 30px !important;

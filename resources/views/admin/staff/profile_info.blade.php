@@ -15,14 +15,14 @@
 
     <div class="fpb-7">
         <label for="eClassList" class="eForm-label">{{ get_phrase('Role') }}</label>
-        <select name="role" class="form-select eForm-select eChoice-multiple-without-remove" required>
+        <select name="role" class="form-select eForm-select select2" required>
             <option value="staff" @if ($user->role == 'staff') selected @endif>{{ get_phrase('Staff') }}</option>
         </select>
     </div>
 
     <div class="fpb-7">
         <label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>
-        <input type="text" name="designation" value="{{ $user->designation }}" class="form-control" id="designation">
+        <input type="text" name="designation" value="{{ $user->designation }}" class="form-control eForm-control" id="designation">
     </div>
 
 
@@ -46,7 +46,7 @@
     </div>
     <div class="fpb-7">
         <label for="eGenderList" class="eForm-label">{{ get_phrase('Gender') }}</label>
-        <select name="gender" class="form-select eForm-select eChoice-multiple-without-remove" required>
+        <select name="gender" class="form-select eForm-select select2" required>
             <option value="male" @if ($user->gender == 'Male') selected @endif>{{ get_phrase('Male') }}</option>
             <option value="female" @if ($user->gender == 'Female') selected @endif>{{ get_phrase('Female') }}</option>
         </select>
@@ -61,7 +61,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="fpb-7">
-                <label for="alternative_phone" class="eForm-label">{{ get_phrase('Relationship of Contact person') }}</label>
+                <label for="alternative_phone" class="eForm-label">{{ get_phrase('Alternative phone number') }}</label>
                 <input value="{{ $user->alternative_phone }}" name="alternative_phone" type="text" class="form-control eForm-control"
                     id="alternative_phone" placeholder="01XXXXXXXXX" aria-label="01XXXXXXXXX" />
             </div>

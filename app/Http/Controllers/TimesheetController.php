@@ -8,6 +8,8 @@ use App\Models\{User, Task, Timesheet, Attendance, Leave_application, Assessment
 use Session, Image;
 use Carbon\Carbon;
 
+use Jenssegers\Agent\Agent;
+
 class TimesheetController extends Controller
 {
     function index(){
@@ -26,7 +28,23 @@ class TimesheetController extends Controller
         $from_date = strtotime($request->from_date);
         $to_date = strtotime($request->to_date);
 
+        //Location tracking
         $data['location'] = getCurrentLocation($request->lat, $request->lon);
+
+
+        //Device tracking
+        $agent = new Agent();
+        if($agent->isMobile()){
+            $device = "Submitted from Mobile (".$agent->browser().")";
+        }elseif($agent->isTablet()){
+            $device = "Submitted from Tablet (".$agent->browser().")";
+        }else{
+            $device = "Submitted from ".$agent->platform()." (".$agent->browser().")";
+        }
+        $data['device'] = $device;
+
+
+
 
         $data['user_id'] = $request->user_id;
         $data['from_date'] = $from_date;
@@ -39,12 +57,51 @@ class TimesheetController extends Controller
             return redirect()->back()->withInput()->with('error_message', "From & To can't be same");
         }
 
-        
-
         $id = Timesheet::insertGetId($data);
 
-        session(['table' => 'timesheets', 'location' => base64_encode($data['location']), 'id' => $id]);
         return redirect()->back()->with('success_message', __('New working log has been added'));
+    }
+
+    function update($id = "", Request $request){
+        $this->validate($request,[
+            'description'=>'required',
+            'user_id' => 'required',
+            'lat'=>'required',
+            'lon'=>'required',
+        ]);
+
+        if(auth()->user()->role == 'admin'){
+            $data['user_id'] = $request->user_id;
+        }
+
+        $from_date = strtotime($request->from_date);
+        $to_date = strtotime($request->to_date);
+
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
+        $data['description'] = $request->description;
+        $data['working_time'] = $to_date - $from_date;
+
+        if($data['working_time'] <= 0){
+            return redirect()->back()->withInput()->with('error_message', "From & To can't be same");
+        }
+
+        if(auth()->user()->role == 'admin'){
+            Timesheet::where('id', $id)->update($data);
+        }else{
+            Timesheet::where('id', $id)->where('user_id', auth()->user()->id)->update($data);
+        }
+        return redirect(route('admin.timesheet'))->with('success_message', __('Timesheet has been updated'));
+    }
+
+    function delete($id = "", Request $request){
+        if(auth()->user()->role == 'admin'){
+            Timesheet::where('id', $id)->delete();
+        }else{
+            Timesheet::where('id', $id)->where('user_id', auth()->user()->id)->delete();
+        }
+        
+        return redirect()->back()->with('success_message', get_phrase('Timesheet deleted successfully'));
     }
     
 }

@@ -11,14 +11,14 @@
 <meta content="HR manager" name="description" />
 <meta content="Creativeitem" name="author" />
 <!-- all the css files -->
-<link rel="shortcut icon" href="{{ asset('public/assets/images/favicon.png') }}">
+<link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="{{asset('public/assets/vendors/bootstrap-5.1.3/css/bootstrap.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('public/assets/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/bootstrap-5.1.3/css/bootstrap.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css')}}">
 
 <!--Custom css-->
-<link rel="stylesheet" type="text/css" href="{{asset('public/assets/css/style.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('public/assets/css/custom.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/custom.css')}}">
 
 </head>
 
@@ -26,14 +26,14 @@
 <div class="container-fluid h-100">
 <div class="row h-100">
   <div class="col-lg-6 d-none d-lg-block p-0 h-100">
-    <div class="bg-image" style="width: inherit; height: 100%; position: fixed; background-image: url('{{asset('public/assets/images/login.png')}}'); background-size: cover; background-position: center;">
+    <div class="bg-image" style="width: inherit; height: 100%; position: fixed; background-image: url('{{asset('assets/images/login.png')}}'); background-size: cover; background-position: center;">
     </div>
   </div>
   <div class="col-lg-6 p-0 h-100 position-relative">
     <div class="parent-elem">
       <div class="middle-elem">
         <div class="primary-form">
-          <img class="mb-5" width="230px" src="{{asset('public/assets/images/logo-login.png')}}">
+          <img class="mb-5" width="230px" src="{{asset('assets/images/logo-login.png')}}">
           <div class="row">
             <div class="col-12">
               <div class="subtitle">
@@ -75,13 +75,13 @@
   </div>
 </div>
 <!--Main Jquery-->
-<script src="{{asset('public/assets/vendors/jquery/jquery-3.6.0.min.js')}}"></script>
+<script src="{{asset('assets/vendors/jquery/jquery-3.6.0.min.js')}}"></script>
 <!--Bootstrap bundle with popper-->
-<script src="{{asset('public/assets/vendors/bootstrap-5.1.3/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('assets/vendors/bootstrap-5.1.3/js/bootstrap.bundle.min.js')}}"></script>
 
 <!--Custom Script-->
-<script src="{{asset('public/assets/js/script.js')}}"></script>
-<script src="{{asset('public/assets/js/custom.js')}}"></script>
+<script src="{{asset('assets/js/script.js')}}"></script>
+<script src="{{asset('assets/js/custom.js')}}"></script>
 
 </body>
 

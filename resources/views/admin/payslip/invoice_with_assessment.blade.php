@@ -6,7 +6,7 @@
     <table style="width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
         <tr>
             <td style="text-align: center">
-                <img src="{{ asset('public/assets/images/favicon.png') }}" alt="" style="width: 37px;" />
+                <img src="{{ asset('assets/images/favicon.png') }}" alt="" style="width: 37px;" />
             </td>
         </tr>
     </table>
