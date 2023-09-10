@@ -98,12 +98,12 @@
                                 <span></span>
                             </button>
                         </li>
-                        {{-- <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['payslip', $user->id])}}');" class="nav-link @if($tab == 'payslip') active @endif" type="button">
                                 Payslip
                                 <span></span>
                             </button>
-                        </li> --}}
+                        </li>
                     </ul>
                     <!-- Tab content -->
                     <div class="tab-content eNav-Tabs-content" id="myTabContent">
