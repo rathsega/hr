@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Timesheet'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Timesheet') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{route('admin.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Timesheet') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -100,8 +117,7 @@
                                                             @foreach ($timesheets as $key => $timesheet)
                                                                 <tr id="work-update{{$timesheet->id}}">
                                                                     @if ($key == 0)
-                                                                        <td class="text-13px text-dark text-center align-baseline" rowspan="{{ $timesheets->count() }}"
-                                                                            style="width: 130px; padding: 0px !important;">
+                                                                        <td class="text-13px text-dark text-center align-baseline w-130px w-100" rowspan="{{ $timesheets->count() }}">
                                                                             <img class="rounded-circle mt-2" src="{{ get_image('uploads/user-image/' . $staff->photo) }}"
                                                                                 width="30px">
                                                                             <p class="p-0 m-0 text-dark">{{ $staff->name }}</p>
@@ -122,7 +138,7 @@
                                                                             </p>
                                                                         </td>
                                                                     @endif
-                                                                    <td class="text-12px text-start align-baseline" style="width: 160px; padding: 0px !important;">
+                                                                    <td class="text-12px text-start align-baseline w-160px p-0">
                                                                         {{ date('h:i a', $timesheet->from_date) }} - {{ date('h:i a', $timesheet->to_date) }}
                                                                         @if ($timesheet->location)
                                                                             <span class="" title="{{ $timesheet->location }}" data-bs-toggle="tooltip">
@@ -183,7 +199,7 @@
                                                                         </span>
                                                                     </td>
                                                                     <td class="ps-3 align-baseline p-0">
-                                                                        {!! nl2br($timesheet->description) !!}
+                                                                        {!! script_checker($timesheet->description, false) !!}
                                                                     </td>
                                                                     <td class="p-0 ">
                                                                         <div class="invisible-layout">
@@ -256,6 +272,8 @@
 
 @push('js')
     <script>
+        "Use strict";
+        
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;

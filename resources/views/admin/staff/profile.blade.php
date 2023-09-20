@@ -1,12 +1,17 @@
 @extends('index')
+@push('title', get_phrase('Categories'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
     <!-- Start User Profile area -->
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4 col-xl-3">
             <!-- Left side -->
             <div class="user-profile-area">
-                <div class="user-info d-flex flex-column" style="max-width: unset;">
+                <div class="user-info d-flex flex-column mw-unset">
                     <div class="user-info-basic d-flex flex-column justify-content-center">
                         <div class="user-graphic-element-1">
                             <img src="{{ get_image('assets/images/sprial_1.png') }}" alt="" />
@@ -68,10 +73,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8 col-xl-9">
             <!-- Right side -->
             <div class="user-profile-area">
-                <div class="user-details-info" style="max-width: unset;">
+                <div class="user-details-info mw-unset">
                     <!-- Tab label -->
                     <ul class="nav nav-tabs eNav-Tabs-custom" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -101,6 +106,30 @@
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['payslip', $user->id])}}');" class="nav-link @if($tab == 'payslip') active @endif" type="button">
                                 Payslip
+                                <span></span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button onclick="redirectTo('{{route('admin.staff.profile', ['assessment', $user->id])}}');" class="nav-link @if($tab == 'assessment') active @endif" type="button">
+                                Assessment
+                                <span></span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button onclick="redirectTo('{{route('admin.staff.profile', ['performance', $user->id])}}');" class="nav-link @if($tab == 'performance') active @endif" type="button">
+                                Performance
+                                <span></span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button onclick="redirectTo('{{route('admin.staff.profile', ['leave', $user->id])}}');" class="nav-link @if($tab == 'leave') active @endif" type="button">
+                                Leave
+                                <span></span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button onclick="redirectTo('{{route('admin.staff.profile', ['inventory', $user->id])}}');" class="nav-link @if($tab == 'inventory') active @endif" type="button">
+                                {{get_phrase('Inventory')}}
                                 <span></span>
                             </button>
                         </li>

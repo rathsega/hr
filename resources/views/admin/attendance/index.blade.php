@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Attendance'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Attendance') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Attendance') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -19,6 +36,7 @@
                             $selected_month = date('m');
                         }
                         
+                        $timestamp = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
                         $timestamp_of_first_date = strtotime($selected_year . '-' . $selected_month . '-1');
                         $total_days_of_this_month = date('t', $timestamp_of_first_date);
                     @endphp
@@ -455,6 +473,8 @@
 
 @push('js')
     <script>
+        "Use strict";
+        
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;

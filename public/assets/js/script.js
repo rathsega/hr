@@ -295,8 +295,3 @@ if (toastTriggerColor) {
     toast.show();
   });
 }
-
-$(document).ready(function () {
-  $(".eChoice-multiple-with-remove").select2();
-  $(".select2").select2();
-});

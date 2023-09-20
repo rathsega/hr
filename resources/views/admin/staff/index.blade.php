@@ -1,6 +1,34 @@
 @extends('index')
+@push('title', get_phrase('Employee'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Employee') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Employee') }}</a></li>
+                </ul>
+            </div>
+            <div class="export-btn-area d-flex ">
+                <a href="#" class="export_btn" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.staff.add']) }}', '{{ __('Add new employee') }}')">
+                    <i class="bi bi-plus me-2"></i>
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Add new employee') }}</span>
+                </a>
+                <a href="#" class="export_btn ms-3"
+                    onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.staff.sorting']) }}', '{{ __('Sort by drag and drop') }}')">
+                    <i class="bi bi-plus me-2"></i>
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Sort') }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="eCard">
         <div class="card-body">
             <ul class="nav nav-tabs eNav-Tabs-custom" id="pills-tab" role="tablist">
@@ -17,15 +45,6 @@
                         Inactive
                         <span></span>
                     </button>
-                </li>
-                <li class="nav-item ms-auto" role="presentation">
-                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" class="btn btn-primary btn-sm"> <i class="bi bi-plus"></i> <span class="d-none d-sm-inline-block"
-                            onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.staff.add']) }}', '{{ __('Add staff') }}')">Add new staff</span></a>
-
-                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" class="btn btn-primary btn-sm ms-1"
-                        onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.staff.sorting']) }}', '{{ __('Sort by drag and drop') }}')"> <i
-                            class="bi bi-sort-up"></i>
-                        <span class="d-none d-sm-inline-block">Sort</span></a>
                 </li>
             </ul>
             <div class="tab-content eNav-Tabs-content" id="pills-tabContent">
@@ -54,7 +73,8 @@
                                         <span class="badge ebg-soft-success text-capitalize">{{ $active_staff->role }}</span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ route('admin.staff.profile', ['info', $active_staff->id]) }}" class="btn btn p-0 px-1" title="View profile info" data-bs-toggle="tooltip">
+                                        <a href="{{ route('admin.staff.profile', ['info', $active_staff->id]) }}" class="btn btn p-0 px-1" title="View profile info"
+                                            data-bs-toggle="tooltip">
                                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"
                                                 width="15" height="15" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512"
                                                 xml:space="preserve" class="">

@@ -3810,10 +3810,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   color: #00a3ff !important;
 }
 
-.select2-search--dropdown {
-  display: none !important;
-}
-
 .select2-container--default .select2-results__option--selected {
   background-color: #edf2f6 !important;
   color: #00a3ff !important;

@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Assessment'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Assessment') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Assessment') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -86,32 +103,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                             <div class="table-responsive">
                                                 <table class="table eTable">
                                                     <tbody>
@@ -137,21 +128,21 @@
                                                                             <p class="p-0 m-0 text-dark">{{ $staff_details->name }}</p>
                                                                             <p class="text-13px p-0 text-center mb-2">
                                                                                 <span class="badge bg-secondary">
-                                                                                    {{$staff_details->designation}}
+                                                                                    {{ $staff_details->designation }}
                                                                                 </span>
                                                                             </p>
                                                                         </td>
                                                                     @endif
                                                                     <td class="ps-3 align-baseline p-0">
-                                                                        {{date('d M Y', $incident->date_time)}}
+                                                                        {{ date('d M Y', $incident->date_time) }}
                                                                     </td>
-                                                                        <td class="ps-3 align-baseline p-0">
-                                                                        {!! nl2br($incident->description) !!}
+                                                                    <td class="ps-3 align-baseline p-0">
+                                                                        {!! script_checker($incident->description) !!}
                                                                     </td>
                                                                     <td class="p-0 ">
                                                                         <div class="invisible-layout">
-                                                                            <a href="{{ route('admin.assessment', ['id' => $incident->id]) }}"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                            <a href="{{ route('admin.assessment', ['id' => $incident->id]) }}" class="btn btn p-1"
+                                                                                title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                                                     xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
                                                                                     viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve"
@@ -164,9 +155,9 @@
                                                                                 </svg>
                                                                             </a>
 
-                                                                            <a href="#"
-                                                                                onclick="confirmModal('{{ route('admin.assessment.delete',$incident->id) }}')"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                            <a href="#" onclick="confirmModal('{{ route('admin.assessment.delete', $incident->id) }}')"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip"
+                                                                                data-bs-placement="top">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
                                                                                     height="15" viewBox="0 0 24 24">
                                                                                     <path
@@ -186,6 +177,7 @@
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td></td>
+                                                                <td></td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -193,96 +185,6 @@
                                             </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                            {{-- @foreach ($assessment_staffs->get() as $key => $assessment_staff)
-                                                @php
-                                                    $incidents = App\Models\Assessment::where('user_id', $assessment_staff->user_id)
-                                                        ->whereDate('created_at', $selected_date)
-                                                        ->get();
-                                                    $staff_details = App\Models\User::where('id', $assessment_staff->user_id)->first();
-                                                @endphp
-                                                <div class="row @if ($key > 0) border-top @endif mb-2 pt-2 invisible-layout-parent">
-                                                    <div class="col-md-4 text-13px text-dark">
-                                                        <div class="d-flex align-items-center">
-                                                            <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $staff_details->photo) }}" width="40px">
-                                                            <div class="text-start ps-3">
-                                                                <p class="text-dark text-13px">{{ $staff_details->name }}</p>
-                                                                <small class="badge bg-secondary">{{ $staff_details->designation }}</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-8 text-13px text-dark">
-                                                        <table class="w-100">
-                                                            @foreach ($incidents as $key => $incident)
-                                                                <tr>
-                                                                    <td>
-                                                                        {{ $incident->description }}
-                                                                    </td>
-                                                                    <td class="p-0">
-                                                                        <div class="invisible-layout">
-                                                                            <a href="{{ route('admin.assessment', ['id' => $incident->id]) }}"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
-                                                                                    viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve"
-                                                                                    class="">
-                                                                                    <g>
-                                                                                        <path
-                                                                                            d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
-                                                                                            fill="#000000" data-original="#000000" class=""></path>
-                                                                                    </g>
-                                                                                </svg>
-                                                                            </a>
-
-                                                                            <a href="#"
-                                                                                onclick="confirmModal('{{ route('admin.assessment.delete',$incident->id) }}')"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="top">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
-                                                                                    height="15" viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
-                                                                                    </path>
-                                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
-                                                                                    </path>
-                                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                                </svg>
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            @endforeach --}}
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +198,7 @@
             <div class="eSection-wrap">
                 <div class="row">
                     <div class="col-md-12">
-                        @if(isset($_GET['id']) && $_GET['id'] > 0)
+                        @if (isset($_GET['id']) && $_GET['id'] > 0)
                             @include('admin.assessment.edit')
                         @else
                             @include('admin.assessment.add')

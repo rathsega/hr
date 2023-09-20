@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Performance'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Performance') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Performance') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -205,8 +222,7 @@
                                         <div class="col-md-12">
                                             <div class="fpb-7 d-flex">
                                                 <label for="net_salary" class="eForm-label col-4">{{ $performance_type->title }}: </label>
-                                                <select name="ratings[{{ $performance_type->slug }}]" class="form-control eForm-control"
-                                                    style="height: 27px; padding: 0px 12px; font-size: 12px;">
+                                                <select name="ratings[{{ $performance_type->slug }}]" class="form-control eForm-control text-12px py-0 px-4 h-27px">
                                                     <option value="5" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 5) selected @endif>5 Start</option>
                                                     <option value="4" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 4) selected @endif>4 Start</option>
                                                     <option value="3" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 3) selected @endif>3 Start</option>

@@ -30,6 +30,13 @@
 			$('.ajaxForm:not(.inited)').addClass('inited');
 		}
 
-
     });
+
+	$(function(){
+		if($('select.select2:not(.inited)').length > 0){
+			$('select.select2:not(.inited)').select2();
+			$('select.select2:not(.inited)').addClass('inited');
+		}
+		
+	});
 </script>

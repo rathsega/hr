@@ -35,14 +35,14 @@ return [
 
     'mailers' => [
         'smtp' => [
-            'transport' => 'smtp',
-            'host' => 'smtp.gmail.com',//'smtp.mailgun.org',
-            'port' => 587,
-            'encryption' => 'tls',
-            'username' => 'pollobtesting@gmail.com',
-            'password' => 'atdeswbbfregelhw',
+            'transport' => env('transport', 'smtp'),
+            'host' => env('host', 'smtp.gmail.com'),//'smtp.mailgun.org',
+            'port' => env('port', '587'),
+            'encryption' => env('security', 'tls'),
+            'username' => env('username', 'admin@example.com'),
+            'password' => env('password', ''),
             'timeout' => null,
-            'local_domain' => 'workplace.creativeitem.com',
+            'local_domain' => env('local_domain', 'example.com'),
         ],
 
         'ses' => [

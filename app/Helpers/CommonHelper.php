@@ -5,26 +5,69 @@ use Illuminate\Support\Facades\File;
 
 //All common helper functions
 if (!function_exists('get_phrase')) {
-    function get_phrase($phrase = "")
+    function get_phrase($phrase = "", $replaces = array())
     {
+        if(!is_array($replaces)){
+            $replaces = array($replaces);
+        }
+        foreach ($replaces as $replace) {
+            $phrase = preg_replace('/____/', $replace, $phrase, 1); // Replace one placeholder at a time
+        }
+
         return $phrase;
     }
 }
 
 //All common helper functions
 if (!function_exists('get_image')) {
-    function get_image($image_path = "")
+    function get_image($url = null, $optimized = false)
     {
-        if (!is_file(public_path($image_path))) {
-            return asset('' . $image_path . 'default.png');
-        }
+        if ($url == null)
+            return asset('uploads/placeholder/placeholder.svg');
 
-        if (file_exists(public_path($image_path))) {
-            return asset('' . $image_path);
+        //If the value of URL is from an online URL
+        if (str_contains($url, 'http://') && str_contains($url, 'https://'))
+            return $url;
+
+        $url_arr = explode('/', $url);
+        //File name & Folder path
+        $file_name = $url_arr[count($url_arr) - 1];
+        $path = str_replace($file_name, '', $url);
+
+        if ($optimized) {
+            //Optimized image url
+            $optimized_image = $path . 'optimized/' . $file_name;
+            if (is_file(public_path($optimized_image)) && file_exists(public_path($optimized_image))) {
+                return asset($optimized_image);
+            } else {
+                return asset($optimized_image . 'placeholder/placeholder.png');
+            }
         } else {
-            $image_path_arr = explode('/', $image_path);
-            $file_name = end($image_path_arr);
-            return asset('' . str_replace($file_name, 'default.png', $image_path));
+            if (is_file(public_path($url)) && file_exists(public_path($url))) {
+                return asset($url);
+            } else {
+                return asset($path . 'placeholder/placeholder.png');
+            }
+        }
+    }
+}
+
+// Global Settings
+if (!function_exists('remove_file')) {
+    function remove_file($url = null)
+    {
+        $url = public_path($url);
+        $url = str_replace('optimized/', '', $url);
+        $url_arr = explode('/', $url);
+        $file_name = $url_arr[count($url_arr) - 1];
+
+        if (is_file($url) && file_exists($url) && !empty($file_name)) {
+            unlink($url);
+
+            $url = str_replace($file_name, 'optimized/' . $file_name, $url);
+            if (is_file($url) && file_exists($url)) {
+                unlink($url);
+            }
         }
     }
 }
@@ -160,25 +203,13 @@ if (!function_exists('random')) {
 
 
 if (!function_exists('get_settings')) {
-    function get_settings($type = "", $decode = "")
+    function get_settings($type = "", $decode = false)
     {
         $value = DB::table('settings')->where('type', $type)->value('description');
-        if ($decode != "") {
+        if ($decode === true) {
             return json_decode($value, true);
         } else {
             return $value;
-        }
-    }
-}
-
-
-// file remove on delete and update 
-
-if (!function_exists('removeFile')) {
-    function removeFile($path = "")
-    {
-        if (File::exists(public_path($path))) {
-            File::delete(public_path($path));
         }
     }
 }
@@ -200,10 +231,10 @@ if (!function_exists('currency')) {
     function currency($price = null)
     {
         $currency_code = App\Models\Currency::where('id', get_settings('system_currency'))->value('code');
-        if($price === null){
+        if ($price === null) {
             return $currency_code;
-        }else{
-            return number_format($price).' '.$currency_code;
+        } else {
+            return number_format($price) . ' ' . $currency_code;
         }
     }
 }

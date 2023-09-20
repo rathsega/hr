@@ -220,16 +220,35 @@
 .ps-1px{padding-left: 1px !important;}
 .ps-0px{padding-left: 0px !important;}
 
+.w-80px{width:80px;}
+.w-90px{width:90px;}
 .w-100px{width:100px;}
+.w-110px{width:110px;}
+.w-120px{width:120px;}
+.w-130px{width:130px;}
+.w-140px{width:140px;}
 .w-150px{width:150px;}
+.w-160px{width:160px;}
 .w-200px{width:200px;}
 .w-250px{width:250px;}
+.w-255px{width:255px;}
 .w-300px{width:300px;}
 .w-350px{width:350px;}
 .w-400px{width:400px;}
 .w-450px{width:450px;}
 .w-500px{width:500px;}
 .w-550px{width:550px;}
+.mw-unset{max-width: unset;}
+
+.lh-40px{
+	line-height: 40px;
+}
+.h-27px{
+	height: 27px;
+}
+.w-inherit{
+	width: inherit;
+}
 
 
 /*Navigation*/
@@ -284,11 +303,11 @@
 
 
 /* Flaticon icon issue solve */
-i:not(.fas, .fa, .fab) {
+/* i:not(.fas, .fa, .fab) {
     line-height: 0.5em !important;
     vertical-align: -0.15em !important;
     display: inline-flex !important;
-}
+} */
 /* Flaticon issue solved */
 
 .px-30px{
@@ -484,6 +503,23 @@ i:not(.fas, .fa, .fab) {
 	border-radius: 5px 0px 0px 5px;
 	margin: 0px 0px;
 }
+.contant-overlay-horizontal{
+	visibility: hidden;
+	transition: right .3s ease, visibility .3s ease;
+	position: absolute;
+    right: -35px;
+    top: 0;
+    bottom: 0;
+    height: 30px;
+    text-align: center;
+    width: auto;
+    writing-mode: vertical-rl;
+	background-color: #fff;
+    box-shadow: 0px 0px 2px 0px #00000040;
+    padding: 0px 2px;
+	border-radius: 5px 0px 0px 5px;
+	margin: 0px 0px;
+}
 .contant-overlay-bottom{
 	visibility: hidden;
     transition: opacity .3s ease, visibility .3s ease;
@@ -528,6 +564,12 @@ tr:hover .position-relative .contant-overlay-bottom{
     right: 0px;
 	opacity: 1;
 }
+tr:hover .position-relative .contant-overlay-horizontal{
+	visibility: visible;
+	display: inline-block;
+    right: 0px;
+	opacity: 1;
+}
 
 .offcanvas-header h6{
 	font-size: 15px;
@@ -541,4 +583,97 @@ tr:hover .position-relative .contant-overlay-bottom{
 
 .profile-tab-content{
 	margin: 0px -26px;
+}
+.user-profile-area .user-details-info .eNav-Tabs-custom button.nav-link{
+	width: max-content;
+}
+
+th.w-180px{
+	width: 180px;
+    max-width: 160px !important;
+}
+.export_btn{
+	min-width: unset;
+	padding: 12px 18px;
+}
+.mainSection-title h4{
+	margin-bottom: 5px;
+}
+.eBreadcrumb-2 li{
+	margin-right: 15px;
+}
+.eBreadcrumb-2 li::before{
+	content: ">";
+    position: absolute;
+    top: 2px;
+    right: -20px;
+    width: 10px;
+    height: 0px;
+}
+
+
+/* Select 2 Search bar */
+/* .select2-search--dropdown {
+	display: none !important;
+} */
+.select2-container--default .select2-search--dropdown .select2-search__field{
+	border: 1px solid #d5d9dd !important;
+    border-radius: 5px;
+	outline: none;
+}
+/*End Select 2 Search bar */
+
+
+.w-40-image{
+	height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+.btn-form{
+	width: unset;
+	padding: 0px 12px;
+}
+.system-dark-logo{
+	background-color: #000000e6;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.ds_item_icon.success{
+	border-radius: 10px;
+    background-color: #50cd8940;
+    padding: 8px;
+}
+.ds_item_icon.success svg, .ds_item_icon.success svg *{
+	fill: #50cd89;
+}
+.ds_item_icon.primary{
+	border-radius: 10px;
+    background-color: #00a3ff40;
+    padding: 8px;
+}
+.ds_item_icon.primary svg, .ds_item_icon.primary svg *{
+	fill: #00a3ff;
+}
+.ds_item_icon.warning{
+	border-radius: 10px;
+    background-color: #ffc70040;
+    padding: 8px;
+}
+.ds_item_icon.warning svg, .ds_item_icon.warning svg *{
+	fill: #ffc700;
+}
+
+.sidebar .logo-sm{
+	display: none;
+}
+.sidebar.close .logo-lg{
+	display: none;
+}
+
+.sidebar:not(.close) .logo-lg{
+	display: block;
+}
+.sidebar.close .logo-sm{
+	display: block;
 }

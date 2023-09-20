@@ -4,13 +4,17 @@
 <html lang="en">
 
 <head>
-    <title>{{ DB::table('routes')->where('route_name', Route::currentRouteName())->value('title') }} | Creativeitem Workplace</title>
+    <title>@stack('title') | {{ get_settings('website_title') }}</title>
 
     <!-- all the meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta content="Creativeitem Workplace" name="description" />
     <meta content="Creativeitem" name="author" />
+    <link rel="shortcut icon" href="{{get_image(get_settings('favicon'))}}" />
+    <meta content="{{csrf_token()}}" name="csrf_token" />
+    @stack('meta')
+    <!-- End meta -->
 
 
     <!-- all the css files -->
@@ -21,11 +25,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/bootstrap-icons-1.9.1/bootstrap-icons.css') }}">
 
     {{-- FlatIcons --}}
-    <link rel="stylesheet" href="{{asset('assets/icons/uicons-solid-rounded/css/uicons-solid-rounded.css')}}"/>
-    <link rel="stylesheet" href="{{asset('assets/icons/uicons-bold-rounded/css/uicons-bold-rounded.css')}}"/>
-    <link rel="stylesheet" href="{{asset('assets/icons/uicons-bold-straight/css/uicons-bold-straight.css')}}"/>
-    <link rel="stylesheet" href="{{asset('assets/icons/uicons-regular-rounded/css/uicons-regular-rounded.css')}}"/>
-    <link rel="stylesheet" href="{{asset('assets/icons/uicons-thin-rounded/css/uicons-thin-rounded.css')}}"/>
+    <link rel="stylesheet" href="{{ asset('assets/icons/uicons-solid-rounded/css/uicons-solid-rounded.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/icons/uicons-bold-rounded/css/uicons-bold-rounded.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/icons/uicons-bold-straight/css/uicons-bold-straight.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/icons/uicons-regular-rounded/css/uicons-regular-rounded.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/icons/uicons-thin-rounded/css/uicons-thin-rounded.css') }}" />
 
     <!--Custom css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
@@ -39,6 +43,8 @@
     <!-- Toastr -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/toastr/toastr.min.css') }}">
 
+    @stack('css')
+
     <!--Main Jquery-->
     <script src="{{ asset('assets/vendors/jquery/jquery-3.6.0.min.js') }}"></script>
 </head>
@@ -50,17 +56,7 @@
             @include('header')
 
             <div class="main_content">
-
-                <div class="mainSection-title">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h4>{{ DB::table('routes')->where('route_name', Route::currentRouteName())->value('page_title') }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                
                 @yield('content')
 
             </div>

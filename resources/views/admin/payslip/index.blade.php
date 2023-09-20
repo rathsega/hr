@@ -1,10 +1,27 @@
 @extends('index')
+@push('title', get_phrase('Payslip'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Payslip') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Payslip') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Leave Reports</p>
+                <p class="column-title mb-2">Monthly payslip</p>
                 <div class="row">
 
                     @php
@@ -64,7 +81,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         @php
-                                            $payslip = \App\Models\Payslip::where('user_id', $user->id)->whereDate('month_of_salary', $selected_year.'-'.$selected_month.'-1 00:00:00');
+                                            $payslip = \App\Models\Payslip::where('user_id', $user->id)->whereDate('month_of_salary', $selected_year . '-' . $selected_month . '-1 00:00:00');
                                         @endphp
                                         <tr>
                                             <td class="text-center">
@@ -116,15 +133,16 @@
                                                         </svg>
                                                     </a>
                                                 @else
-                                                    <a href="{{ route('admin.payslip', ['id' => $payslip->value('id')]) }}"
-                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Edit Invoice') }}" data-bs-toggle="tooltip">
+                                                    <a href="{{ route('admin.payslip', ['id' => $payslip->value('id')]) }}" class="btn btn p-0 px-1"
+                                                        title="{{ get_phrase('Edit Invoice') }}" data-bs-toggle="tooltip">
                                                         <i class="fi-rr-blog-pencil"></i>
                                                     </a>
-                                                    
+
                                                     <a href="#"
                                                         onclick="confirmModal('{{ route('admin.payslip.send', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}')"
                                                         class="btn btn p-0 px-1" title="{{ get_phrase('Send Invoice') }}" data-bs-toggle="tooltip">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" id="fi_2907795" data-name="Layer 1" viewBox="0 0 24 24" width="18" height="18">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" id="fi_2907795" data-name="Layer 1" viewBox="0 0 24 24" width="18"
+                                                            height="18">
                                                             <path
                                                                 d="M14.76,22.65a2.3,2.3,0,0,1-2-1.23L9.28,15.06a.8.8,0,0,0-.34-.34L2.58,11.29A2.34,2.34,0,0,1,3,7L19.57,1.47h0a2.35,2.35,0,0,1,3,3L17,21.05a2.31,2.31,0,0,1-2,1.59ZM20,2.9,3.43,8.43a.84.84,0,0,0-.58.73.83.83,0,0,0,.44.81L9.65,13.4a2.29,2.29,0,0,1,.95.95L14,20.71a.83.83,0,0,0,.81.44.84.84,0,0,0,.73-.58L21.1,4A.84.84,0,0,0,20,2.9Z">
                                                             </path>

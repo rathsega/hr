@@ -24,21 +24,21 @@
                     <div class="col-md-12">
                         <div class="fpb-7">
                             <label for="net_salary" class="eForm-label">Net Salary ({{ currency() }})</label>
-                            <input value="{{$payslip->net_salary}}" type="number" name="net_salary" value="0" class="form-control eForm-control" id="net_salary" />
+                            <input value="{{$payslip->net_salary}}" type="number" name="net_salary" class="form-control eForm-control" id="net_salary" />
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="fpb-7">
                             <label for="bonus" class="eForm-label">Bonus ({{ currency() }})</label>
-                            <input value="{{$payslip->bonus}}" type="number" name="bonus" value="0" class="form-control eForm-control" id="bonus" />
+                            <input value="{{$payslip->bonus}}" type="number" name="bonus" class="form-control eForm-control" id="bonus" />
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="fpb-7">
                             <label for="penalty" class="eForm-label">Penalty ({{ currency() }})</label>
-                            <input value="{{$payslip->penalty}}" type="number" name="penalty" value="0" class="form-control eForm-control" id="penalty" />
+                            <input value="{{$payslip->penalty}}" type="number" name="penalty" class="form-control eForm-control" id="penalty" />
                         </div>
                     </div>
 

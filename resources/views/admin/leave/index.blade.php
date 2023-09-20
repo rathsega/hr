@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Leave'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Leave') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Leave') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -145,7 +162,7 @@
                                                             @endphp
                                                             @foreach ($leave_reports->get() as $leave_report)
                                                                 <tr>
-                                                                    <td class="text-center align-baseline" style="width: 170px;">
+                                                                    <td class="text-center align-baseline w-160px">
                                                                         <div class="d-flex align-items-center">
                                                                             <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $staff_details->photo) }}"
                                                                                 width="40px">
@@ -157,7 +174,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="text-center" style="width: 255px;">
+                                                                    <td class="text-center w-255px">
                                                                         @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
                                                                             {{ date('d M Y', $leave_report->from_date) }}
                                                                             <hr class="my-0">
@@ -168,18 +185,26 @@
                                                                             {{ date('d M Y, h:i A', $leave_report->to_date) }}
                                                                         @endif
                                                                     </td>
-                                                                    <td style="">
+                                                                    <td>
                                                                         @php echo script_checker($leave_report->reason); @endphp
 
-                                                                        @if($leave_report->attachment)
-                                                                            <a href="{{asset($leave_report->attachment)}}" download>
+                                                                        @if ($leave_report->attachment)
+                                                                            <a href="{{ asset($leave_report->attachment) }}" download>
                                                                                 <br>
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="M128 65c0 15.439-12.563 28-28 28H80c-2.211 0-4-1.791-4-4s1.789-4 4-4h20c11.027 0 20-8.973 20-20s-8.973-20-20-20h-4c-2.211 0-4-1.791-4-4 0-15.439-12.563-28-28-28S36 25.561 36 41c0 2.209-1.789 4-4 4h-4C16.973 45 8 53.973 8 65s8.973 20 20 20h20c2.211 0 4 1.791 4 4s-1.789 4-4 4H28C12.563 93 0 80.439 0 65s12.563-28 28-28h.223C30.219 19.025 45.5 5 64 5s33.781 14.025 35.777 32H100c15.438 0 28 12.561 28 28zm-50.828 37.172L68 111.344V61c0-2.209-1.789-4-4-4s-4 1.791-4 4v50.344l-9.172-9.172c-1.563-1.563-4.094-1.563-5.656 0s-1.563 4.094 0 5.656l16 16c.781.781 1.805 1.172 2.828 1.172s2.047-.391 2.828-1.172l16-16c1.563-1.563 1.563-4.094 0-5.656s-4.094-1.563-5.656 0z" fill="#000000" data-original="#000000" class=""></path></g></svg>
-                                                                                {{get_phrase('Download')}}
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
+                                                                                    viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                                                    <g>
+                                                                                        <path
+                                                                                            d="M128 65c0 15.439-12.563 28-28 28H80c-2.211 0-4-1.791-4-4s1.789-4 4-4h20c11.027 0 20-8.973 20-20s-8.973-20-20-20h-4c-2.211 0-4-1.791-4-4 0-15.439-12.563-28-28-28S36 25.561 36 41c0 2.209-1.789 4-4 4h-4C16.973 45 8 53.973 8 65s8.973 20 20 20h20c2.211 0 4 1.791 4 4s-1.789 4-4 4H28C12.563 93 0 80.439 0 65s12.563-28 28-28h.223C30.219 19.025 45.5 5 64 5s33.781 14.025 35.777 32H100c15.438 0 28 12.561 28 28zm-50.828 37.172L68 111.344V61c0-2.209-1.789-4-4-4s-4 1.791-4 4v50.344l-9.172-9.172c-1.563-1.563-4.094-1.563-5.656 0s-1.563 4.094 0 5.656l16 16c.781.781 1.805 1.172 2.828 1.172s2.047-.391 2.828-1.172l16-16c1.563-1.563 1.563-4.094 0-5.656s-4.094-1.563-5.656 0z"
+                                                                                            fill="#000000" data-original="#000000" class=""></path>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                {{ get_phrase('Download') }}
                                                                             </a>
                                                                         @endif
                                                                     </td>
-                                                                    <td class="text-center position-relative" style="width: 80px;">
+                                                                    <td class="text-center position-relative w-80px">
                                                                         @if ($leave_report->status == 'pending')
                                                                             <span class="badge bg-danger">Pending</span>
                                                                         @elseif($leave_report->status == 'rejected')
@@ -190,8 +215,9 @@
                                                                         <div class="contant-overlay">
                                                                             @if ($leave_report->status != 'approved')
                                                                                 <a href="#"
-                                                                                    onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.leave.leave_accept_form', 'id' => $leave_report->id])}}', '{{get_phrase('Send message')}}')"
-                                                                                    class="btn btn p-0" title="{{ get_phrase('Approve') }}" data-bs-placement="right" data-bs-toggle="tooltip">
+                                                                                    onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.leave.leave_accept_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send message') }}')"
+                                                                                    class="btn btn p-0" title="{{ get_phrase('Approve') }}" data-bs-placement="right"
+                                                                                    data-bs-toggle="tooltip">
                                                                                     <svg height="15" viewBox="0 0 520 520" width="15" xmlns="http://www.w3.org/2000/svg"
                                                                                         id="fi_5291043">
                                                                                         <g id="_7-Check" data-name="7-Check">
@@ -205,8 +231,9 @@
 
                                                                             @if ($leave_report->status != 'rejected')
                                                                                 <a href="#"
-                                                                                    onclick="showRightModal('{{route('right_modal', ['view_path' => 'admin.leave.leave_rejection_form', 'id' => $leave_report->id])}}', '{{get_phrase('Send a reason for this rejection')}}')"
-                                                                                    class="btn btn p-1" title="{{ get_phrase('Reject') }}" data-bs-placement="right" data-bs-toggle="tooltip">
+                                                                                    onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.leave.leave_rejection_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send a reason for this rejection') }}')"
+                                                                                    class="btn btn p-1" title="{{ get_phrase('Reject') }}" data-bs-placement="right"
+                                                                                    data-bs-toggle="tooltip">
                                                                                     <svg id="fi_8867452" enable-background="new 0 0 512 512" height="15" viewBox="0 0 512 512"
                                                                                         width="15" xmlns="http://www.w3.org/2000/svg">
                                                                                         <g>
@@ -219,7 +246,8 @@
                                                                             @endif
 
                                                                             <a href="#" onclick="confirmModal('{{ route('admin.leave.report.delete', $leave_report->id) }}')"
-                                                                                class="btn btn p-0" title="{{ get_phrase('Delete') }}" data-bs-placement="right" data-bs-toggle="tooltip">
+                                                                                class="btn btn p-0" title="{{ get_phrase('Delete') }}" data-bs-placement="right"
+                                                                                data-bs-toggle="tooltip">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
                                                                                     height="15" viewBox="0 0 24 24">
                                                                                     <path
@@ -305,10 +333,10 @@
                                         @endif
                                     </div>
                                     <div class="fpb-7">
-                                        <label for="photo" class="eForm-label">{{get_phrase('Attachment')}} <small>(Optional - image, pdf)</small></label>
+                                        <label for="photo" class="eForm-label">{{ get_phrase('Attachment') }} <small>(Optional - image, pdf)</small></label>
                                         <input type="file" name="attachment" class="form-control eForm-control-file mb-0" id="photo">
                                     </div>
-                                    <button type="submit" class="btn-form mt-2 mb-3">{{get_phrase('Submit request')}}</button>
+                                    <button type="submit" class="btn-form mt-2 mb-3">{{ get_phrase('Submit request') }}</button>
                                 </div>
                             </div>
                         </form>

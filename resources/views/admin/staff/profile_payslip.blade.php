@@ -6,15 +6,6 @@
         } else {
             $selected_year = date('Y');
         }
-        
-        if (isset($_GET['month'])) {
-            $selected_month = $_GET['month'];
-        } else {
-            $selected_month = date('m');
-        }
-        
-        $timestamp_of_first_date = strtotime($selected_year . '-' . $selected_month . '-1');
-        $total_days_of_this_month = date('t', $timestamp_of_first_date);
     @endphp
 
     <div class="col-md-12">
@@ -40,39 +31,33 @@
                     <tr>
                         <th class="">{{ get_phrase('Month of Salary') }}</th>
                         <th class="">{{ get_phrase('Status') }}</th>
-                        <th class="text-center">{{ get_phrase('Action') }}</th>
+                        <th class="text-center">{{ get_phrase('Invoice') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @php
-                        $payslip = \App\Models\Payslip::where('user_id', $user->id)
+                        $payslips = \App\Models\Payslip::where('user_id', $user->id)
                             ->whereDate('month_of_salary', '>=', $selected_year . '-1-1 00:00:00')
-                            ->whereDate('month_of_salary', '<=', $selected_year . '-12-31 23:59:59');
+                            ->whereDate('month_of_salary', '<=', $selected_year . '-12-31 23:59:59')->get();
                     @endphp
-                    <tr>
-                        <td>
-                            @if ($payslip->value('status') == 1)
-                                <span class="badge bg-success">{{ get_phrase('Paid') }}</span>
-                            @else
-                                <span class="badge bg-danger">{{ get_phrase('Unpaid') }}</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            @if ($payslip->count() > 0)
-                                <a href="#"
-                                    onclick="confirmModal('{{ route('admin.payslip.send', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}')"
-                                    class="btn btn p-0 px-1" title="{{ get_phrase('Send Invoice') }}" data-bs-toggle="tooltip">
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="fi_2907795" data-name="Layer 1" viewBox="0 0 24 24" width="18" height="18">
-                                        <path
-                                            d="M14.76,22.65a2.3,2.3,0,0,1-2-1.23L9.28,15.06a.8.8,0,0,0-.34-.34L2.58,11.29A2.34,2.34,0,0,1,3,7L19.57,1.47h0a2.35,2.35,0,0,1,3,3L17,21.05a2.31,2.31,0,0,1-2,1.59ZM20,2.9,3.43,8.43a.84.84,0,0,0-.58.73.83.83,0,0,0,.44.81L9.65,13.4a2.29,2.29,0,0,1,.95.95L14,20.71a.83.83,0,0,0,.81.44.84.84,0,0,0,.73-.58L21.1,4A.84.84,0,0,0,20,2.9Z">
-                                        </path>
-                                        <path d="M9.67,15.08a.71.71,0,0,1-.53-.22.74.74,0,0,1,0-1.06L20.9,2A.75.75,0,0,1,22,3.1L10.2,14.86A.74.74,0,0,1,9.67,15.08Z">
-                                        </path>
-                                    </svg>
-                                </a>
-
-                                <a href="{{ route('admin.payslip.download', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}"
-                                    class="btn btn p-0 px-1" title="{{ get_phrase('Download Invoice') }}" data-bs-toggle="tooltip">
+                    @foreach ($payslips as $payslip)
+                        <tr>
+                            <td>
+                                @php
+                                    $timestamp = strtotime($payslip->month_of_salary);
+                                @endphp
+                                {{date('d M Y - t M Y', $timestamp)}}
+                            </td>
+                            <td>
+                                @if ($payslip->status == 1)
+                                    <span class="badge bg-success">{{ get_phrase('Paid') }}</span>
+                                @else
+                                    <span class="badge bg-danger">{{ get_phrase('Unpaid') }}</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('admin.payslip.download', ['invoice_id' => $payslip->id, 'user_id' => $user->id]) }}" class="btn btn p-0 px-1"
+                                    title="{{ get_phrase('Download Invoice') }}" data-bs-toggle="tooltip">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="18" version="1.1" viewBox="-53 1 511 511.99906" width="18" id="fi_1092004">
                                         <g id="surface1">
                                             <path
@@ -87,9 +72,9 @@
                                         </g>
                                     </svg>
                                 </a>
-                            @endif
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

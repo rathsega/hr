@@ -1,6 +1,23 @@
 @extends('index')
+@push('title', get_phrase('Task manager'))
+@push('meta')
+@endpush
+@push('css')
+@endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Task Manager') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{route('admin.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Task Manager') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
@@ -60,7 +77,7 @@
                                     </h2>
                                     <div id="collapse_{{ $key }}"
                                         class="accordion-collapse collapse @php echo (isset($_GET['expand-user']) && $user->id == $_GET['expand-user']) ? 'show' : ''; @endphp"
-                                        aria-labelledby="heading_{{ $key }}" data-bs-parent="#accordionStaff" style="">
+                                        aria-labelledby="heading_{{ $key }}" data-bs-parent="#accordionStaff">
                                         <div class="accordion-body py-3 px-0">
                                             <ul class="mb-2">
                                                 <li class="mx-2">
@@ -68,9 +85,8 @@
                                                         @Csrf
                                                         <div class="input-group px-1">
                                                             <input type="text" name="description" class="form-control py-2 text-13px ms-3" placeholder="Enter a new task"
-                                                                aria-label="Enter a new task" style="border: 1px solid #e7e7e7;">
-                                                            <button class="input-group-text text-12px text-dark me-3"
-                                                                style="    background-color: #f5f5f5; border: 1px solid #e7e7e7;">Add</button>
+                                                                aria-label="Enter a new task border-1">
+                                                            <button class="input-group-text text-12px text-dark me-3 border-1">Add</button>
                                                         </div>
                                                     </form>
                                                 </li>
@@ -129,6 +145,8 @@
 
 @push('js')
     <script>
+        "Use strict";
+        
         var time = 0;
 
         function setTimeoutAwait(e) {

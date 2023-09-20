@@ -13,7 +13,7 @@
 
 	<div class="fpb-7">
 		<label for="role" class="eForm-label">User role</label>
-		<select name="role" class="form-select eForm-select eChoice-multiple-without-remove" required>
+		<select name="role" class="form-select eForm-select" required>
 			<option value="staff" @if($user_details->role == 'staff') selected @endif>Staff</option>
 		</select>
 	</div>
@@ -31,10 +31,4 @@
 	<button type="submit" class="btn-form mt-2 mb-3">Apply</button>
 </form>
 
-<script type="text/javascript">
-	"user strict";
-
-	$(document).ready(function () {
-		$(".eChoice-multiple-without-remove").select2();
-	});
-</script>
+@include('init')

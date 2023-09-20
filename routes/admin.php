@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LeaveApplicationController, AdminController, TimesheetController, StaffController, ModalController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, SettingsController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -67,12 +67,45 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('payslip/download', [PayslipController::class, 'payslip_download'])->name('payslip.download');
     Route::get('payslip/send', [PayslipController::class, 'payslip_send_to_email'])->name('payslip.send');
 
+    //Branch
+    Route::get('branch', [BranchController::class, 'index'])->name('branch');
+    Route::post('branch/store', [BranchController::class, 'store'])->name('branch.store');
+    Route::post('branch/update/{id}', [BranchController::class, 'update'])->name('branch.update');
+    Route::get('branch/delete/{id}', [BranchController::class, 'delete'])->name('branch.delete');
+
+    //Inventory
+    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
+    Route::post('inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::post('inventory/update/{id}', [InventoryController::class, 'update'])->name('inventory.update');
+    Route::get('inventory/delete/{id}', [InventoryController::class, 'delete'])->name('inventory.delete');
+
+    //Inventory
+    Route::get('inventory/item', [InventoryItemController::class, 'index'])->name('inventory.item');
+    Route::post('inventory/item/store', [InventoryItemController::class, 'store'])->name('inventory.item.store');
+    Route::post('inventory/item/update/{id}', [InventoryItemController::class, 'update'])->name('inventory.item.update');
+    Route::get('inventory/item/delete/{id}', [InventoryItemController::class, 'delete'])->name('inventory.item.delete');
+
+    //Performance Criteria
+    Route::get('performance-criteria', [PerformanceCriteriaController::class, 'index'])->name('performance.criteria');
+    Route::post('performance-criteria/store', [PerformanceCriteriaController::class, 'store'])->name('performance.criteria.store');
+    Route::post('performance-criteria/update/{id}', [PerformanceCriteriaController::class, 'update'])->name('performance.criteria.update');
+    Route::get('performance-criteria/delete/{id}', [PerformanceCriteriaController::class, 'delete'])->name('performance.criteria.delete');
+
     //Settings
     Route::get('system-settings', [SettingsController::class, 'system_settings'])->name('system.settings');
     Route::post('system-settings/update', [SettingsController::class, 'update'])->name('system.settings.update');
 
+    Route::post('system/logo/update', [SettingsController::class, 'update_logo'])->name('system.logo.update');
+
     Route::get('smtp-settings', [SettingsController::class, 'smtp_settings'])->name('smtp.settings');
     Route::post('smtp-settings/update', [SettingsController::class, 'update'])->name('smtp.settings.update');
+    Route::get('system/about', [SettingsController::class, 'about'])->name('system.about');
 
-    Route::post('about', [SettingsController::class, 'about'])->name('about');
+    //My profile
+    Route::get('my-profile/{tab?}/{user_id?}', [MyProfileController::class, 'index'])->name('my.profile');
+    Route::post('my-profile/update/{user_id?}', [MyProfileController::class, 'update'])->name('my.profile.update');
+
+    //Change Password
+    Route::get('password/change', [MyProfileController::class, 'change_password'])->name('change.password');
+    Route::post('password/update', [MyProfileController::class, 'password_update'])->name('password.update');
 });

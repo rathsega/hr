@@ -35,9 +35,8 @@
             <form action="{{ route('admin.task.store', $user->id) }}" method="post" class="ajaxForm resetable w-100">
                 @Csrf
                 <div class="input-group px-1">
-                    <input type="text" name="description" class="form-control py-2 text-13px ms-3" placeholder="Enter a new task" aria-label="Enter a new task"
-                        style="border: 1px solid #e7e7e7;">
-                    <button class="input-group-text text-12px text-dark me-3" style="    background-color: #f5f5f5; border: 1px solid #e7e7e7;">Add</button>
+                    <input type="text" name="description" class="form-control py-2 text-13px ms-3 border-1" placeholder="Enter a new task" aria-label="Enter a new task">
+                    <button class="input-group-text text-12px text-dark me-3 border-1">Add</button>
                 </div>
             </form>
         </li>
@@ -48,11 +47,10 @@
         @endforeach
     </ul>
 </div>
-</div>
-</div>
 
 <script>
     "Use strict";
+
     $(function() {
         $('#user-task-list{{ $user->id }}').sortable({
             axis: "y",
@@ -84,11 +82,7 @@
             }
         });
     });
-</script>
-
-</div>
-
-<script>
+    
     var time = 0;
 
     function setTimeoutAwait(e) {

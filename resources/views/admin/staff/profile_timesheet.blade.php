@@ -63,24 +63,25 @@
                         <th>Work Description</th>
                     </thead>
                     <tbody>
-                        @php
-                            $day = 0;
-                            $rowspan = 0;
-                        @endphp
+                        @php $pre_date = ''; @endphp
                         @foreach ($timesheets as $key => $timesheet)
                             @php
-                                
-                                if (date('d', $timesheet->from_date) == $day) {
-                                    $rowspan = $rowspan + 1;
-                                } else {
-                                    $day = date('d', $timesheet->from_date);
+                                $r_start_date = strtotime(date('d M Y', $timesheet->from_date));
+                                $r_end_date = strtotime(date('d M Y 23:59:59', $timesheet->to_date));
+                                $rowspan = DB::table('timesheets')
+                                ->where('user_id', $user->id)
+                                ->where('from_date', '>=', $r_start_date)
+                                ->where('to_date', '<=', $r_end_date)
+                                ->count();
+                                if($pre_date == date('d-M-Y', $r_start_date)){
                                     $rowspan = 0;
                                 }
+                                $pre_date = date('d-M-Y', $r_start_date);
                             @endphp
 
                             <tr id="work-update{{ $timesheet->id }}">
-                                @if ($key == 0)
-                                    <td class="text-13px text-dark text-center align-baseline" rowspan="{{ $rowspan }}" style="width: 130px; padding: 0px !important;">
+                                @if ($rowspan > 0)
+                                    <td class="text-13px text-dark text-center align-baseline w-30px p-0" rowspan="{{ $rowspan }}">
                                         <p class="p-0 m-0 text-dark">{{ date('d M Y', $timesheet->from_date) }}</p>
                                         <p class="text-13px p-0 text-center mb-2">
                                             <span class="badge bg-secondary" title="{{ get_phrase('Working time') }}" data-bs-toggle="tooltip">
@@ -99,7 +100,7 @@
                                         </p>
                                     </td>
                                 @endif
-                                <td class="text-12px text-start align-baseline" style="width: 160px; padding: 0px !important;">
+                                <td class="text-12px text-start align-baseline w-160px p-0">
                                     {{ date('h:i a', $timesheet->from_date) }} - {{ date('h:i a', $timesheet->to_date) }}
                                     @if ($timesheet->location)
                                         <span class="" title="{{ $timesheet->location }}" data-bs-toggle="tooltip">
@@ -157,12 +158,10 @@
                                     </span>
                                 </td>
                                 <td class="ps-3 align-baseline p-0">
-                                    {!! nl2br($timesheet->description) !!}
+                                    {!! script_checker($timesheet->description) !!}
                                 </td>
                             </tr>
-                            @php
-                                $day = date('d', $timesheet->from_date);
-                            @endphp
+
                         @endforeach
                     </tbody>
                 </table>
@@ -172,6 +171,8 @@
 </div>
 
 <script>
+    "Use strict";
+    
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
