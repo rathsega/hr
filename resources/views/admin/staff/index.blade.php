@@ -52,9 +52,9 @@
                     <table class="table eTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th class="text-center">Action</th>
+                                <th>{{get_phrase('Name')}}</th>
+                                <th>{{get_phrase('Role')}}</th>
+                                <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -141,9 +141,9 @@
                     <table class="table eTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th class="text-center">Action</th>
+                                <th>{{get_phrase('Name')}}</th>
+                                <th>{{get_phrase('Role')}}</th>
+                                <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>

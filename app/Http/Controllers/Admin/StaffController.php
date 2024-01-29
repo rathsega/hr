@@ -8,12 +8,13 @@ use App\Models\{User, Task, Timesheet, Attendance, Leave_application};
 use Session;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+
 class StaffController extends Controller
 {
 
     function index(){
-        $page_data['active_staffs'] = User::where('status', 'active')->orderBy('sort')->get();
-        $page_data['inactive_staffs'] = User::where('status', 'inactive')->orderBy('sort')->get();
+        $page_data['active_staffs'] = User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get();
+        $page_data['inactive_staffs'] = User::where('status', 'inactive')->where('role', 'staff')->orderBy('sort')->get();
         return view(auth()->user()->role.'.staff.index', $page_data);
     }
 
@@ -66,7 +67,6 @@ class StaffController extends Controller
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
-        $data['role'] = $request->role;
         $data['designation'] = $request->designation;
         $data['updated_at'] = date('Y-m-d H:i:s');
 

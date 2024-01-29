@@ -225,7 +225,7 @@
 .w-100px{width:100px;}
 .w-110px{width:110px;}
 .w-120px{width:120px;}
-.w-130px{width:130px;}
+.w-130px{width:130px!important;}
 .w-140px{width:140px;}
 .w-150px{width:150px;}
 .w-160px{width:160px;}
@@ -303,11 +303,11 @@
 
 
 /* Flaticon icon issue solve */
-/* i:not(.fas, .fa, .fab) {
+i:not(.fas, .fa, .fab) {
     line-height: 0.5em !important;
     vertical-align: -0.15em !important;
     display: inline-flex !important;
-} */
+}
 /* Flaticon issue solved */
 
 .px-30px{
@@ -350,30 +350,6 @@
 .cursor-context-menu{
 	cursor: context-menu !important;
 }
-
-/*Scroll bar design*/
-	/* width */
-	/*::-webkit-scrollbar {
-	  width: 10px;
-	}*/
-
-	/* Track */
-	/*::-webkit-scrollbar-track {
-	  background: #efefef;
-	}*/
-	 
-	/* Handle */
-	/*::-webkit-scrollbar-thumb {
-	  background: #d1d1d1;
-	  border-radius: 50px !important;
-	}*/
-
-	/* Handle on hover */
-	/*::-webkit-scrollbar-thumb:hover {
-	  background: #d1d1d1;
-	  border-radius: 50px !important;
-	}*/
-/*Scroll bar design*/
 
 .fade-in-area-1{
     font-size: 16px;
@@ -421,19 +397,7 @@
 .task-list .task-from{
 	margin: 5px 0px;
 }
-/* .task-list .position-relative .archive-section::before{
-	content: "";
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-bottom: 2px solid;
-    border-right: 2px solid;
-    transform: rotate(-45deg);
-    right: 6px;
-    top: 4px
-} */
+
 .task-list .sorting-btn{
 	position: absolute;
 	top: -3px;
@@ -613,9 +577,6 @@ th.w-180px{
 
 
 /* Select 2 Search bar */
-/* .select2-search--dropdown {
-	display: none !important;
-} */
 .select2-container--default .select2-search--dropdown .select2-search__field{
 	border: 1px solid #d5d9dd !important;
     border-radius: 5px;

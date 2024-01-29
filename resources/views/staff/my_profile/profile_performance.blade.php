@@ -11,7 +11,7 @@
         <form action="{{ route('staff.my.profile', 'performance') }}" method="get" id="filterForm">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <label class="eForm-label">Selected Year</label>
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                         @for ($year = date('Y'); $year >= 2022; $year--)
                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -29,9 +29,9 @@
             <table class="table eTable">
                 <thead>
                     <tr>
-                        <th class="">Month</th>
-                        <th class="">Ratings</th>
-                        <th class="">Remarks</th>
+                        <th class="">{{get_phrase('Month')}}</th>
+                        <th class="">{{get_phrase('Ratings')}}</th>
+                        <th class="">{{get_phrase('Remarks')}}</th>
                     </tr>
                 </thead>
                 <tbody>

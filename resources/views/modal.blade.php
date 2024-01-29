@@ -22,17 +22,16 @@
                         <path d="M22.5 29V10H25.5V29ZM22.5 38V35H25.5V38Z" />
                     </svg>
                 </div>
-                <p>Are you sure?</p>
+                <p>{{get_phrase('Are you sure?')}}</p>
                 <p class="focus-text">
-                    Click Yes if you want to do that.
+                    {{get_phrase('Click Yes if you want to do that')}}
                 </p>
                 <div class="confirmBtn">
-
                     <button type="button" class="eBtn eBtn-red" data-bs-dismiss="modal">
-                        Cancel
+                        {{get_phrase('Cancel')}}
                     </button>
                     <a id="confirmBtn" class="eBtn eBtn-green text-white lh-40px">
-                        Yes
+                        {{get_phrase('Yes')}}
                     </a>
                 </div>
             </div>
@@ -42,7 +41,7 @@
 
 
 <script type="text/javascript">
-    "Use strict";
+    "use strict";
 
     function showRightModal(url, title) {
         $('#rightOffcanvasTitle').text(title);

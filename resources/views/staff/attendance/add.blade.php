@@ -7,7 +7,7 @@
                 <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
             @else
                 <div class="fpb-7">
-                    <label class="eForm-label">Selected User</label>
+                    <label class="eForm-label">{{get_phrase('Selected User')}}</label>
                     <select name="user_id" class="form-select eForm-select select2" required>
                         <option value="">{{ get_phrase('Select a user') }}</option>
                         @foreach ($users as $user)
@@ -15,7 +15,7 @@
                                 {{ $user->name }}
 
                                 @if ($user->id == auth()->user()->id)
-                                    <small>(Me)</small>
+                                    <small>({{get_phrase('Me')}})</small>
                                 @endif
                             </option>
                         @endforeach
@@ -35,16 +35,16 @@
         </div>
         <div class="col-md-6">
             <div class="fpb-7">
-                <label for="eInputTextarea" class="eForm-label">Date & time</label>
+                <label for="eInputTextarea" class="eForm-label">{{get_phrase('Date & time')}}</label>
                 <input type="datetime-local" name="time" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control date-time-picker" id="eInputDateTime" />
             </div>
         </div>
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="eInputTextarea" class="eForm-label">Note <small class="text-muted">(Optional)</small></label>
+                <label for="eInputTextarea" class="eForm-label">{{get_phrase('Note')}} <small class="text-muted">({{get_phrase('Optional')}})</small></label>
                 <textarea name="note" class="form-control" rows="2">{{ old('note') }}</textarea>
             </div>
-            <button type="submit" class="btn-form mt-2 mb-3 w-100" disabled>Submit</button>
+            <button type="submit" class="btn-form mt-2 mb-3 w-100" disabled>{{get_phrase('Submit')}}</button>
         </div>
     </div>
 </form>

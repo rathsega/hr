@@ -11,7 +11,7 @@
             <div class="d-flex flex-column">
                 <h4>{{ get_phrase('Timesheet') }}</h4>
                 <ul class="d-flex align-items-center eBreadcrumb-2">
-                    <li><a href="{{route('admin.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
                     <li><a href="#">{{ get_phrase('Timesheet') }}</a></li>
                 </ul>
             </div>
@@ -19,7 +19,20 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4 order-md-2">
+            <div class="eSection-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (isset($_GET['id']) && $_GET['id'] > 0)
+                            @include('admin.timesheet.edit')
+                        @else
+                            @include('admin.timesheet.add')
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
             <div class="eSection-wrap">
                 <div class="row">
 
@@ -43,7 +56,7 @@
                         <form action="{{ route('admin.timesheet') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{ get_phrase('Selected Year') }}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -54,7 +67,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{ get_phrase('Selected Month') }}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -115,7 +128,7 @@
                                                             @endphp
 
                                                             @foreach ($timesheets as $key => $timesheet)
-                                                                <tr id="work-update{{$timesheet->id}}">
+                                                                <tr id="work-update{{ $timesheet->id }}">
                                                                     @if ($key == 0)
                                                                         <td class="text-13px text-dark text-center align-baseline w-130px w-100" rowspan="{{ $timesheets->count() }}">
                                                                             <img class="rounded-circle mt-2" src="{{ get_image('uploads/user-image/' . $staff->photo) }}"
@@ -199,16 +212,16 @@
                                                                         </span>
                                                                     </td>
                                                                     <td class="ps-3 align-baseline p-0">
-                                                                        {!! script_checker($timesheet->description, false) !!}
+                                                                        {!! script_checker($timesheet->description) !!}
                                                                     </td>
                                                                     <td class="p-0 ">
                                                                         <div class="invisible-layout">
-                                                                            <a href="{{ route('admin.timesheet', ['id' => $timesheet->id]) }}"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                            <a href="{{ route('admin.timesheet', ['id' => $timesheet->id]) }}" class="btn btn p-1"
+                                                                                title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
-                                                                                    viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve"
-                                                                                    class="">
+                                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0"
+                                                                                    y="0" viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512"
+                                                                                    xml:space="preserve" class="">
                                                                                     <g>
                                                                                         <path
                                                                                             d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
@@ -217,9 +230,9 @@
                                                                                 </svg>
                                                                             </a>
 
-                                                                            <a href="#"
-                                                                                onclick="confirmModal('{{ route('admin.timesheet.delete',$timesheet->id) }}')"
-                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                            <a href="#" onclick="confirmModal('{{ route('admin.timesheet.delete', $timesheet->id) }}')"
+                                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip"
+                                                                                data-bs-placement="top">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
                                                                                     height="15" viewBox="0 0 24 24">
                                                                                     <path
@@ -254,26 +267,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="eSection-wrap">
-                <div class="row">
-                    <div class="col-md-12">
-                        @if(isset($_GET['id']) && $_GET['id'] > 0)
-                            @include('admin.timesheet.edit')
-                        @else
-                            @include('admin.timesheet.add')
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
 @push('js')
     <script>
-        "Use strict";
-        
+        "use strict";
+
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;

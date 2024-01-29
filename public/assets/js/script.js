@@ -1,4 +1,6 @@
 //Left navigationbar
+"use strict";
+
 $(document).ready(function () {
   //Left navigation bar
   $(".parent-droupdown").on("click", function (e) {
@@ -32,32 +34,6 @@ $(document).ready(function () {
     $(".navigation-section").toggleClass("showNav");
     $(".navigation-section-backdrop").fadeIn(100);
   });
-
-  //Left navigation bar toggler
-  //toggle button
-  //   $("#navbar-toggle").on("click", function (e) {
-  //     if ($(".navigation-section").hasClass("hide")) {
-  //       $(".navigation-section").removeClass("hide");
-  //       $(".navigation-section").addClass("show");
-  //       $(".navigation-section-backdrop").fadeIn(100);
-  //       $(".navigation-section").animate(
-  //         {
-  //           marginLeft: "0px",
-  //         },
-  //         300
-  //       );
-  //     } else if ($(".navigation-section").hasClass("show")) {
-  //       $(".navigation-section").removeClass("show");
-  //       $(".navigation-section").addClass("hide");
-  //       $(".navigation-section-backdrop").fadeOut(100);
-  //       $(".navigation-section").animate(
-  //         {
-  //           marginLeft: "-266px",
-  //         },
-  //         300
-  //       );
-  //     }
-  //   });
 
   //   Backdroup
   $(".navigation-section-backdrop").on("click", function () {
@@ -134,9 +110,6 @@ var swiperOnly = new Swiper(".carouselOnly", {
 
 // Carousel controls only
 var swiperOnly = new Swiper(".carouselControlsOnly", {
-  // autoplay: {
-  //   delay: 1250,
-  // },
   loop: true,
   navigation: {
     nextEl: ".swiper-button-next",
@@ -158,29 +131,6 @@ var swiperOnly = new Swiper(".carouselIndicatorsOnly", {
     el: ".swiper-pagination",
   },
 });
-
-// Sidebar only
-// let arrow = document.querySelectorAll(".arrow");
-// for (var i = 0; i < arrow.length; i++) {
-//   arrow[i].addEventListener("click", (e) => {
-//     let arrowParent = e.target.parentElement; //selecting main parent of arrow
-//     arrowParent.classList.toggle("showMenu");
-//   });
-// }
-
-// let sidebar = document.querySelector(".sidebar");
-// let sidebarBtn = document.querySelector(".menuList");
-// console.log(sidebarBtn);
-// sidebarBtn.addEventListener("click", () => {
-//   sidebar.classList.toggle("close");
-// });
-// $(".menuList").on("click", function () {
-//   $(".sidebar").toggleClass("close");
-// });
-
-// $(document).click(function (event) {
-//   $(".sidebar").removeClass("close");
-// });
 
 $(".menuList").on("click", function () {
   $(".sidebar").toggleClass("close");

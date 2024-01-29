@@ -39,7 +39,7 @@
                 <label for="toDate" class="eForm-label">Date</label>
                 <input type="datetime-local" value="{{ date('Y-m-d H:i', $assessment->date_time) }}" class="form-control eForm-control" name="date_time" id="toDate" />
             </div>
-            <button type="submit" class="btn-form mt-2 mb-3">Update</button>
+            <button type="submit" class="btn-form mt-2 mb-3">{{get_phrase('Update')}}</button>
         </div>
     </div>
 </form>

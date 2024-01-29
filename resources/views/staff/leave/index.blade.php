@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Leave Reports</p>
+                <p class="column-title mb-2">{{get_phrase('Leave Reports')}}</p>
                 <div class="row">
                     @php
                         if (isset($_GET['year'])) {
@@ -42,7 +42,7 @@
                         <form action="{{ route('staff.leave.report') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             @php
@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             @php
@@ -91,9 +91,9 @@
                             <table class="table eTable">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Date</th>
-                                        <th>Reason</th>
-                                        <th class="text-center">Status</th>
+                                        <th class="text-center">{{get_phrase('Date')}}</th>
+                                        <th>{{get_phrase('Reason')}}</th>
+                                        <th class="text-center">{{get_phrase('Status')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,11 +138,11 @@
                                             </td>
                                             <td class="text-center position-relative w-80px">
                                                 @if ($leave_report->status == 'pending')
-                                                    <span class="badge bg-danger">Pending</span>
+                                                    <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
                                                 @elseif($leave_report->status == 'rejected')
-                                                    <span class="badge bg-secondary">Rejected</span>
+                                                    <span class="badge bg-secondary">{{get_phrase('Rejected')}}</span>
                                                 @else
-                                                    <span class="badge bg-success">Approved</span>
+                                                    <span class="badge bg-success">{{get_phrase('Approved')}}</span>
                                                 @endif
 
                                                 @if ($leave_report->status == 'pending')
@@ -185,14 +185,14 @@
                                 <div class="col-md-12">
                                     @if (auth()->user()->role == 'admin')
                                         <div class="fpb-7">
-                                            <label class="eForm-label">Select User</label>
+                                            <label class="eForm-label">{{get_phrase('Select User')}}</label>
                                             <select name="user_id" class="form-select eForm-select select2" required>
                                                 <option value="">{{ get_phrase('Select a user') }}</option>
                                                 @foreach ($users as $user)
                                                     <option value="{{ $user->id }}" @if ($user->id == auth()->user()->id) selected @endif>
                                                         {{ $user->name }}
                                                         @if ($user->id == auth()->user()->id)
-                                                            <small>(Me)</small>
+                                                            <small>({{get_phrase('Me')}})</small>
                                                         @endif
                                                     </option>
                                                 @endforeach
@@ -202,19 +202,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
-                                        <label for="eInputTextarea" class="eForm-label">From</label>
+                                        <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
                                         <input type="datetime-local" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
-                                        <label for="eInputTextarea" class="eForm-label">To</label>
+                                        <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
                                         <input type="datetime-local" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="fpb-7">
-                                        <label for="eInputTextarea" class="eForm-label">Reason</label>
+                                        <label for="eInputTextarea" class="eForm-label">{{get_phrase('Reason')}}</label>
                                         <textarea class="form-control" rows="2" name="reason" required>{{ old('reason') }}</textarea>
                                         @if ($errors->has('reason'))
                                             <small class="text-danger">
@@ -223,7 +223,7 @@
                                         @endif
                                     </div>
                                     <div class="fpb-7">
-                                        <label for="photo" class="eForm-label">{{ get_phrase('Attachment') }} <small>(Optional - image, pdf)</small></label>
+                                        <label for="photo" class="eForm-label">{{ get_phrase('Attachment') }} <small>({{get_phrase('Optional')}} - {{get_phrase('image')}}, {{get_phrase('pdf')}})</small></label>
                                         <input type="file" name="attachment" class="form-control eForm-control-file mb-0" id="photo">
                                     </div>
                                     <button type="submit" class="btn-form mt-2 mb-3">{{ get_phrase('Submit request') }}</button>

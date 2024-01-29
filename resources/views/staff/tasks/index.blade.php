@@ -22,7 +22,7 @@
         <div class="col-md-8">
             <div class="eSection-wrap pb-3">
 
-                <p class="column-title">Employee Tasks</p>
+                <p class="column-title">{{get_phrase('Employee Tasks')}}</p>
                 <ul class="nav nav-tabs eNav-Tabs-custom" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link @if ($tasks_type == 'running') active @endif" onclick="redirectTo('{{ route('staff.tasks', 'running') }}')">
@@ -62,7 +62,7 @@
                                             <div class="input-group px-1">
                                                 <input type="text" name="description" class="form-control py-2 text-13px ms-3" placeholder="Enter a new task"
                                                     aria-label="Enter a new task border-1">
-                                                <button class="input-group-text text-12px text-dark me-3">Add</button>
+                                                <button class="input-group-text text-12px text-dark me-3">{{get_phrase('Add')}}</button>
                                             </div>
                                         </form>
                                     </li>
@@ -77,7 +77,7 @@
                     </div>
 
                     <script>
-                        "Use strict";
+                        "use strict";
 
                         $(function() {
                             $('#user-task-list{{ $user->id }}').sortable({
@@ -119,7 +119,7 @@
 
 @push('js')
     <script>
-        "Use strict";
+        "use strict";
         
         var time = 0;
 
@@ -146,11 +146,11 @@
 
         }
 
-        function taskExpandToggler(taskId) {
+        function taskExpandToggler(taskId, expand) {
             let taskArea = document.querySelector('#task-list' + taskId + ' textarea');
             let scrollHeight = taskArea.scrollHeight;
             let outerHeight = $('#task-list' + taskId + ' textarea').outerHeight();
-            if (outerHeight <= 35) {
+            if (outerHeight <= 35 || expand == true) {
                 taskArea.style.height = scrollHeight + 'px';
             } else {
                 taskArea.style.height = '32px';

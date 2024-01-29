@@ -19,7 +19,21 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4 order-md-2">
+            <div class="eSection-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        @if (isset($_GET['id']) && $_GET['id'] > 0)
+                            @include('admin.attendance.edit')
+                        @else
+                            @include('admin.attendance.add')
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
             <div class="eSection-wrap">
                 <div class="row">
 
@@ -44,7 +58,7 @@
                         <form action="{{ route('admin.attendance') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -55,7 +69,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -106,10 +120,10 @@
                                                 <table class="table eTable">
                                                     <thead>
                                                         <tr>
-                                                            <th>Employee</th>
-                                                            <th class="text-center">Checkin</th>
-                                                            <th class="text-center">Checkout</th>
-                                                            <th>Note</th>
+                                                            <th>{{get_phrase('Employee')}}</th>
+                                                            <th class="text-center">{{get_phrase('Checkin')}}</th>
+                                                            <th class="text-center">{{get_phrase('Checkout')}}</th>
+                                                            <th>{{get_phrase('Note')}}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -125,11 +139,6 @@
 
                                                             @foreach ($att_reports as $key => $att_report)
                                                                 <tr>
-                                                                    {{-- @if ($key == 0)
-                                                                        <td rowspan="{{$att_reports->count()}}">
-                                                                            {{$staff->name}}
-                                                                        </td>
-                                                                    @endif --}}
                                                                     <td class="text-13px text-dark align-baseline">
                                                                         <div class="d-flex align-items-center">
                                                                             <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $staff->photo) }}" width="40px">
@@ -216,7 +225,7 @@
 
                                                                         @if ($att_report->late_entry == 1)
                                                                             <p class="p-0 m-0">
-                                                                                <span class="badge bg-warning fw-700">Late entry</span>
+                                                                                <span class="badge bg-warning fw-700">{{get_phrase('Late entry')}}</span>
                                                                             </p>
                                                                         @endif
                                                                     </td>
@@ -293,7 +302,7 @@
 
                                                                             @if ($att_report->early_leave == 1)
                                                                                 <p class="p-0 m-0">
-                                                                                    <span class="badge bg-danger fw-700">Early leave</span>
+                                                                                    <span class="badge bg-danger fw-700">{{get_phrase('Early leave')}}</span>
                                                                                 </p>
                                                                             @endif
                                                                         @endif
@@ -319,7 +328,7 @@
                                                                                 </svg>
                                                                             </a>
 
-                                                                            <a href="#" onclick="confirmModal('{{ route('admin.attendance.delete', $att_report->id) }}')"
+                                                                            <a href="#" onclick="confirmModal('{{ route(`admin.attendance.delete`, $att_report->id) }}')"
                                                                                 class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip"
                                                                                 data-bs-placement="right">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
@@ -350,130 +359,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="eSection-wrap">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        @if (isset($_GET['id']) && $_GET['id'] > 0)
-                            <h4 class="column-title">
-                                {{ get_phrase('Edit attendance') }}
-                                <a class="float-end text-primary" href="{{ route('admin.attendance') }}">Back</a>
-                            </h4>
-                            @php
-                                $attendance = App\Models\Attendance::where('id', $_GET['id'])->first();
-                            @endphp
-                            <form action="{{ route('admin.attendance.update', $_GET['id']) }}" method="post" class="current-location-form">
-                                @Csrf
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        @if (auth()->user()->role != 'admin')
-                                            <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
-                                        @else
-                                            <div class="fpb-7">
-                                                <label class="eForm-label">Selected User</label>
-                                                <select name="user_id" class="form-select eForm-select select2" required>
-                                                    <option value="">{{ get_phrase('Select a user') }}</option>
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}" @if ($user->id == $attendance->user_id) selected @endif>
-                                                            {{ $user->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Check in time') }}</label>
-                                            <input type="datetime-local" name="check_in_time" value="{{ date('Y-m-d H:i', $attendance->checkin) }}"
-                                                class="form-control eForm-control date-time-picker" id="eInputDateTime" />
-                                        </div>
-                                    </div>
-
-                                    @if ($attendance->checkout)
-                                        <div class="col-md-12">
-                                            <div class="fpb-7">
-                                                <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Check out time') }}</label>
-                                                <input type="datetime-local" name="check_out_time" value="{{ date('Y-m-d H:i', $attendance->checkout) }}"
-                                                    class="form-control eForm-control date-time-picker" id="eInputDateTime" />
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">Note <small class="text-muted">(Optional)</small></label>
-                                            <textarea name="note" class="form-control" rows="2">{{ $attendance->note }}</textarea>
-                                        </div>
-                                        <button type="submit" class="btn-form mt-2 mb-3 w-100" disabled>{{ get_phrase('Update') }}</button>
-                                    </div>
-                                </div>
-                            </form>
-                        @else
-                            <h4 class="column-title">{{ get_phrase('Give attendance') }}</h4>
-                            <form action="{{ route('admin.attendance.store') }}" method="post" class="current-location-form">
-                                @Csrf
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        @if (auth()->user()->role != 'admin')
-                                            <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
-                                        @else
-                                            <div class="fpb-7">
-                                                <label class="eForm-label">Selected User</label>
-                                                <select name="user_id" class="form-select eForm-select select2" required>
-                                                    <option value="">{{ get_phrase('Select a user') }}</option>
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}" @if ($user->id == auth()->user()->id) selected @endif>
-                                                            {{ $user->name }}
-
-                                                            @if ($user->id == auth()->user()->id)
-                                                                <small>(Me)</small>
-                                                            @endif
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Type') }}</label>
-                                            <select class="form-select eForm-select select2" name="check_in_out">
-                                                <option value="checkin">{{ get_phrase('Check in') }}</option>
-                                                <option value="checkout">{{ get_phrase('Check out') }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">Date & time</label>
-                                            <input type="datetime-local" name="time" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control date-time-picker"
-                                                id="eInputDateTime" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">Note <small class="text-muted">(Optional)</small></label>
-                                            <textarea name="note" class="form-control" rows="2">{{ old('note') }}</textarea>
-                                        </div>
-                                        <button type="submit" class="btn-form mt-2 mb-3 w-100" disabled>Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
 @push('js')
     <script>
-        "Use strict";
+        "use strict";
         
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {

@@ -64,6 +64,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('payslip/store', [PayslipController::class, 'store'])->name('payslip.store');
     Route::post('payslip/update/{id}', [PayslipController::class, 'update'])->name('payslip.update');
     Route::get('payslip/delete', [PayslipController::class, 'delete'])->name('payslip.delete');
+    Route::get('payslip/deleteAttachment', [PayslipController::class, 'deleteAttachment'])->name('payslip.deleteAttachment');
     Route::get('payslip/download', [PayslipController::class, 'payslip_download'])->name('payslip.download');
     Route::get('payslip/send', [PayslipController::class, 'payslip_send_to_email'])->name('payslip.send');
 

@@ -3,7 +3,7 @@
         <div class="col-md-12">
 
 
-            <form action="{{ route('admin.payslip.store') }}" method="post">
+            <form action="{{ route('admin.payslip.store') }}" method="post" enctype="multipart/form-data">
                 @Csrf
                 @php
                     $pay_to = \App\Models\User::where('id', $_GET['user_id'])->first();
@@ -24,21 +24,21 @@
 
                     <div class="col-md-12">
                         <div class="fpb-7">
-                            <label for="net_salary" class="eForm-label">Net Salary ({{ currency() }})</label>
+                            <label for="net_salary" class="eForm-label">{{get_phrase('Net Salary')}} ({{ currency() }})</label>
                             <input type="number" name="net_salary" value="0" class="form-control eForm-control" id="net_salary" />
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="fpb-7">
-                            <label for="bonus" class="eForm-label">Bonus ({{ currency() }})</label>
+                            <label for="bonus" class="eForm-label">{{get_phrase('Bonus')}} ({{ currency() }})</label>
                             <input type="number" name="bonus" value="0" class="form-control eForm-control" id="bonus" />
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="fpb-7">
-                            <label for="penalty" class="eForm-label">Penalty ({{ currency() }})</label>
+                            <label for="penalty" class="eForm-label">{{get_phrase('Penalty')}} ({{ currency() }})</label>
                             <input type="number" name="penalty" value="0" class="form-control eForm-control" id="penalty" />
                         </div>
                     </div>
@@ -65,10 +65,19 @@
 
                     <div class="col-md-12">
                         <div class="fpb-7">
-                            <label for="eInputTextarea" class="eForm-label">Note <small class="text-muted">(Optional)</small></label>
+                            <label class="eForm-label">{{ get_phrase('Payslip : allows pdf,png,jpg,doc,docx') }}</label>
+                            <input type="file" name="attachment"
+                                accept="image/*,.pdf,.doc,.docx"
+                                class="eForm-control eForm-control-file">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="fpb-7">
+                            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Note')}} <small class="text-muted">({{get_phrase('Optional')}})</small></label>
                             <textarea name="note" class="form-control" rows="2">{{ old('note') }}</textarea>
                         </div>
-                        <button type="submit" class="btn-form mt-2 mb-3 w-100">Submit</button>
+                        <button type="submit" class="btn-form mt-2 mb-3 w-100">{{get_phrase('Submit')}}</button>
                     </div>
                 </div>
             </form>

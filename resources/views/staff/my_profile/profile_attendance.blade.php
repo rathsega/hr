@@ -19,7 +19,7 @@
         <form action="{{ route('staff.my.profile', 'attendance') }}" method="get" id="filterForm">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label class="eForm-label">Selected Year</label>
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                         @for ($year = date('Y'); $year >= 2022; $year--)
                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="eForm-label">Selected Month</label>
+                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                         @for ($month = 1; $month <= 12; $month++)
                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -48,10 +48,10 @@
             <table class="table eTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Checkin</th>
-                        <th>Checkout</th>
-                        <th>Note</th>
+                        <th>{{get_phrase('Date')}}</th>
+                        <th>{{get_phrase('Checkin')}}</th>
+                        <th>{{get_phrase('Checkout')}}</th>
+                        <th>{{get_phrase('Note')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -139,7 +139,7 @@
 
                                 @if ($att_report->late_entry == 1)
                                     <p class="p-0 m-0">
-                                        <span class="badge bg-warning fw-700">Late entry</span>
+                                        <span class="badge bg-warning fw-700">{{get_phrase('Late entry')}}</span>
                                     </p>
                                 @endif
                             </td>
@@ -216,14 +216,14 @@
 
                                     @if ($att_report->late_entry == 1)
                                         <p class="p-0 m-0">
-                                            <span class="badge bg-warning fw-700">Late entry</span>
+                                            <span class="badge bg-warning fw-700">{{get_phrase('Late entry')}}</span>
                                         </p>
                                     @endif
                                 @endif
                             </td>
                             <td>
                                 @if ($att_report->note)
-                                    <p class="text-12px"><b>Note:</b> @php echo script_checker($att_report->note); @endphp</p>
+                                    <p class="text-12px"><b>{{get_phrase('Note')}}:</b> @php echo script_checker($att_report->note); @endphp</p>
                                 @endif
                             </td>
                         </tr>

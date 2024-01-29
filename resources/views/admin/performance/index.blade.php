@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Monthly Reviews</p>
+                <p class="column-title mb-2">{{get_phrase('Monthly Reviews')}}</p>
                 <div class="row">
 
                     @php
@@ -45,7 +45,7 @@
                         <form action="{{ route('admin.performance') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -74,8 +74,8 @@
                                 <thead>
                                     <tr>
                                         <th class="">Employee</th>
-                                        <th class="">Reviews</th>
-                                        <th class="">Remarks</th>
+                                        <th class="">{{get_phrase('Reviews')}}</th>
+                                        <th class="">{{get_phrase('Remarks')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,9 +107,9 @@
                                                     @foreach ($performance_types as $performance_type)
                                                         <div class="col-12">
                                                             @for ($i = 1; $i <= 5; $i++)
-                                                                @if (count($ratings) > 0 && array_key_exists($performance_type->slug, $ratings) && $i <= $ratings[$performance_type->slug])
+                                                                @if (is_array($ratings) && count($ratings) > 0 && array_key_exists($performance_type->slug, $ratings) && $i <= $ratings[$performance_type->slug])
                                                                     <i class="bi bi-star-fill text-warning"></i>
-                                                                @elseif(count($ratings) > 0 && array_key_exists($performance_type->slug, $ratings))
+                                                                @elseif(is_array($ratings) && count($ratings) > 0 && array_key_exists($performance_type->slug, $ratings))
                                                                     <i class="bi bi-star-fill"></i>
                                                                 @else
                                                                     <i class="bi bi-star"></i>
@@ -121,7 +121,7 @@
                                                 </div>
                                             </td>
                                             <td class="position-relative">
-                                                {{ $remarks }}
+                                                {!! script_checker($remarks) !!}
                                                 <div class="contant-overlay">
                                                     @if (!$performance_review)
                                                         <a href="{{ route('admin.performance', ['user_id' => $user->id, 'year' => $selected_year, 'month' => $selected_month]) }}"
@@ -223,11 +223,12 @@
                                             <div class="fpb-7 d-flex">
                                                 <label for="net_salary" class="eForm-label col-4">{{ $performance_type->title }}: </label>
                                                 <select name="ratings[{{ $performance_type->slug }}]" class="form-control eForm-control text-12px py-0 px-4 h-27px">
-                                                    <option value="5" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 5) selected @endif>5 Start</option>
-                                                    <option value="4" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 4) selected @endif>4 Start</option>
-                                                    <option value="3" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 3) selected @endif>3 Start</option>
-                                                    <option value="2" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 2) selected @endif>2 Start</option>
-                                                    <option value="1" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 1) selected @endif>1 Start</option>
+                                                    <option value="">{{get_phrase('Not applicable')}}</option>
+                                                    <option value="5" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 5) selected @endif>5 {{get_phrase('Star')}}</option>
+                                                    <option value="4" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 4) selected @endif>4 {{get_phrase('Star')}}</option>
+                                                    <option value="3" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 3) selected @endif>3 {{get_phrase('Star')}}</option>
+                                                    <option value="2" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 2) selected @endif>2 {{get_phrase('Star')}}</option>
+                                                    <option value="1" @if (array_key_exists($performance_type->slug, $ratings) && $ratings[$performance_type->slug] == 1) selected @endif>1 {{get_phrase('Star')}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -235,10 +236,10 @@
 
                                     <div class="col-md-12">
                                         <div class="fpb-7">
-                                            <label for="eInputTextarea" class="eForm-label">Remarks <small class="text-muted">(Optional)</small></label>
+                                            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Remarks')}} <small class="text-muted">({{get_phrase('Optional')}})</small></label>
                                             <textarea name="remarks" class="form-control eForm-control" rows="2">{{ $remarks }}</textarea>
                                         </div>
-                                        <button type="submit" class="btn-form mt-2 mb-3 w-100">Submit</button>
+                                        <button type="submit" class="btn-form mt-2 mb-3 w-100">{{get_phrase('Submit')}}</button>
                                     </div>
                                 </div>
                             </form>

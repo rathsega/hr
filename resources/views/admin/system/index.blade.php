@@ -82,6 +82,15 @@
                         </div>
 
                         <div class="fpb-7">
+                            <label for="timezone" class="eForm-label">{{ get_phrase('Timezone')}}</label>
+                            <select class="form-select eForm-select select2" data-toggle="select2" name="timezone" id="timezone">
+                                @foreach (DateTimeZone::listIdentifiers(DateTimeZone::ALL) as $timezone):
+                                    <option value="{{$timezone}}" @if(get_settings('timezone') == $timezone) selected @endif>{{$timezone}}</option>
+                                @endforeach;
+                            </select>
+                        </div>
+
+                        <div class="fpb-7">
                             <label for="purchase_code" class="eForm-label">{{ get_phrase('Purchase Code') }}</label>
                             <input value="{{ get_settings('purchase_code') }}" name="purchase_code" type="text" class="form-control eForm-control" id="purchase_code"
                                 placeholder="{{ get_phrase('Enter your purchase code') }}" aria-label="40">

@@ -12,7 +12,7 @@
         <form action="{{ route('staff.my.profile', 'payslip') }}" method="get" id="filterForm">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <label class="eForm-label">Selected Year</label>
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                         @for ($year = date('Y'); $year >= 2022; $year--)
                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>

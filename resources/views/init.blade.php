@@ -1,5 +1,5 @@
 <script>
-    "Use strict";
+    "use strict";
     
     $(function(){
         var formElement;

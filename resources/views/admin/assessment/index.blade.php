@@ -43,7 +43,7 @@
                         <form action="{{ route('admin.assessment') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -106,12 +106,6 @@
                                             <div class="table-responsive">
                                                 <table class="table eTable">
                                                     <tbody>
-                                                        {{-- <thead>
-                                                            <th>{{get_phrase('User')}}</th>
-                                                            <th>{{get_phrase('Date')}}</th>
-                                                            <th>{{get_phrase('Assessment')}}</th>
-                                                            <th></th>
-                                                        </thead> --}}
                                                         @foreach ($assessment_staffs->get() as $assessment_staff)
                                                             @php
                                                                 $incidents = App\Models\Assessment::where('user_id', $assessment_staff->user_id)

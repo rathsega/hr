@@ -32,15 +32,15 @@
     <div class="row">
         <div class="col-md-12">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Inventory item types</p>
+                <p class="column-title mb-2">{{get_phrase('Inventory item types')}}</p>
                 <div class="table-responsive">
                     <table class="table eTable">
                         <thead>
                             <tr>
                                 <th class="">#</th>
-                                <th class="">Type</th>
-                                <th class="">Quantity</th>
-                                <th class="text-center">Action</th>
+                                <th class="">{{get_phrase('Type')}}</th>
+                                <th class="">{{get_phrase('Quantity')}}</th>
+                                <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>

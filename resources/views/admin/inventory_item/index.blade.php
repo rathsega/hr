@@ -116,7 +116,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $query = \DB::table('inventory_items');
+                                $query = App\Models\Inventory_item::query();
                                 
                                 if ($item_type) {
                                     $query->where('type_id', $item_type);
@@ -136,6 +136,7 @@
                                 
                             @endphp
                             @foreach ($query->get() as $key => $inventory_item)
+                                
                                 <tr>
                                     <td>
                                         {{ ++$key }}
@@ -150,13 +151,13 @@
                                         {{ $inventory_item->name }}
                                     </td>
                                     <td>
-                                        {{ App\Models\User::where('id', $inventory_item->assigned_user_id)->first()->name }}
+                                        {{ $inventory_item->assigned_user->name }}
                                     </td>
                                     <td>
-                                        {{ App\Models\User::where('id', $inventory_item->responsible_user_id)->first()->name }}
+                                        {{ $inventory_item->responsible_user->name }}
                                     </td>
                                     <td>
-                                        {{ App\Models\Branch::where('id', $inventory_item->branch_id)->first()->title }}
+                                        {{ $inventory_item->branch->title }}
                                     </td>
                                     <td class="text-center">
                                         <a href="#"

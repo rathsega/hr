@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\{User, Task, Timesheet, Attendance, Leave_application, Assessment, Staff_performance, Payslip};
+use App\Models\{User, Task, Timesheet, Attendance, Leave_application, Assessment, Staff_performance, Payslip, FileUploader};
 use Session, Image;
 use Dompdf\Dompdf;
 use Mail;
@@ -53,9 +53,15 @@ class PayslipController extends Controller
         $data['month_of_salary'] = date('Y-m-d 00:00:00', $brief_of_monthly_salary);
         $data['note'] = $request->note;
 
+        if($request->attachment){
+            $filename = FileUploader::upload($request->attachment, 'uploads/payslip-attachment');
+            $data['attachment'] = last(explode('/', $filename));
+        }
+
+
         $invoice_id = Payslip::insertGetId($data);
 
-        return redirect(route('admin.payslip'))->with('success_message', __('Invoice created successfully'));
+        return redirect()->back()->with('success_message', __('Invoice created successfully'));
     }
 
     function update($id = "", Request $request)
@@ -78,15 +84,31 @@ class PayslipController extends Controller
         $data['month_of_salary'] = date('Y-m-d 00:00:00', $brief_of_monthly_salary);
         $data['note'] = $request->note;
 
+        if($request->attachment){
+            $filename = FileUploader::upload($request->attachment, 'uploads/payslip-attachment');
+            $data['attachment'] = last(explode('/', $filename));
+        }
+
         Payslip::where('id', $id)->update($data);
 
-        return redirect(route('admin.payslip'))->with('success_message', __('Invoice updated successfully'));
+        return redirect()->back()->with('success_message', __('Invoice updated successfully'));
     }
 
     function delete(Request $request)
     {
         Payslip::where('id', $request->id)->delete();
-        return redirect(route('admin.payslip'))->with('success_message', get_phrase('Invoice deleted successfully'));
+        return redirect()->back()->with('success_message', get_phrase('Invoice deleted successfully'));
+    }
+
+    function deleteAttachment(Request $request)
+    {
+        Payslip::where('id', $request->id)->update(array('attachment'=>''));
+        $attachment = $request->attachment;
+        $url = '../public/uploads/payslip-attachment/'. $attachment;
+        if (is_file($url) && file_exists($url)) {
+            unlink($url);
+        }
+        return redirect()->back()->with('success_message', get_phrase('Payslip deleted successfully'));
     }
 
     function payslip_download(Request $request)
@@ -114,12 +136,28 @@ class PayslipController extends Controller
         $dompdf->loadHtml($html_content); // Load the HTML content
         $dompdf->render(); // Render the PDF
 
+        $attachment = $payslip->attachment; 
+        if( $attachment){
+            $payslip_file_url = base_path().'/public' . '/uploads/payslip-attachment/'. $attachment;
+            $file_extension = last(explode('.',$payslip_file_url));
+            $fileData = chunk_split(base64_encode(file_get_contents($payslip_file_url)));
+        }
+        
+
         try {
-            Mail::send('admin.payslip.invoice_with_assessment', $page_data, function ($message) use ($payslip, $user, $dompdf) {
-                $message->to($user->email, $user->name)
-                    ->subject('Monthly Salary of ' . date('1 M - t M, Y', strtotime($payslip->month_of_salary)) . ' - Creativeitem')
-                    ->attachData($dompdf->output(), 'Payslip-' . date('F-Y', strtotime($payslip->month_of_salary)) . '.pdf');
-            });
+            if($attachment){
+                Mail::send('admin.payslip.invoice_with_assessment', $page_data, function ($message) use ($payslip, $user, $payslip_file_url, $file_extension, $fileData) {
+                    $message->to($user->email, $user->name)
+                        ->subject('Monthly Salary of ' . date('1 M - t M, Y', strtotime($payslip->month_of_salary)) . ' - Creativeitem')
+                ->attach($payslip_file_url /*, 'Payslip-' . date('F-Y', strtotime($payslip->month_of_salary)) . '.' . $file_extension*/);
+                });
+            }else{
+                Mail::send('admin.payslip.invoice_with_assessment', $page_data, function ($message) use ($payslip, $user) {
+                    $message->to($user->email, $user->name)
+                        ->subject('Monthly Salary of ' . date('1 M - t M, Y', strtotime($payslip->month_of_salary)) . ' - Creativeitem');
+                });
+            }
+            
         } catch (\Exception $e) {
             \Log::error('Email sending failed: ' . $e->getMessage());
         }
@@ -127,6 +165,6 @@ class PayslipController extends Controller
 	    
         Payslip::where('id', $payslip->id)->update(['email_sent' => 1]);
 
-        return redirect(route('admin.payslip'))->with('success_message', get_phrase('Invoice sent successfully'));
+        return redirect()->back()->with('success_message', get_phrase('Invoice sent successfully'));
     }
 }

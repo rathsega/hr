@@ -5,7 +5,7 @@
 
 <form action="{{route('admin.staff.sort.update')}}" method="post">
 	@Csrf
-	<h6 class="text-14px mb-3">Active users</h6>
+	<h6 class="text-14px mb-3">{{get_phrase('Active users')}}</h6>
 	<ul id="activeUserSortable">
 		@foreach($active_staffs as $active_staff)
 			<li class="ui-state-default">
@@ -24,7 +24,7 @@
 		@endforeach
 	</ul>
 
-	<h6 class="text-14px mb-3 mt-5">Inactive users</h6>
+	<h6 class="text-14px mb-3 mt-5">In{{get_phrase('Active users')}}</h6>
 	<ul id="inActiveUserSortable">
 		@foreach($inactive_staffs as $inactive_staff)	
 			<li class="ui-state-default">
@@ -44,12 +44,12 @@
 	</ul>
 
 	<div class="form-group pt-4">
-		<button type="submit" class="btn btn-success">Update</button>
+		<button type="submit" class="btn btn-success">{{get_phrase('Update')}}</button>
 	</div>
 </form>
 
 <script>
-	"Use strict";
+	"use strict";
 
 	$(function() {
 		$("#activeUserSortable").sortable();

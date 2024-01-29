@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-md-12 mt-3">
-            <label for="description" class="eForm-label">{{get_phrase('Description')}}<small class="text-muted">(Optional)</small></label>
+            <label for="description" class="eForm-label">{{get_phrase('Description')}}<small class="text-muted">({{get_phrase('Optional')}})</small></label>
             <textarea name="description" class="form-control eForm-control" rows="2">{{$branch->description}}</textarea>
         </div>
 

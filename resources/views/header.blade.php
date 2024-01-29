@@ -63,7 +63,7 @@
                                                 </g>
                                             </svg>
                                         </span>
-                                        My Profile
+                                        {{get_phrase('My Profile')}}
                                     </a>
                                 </li>
                                 <li>
@@ -76,7 +76,7 @@
                                     @endphp
                                     <a class="dropdown-item" href="{{$change_password}}">
                                         <i class="fi-br-key-skeleton-left-right"></i>
-                                        Change password
+                                        {{get_phrase('Change password')}}
                                     </a>
                                 </li>
 
@@ -96,7 +96,7 @@
                                                     </g>
                                                 </svg>
                                             </span>
-                                            System Settings
+                                            {{get_phrase('System Settings')}}
                                         </a>
                                     </li>
                                 @endif
@@ -111,7 +111,7 @@
                                                     transform="translate(0 -32)" fill="#fff" />
                                             </svg>
                                         </span>
-                                        Log out
+                                        {{get_phrase('Log out')}}
                                     </a>
                                 </li>
                             </ul>

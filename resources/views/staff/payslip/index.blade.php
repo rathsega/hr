@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Monthly payslip</p>
+                <p class="column-title mb-2">{{get_phrase('Monthly payslip')}}</p>
                 <div class="row">
 
                     @php
@@ -38,7 +38,7 @@
                         <form action="{{ route('staff.payslip') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -55,9 +55,9 @@
                             <table class="table eTable">
                                 <thead>
                                     <tr>
-                                        <th class="">Month of Salary</th>
-                                        <th class="">Status</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="">{{get_phrase('Month of Salary')}}</th>
+                                        <th class="">{{get_phrase('Status')}}</th>
+                                        <th class="text-center">{{get_phrase('Action')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,9 +74,9 @@
                                             </td>
                                             <td>
                                                 @if ($payslip->status == 1)
-                                                    <span class="badge bg-success">Paid</span>
+                                                    <span class="badge bg-success">{{get_phrase('Paid')}}</span>
                                                 @else
-                                                    <span class="badge bg-danger">Unpaid</span>
+                                                    <span class="badge bg-danger">{{get_phrase('Unpaid')}}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">

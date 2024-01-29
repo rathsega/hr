@@ -51,7 +51,6 @@
   border-radius: 12px !important;
 }
 
-/*@import url('assets/vendors/bootstrap-icons-1.8.1/fonts/bootstrap-icons.woff');*/
 :root {
   --dark-color-1: #181c32;
   --text-color-1: #797c8b;
@@ -1766,17 +1765,12 @@ Body Section
   padding: 20px 6px 14px 57px;
   margin-top: -10px;
   background: #1d1b31;
-/*  display: none;*/
 }
 .sidebar .nav-links > li .sub-menu li a {
   height: auto;
   padding: 5px 0px 8px;
 }
 
-.sidebar .nav-links > li.showMenu .sub-menu {
-  /*display: block;
-  transition: all 0.4s;*/
-}
 
 .sidebar .nav-links > li .sub-menu a {
   color: #fff;
@@ -1802,7 +1796,6 @@ Body Section
   padding: 10px 20px;
   border-radius: 0 6px 6px 0;
   opacity: 0;
-/*  display: block;*/
   pointer-events: none;
   transition: 0s;
 }
@@ -1889,10 +1882,8 @@ Body Section
   .sidebar.close .nav-links li .sub-menu {
     position: relative;
     left: 0;
-/*    display: none;*/
   }
   .sidebar.close .nav-links li.showMenu .sub-menu {
-/*    display: block;*/
     padding: 6px 6px 14px 80px;
     opacity: 1;
   }
@@ -5953,4 +5944,4 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 .verticalMenu .eBtn::after {
   display: none;
-}/*# sourceMappingURL=style.css.map */
+}

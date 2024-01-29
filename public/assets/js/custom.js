@@ -10,10 +10,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 //Navigation toggle smoothly
 $(function(){
 	$('.nav-links-li.dropdownToggle').on('click', function(e){
-	  // $(".nav-links-li").on("click", function () {
-	  //   $(this).toggleClass("showMenu");
-	  //   $(".nav-links-li").not($(this)).removeClass("showMenu");
-	  // });
 	  $('.nav-links-li.dropdownToggle .sub-menu').removeClass('d-show');
   
 	  $(this).find('.sub-menu').addClass('d-show');

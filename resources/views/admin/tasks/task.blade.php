@@ -13,7 +13,7 @@
     <div class="task-area-content w-100">
         <form action="{{ route('admin.task.update', $task->id) }}" method="post" class="ajaxForm task-from">
             @Csrf
-            <textarea onkeyup="setTimeoutAwait(this);" name="description" class="task-description form-control border-0" rows="1">{{ $task->description }}</textarea>
+            <textarea onkeyup="setTimeoutAwait(this); taskExpandToggler('{{ $task->id }}', true)" name="description" class="task-description form-control border-0" rows="1">{{ $task->description }}</textarea>
         </form>
     </div>
     <div class="archive-section">

@@ -30,14 +30,14 @@
         <label for="eSectionList" class="eForm-label">{{ get_phrase('Blood group') }}</label>
         <select name="blood_group" class="form-select eForm-select select2" data-placeholder="Selecte a blood group">
             <option value="">{{ get_phrase('Select a blood group') }}</option>
-            <option value="A+" @if ($user->blood_group == 'A+') selected @endif>A Positive (A+)</option>
-            <option value="A-" @if ($user->blood_group == 'A-') selected @endif>A Negative (A-)</option>
-            <option value="B+" @if ($user->blood_group == 'B+') selected @endif>B Positive (B+)</option>
-            <option value="B-" @if ($user->blood_group == 'B-') selected @endif>B Negative (B-)</option>
-            <option value="O+" @if ($user->blood_group == 'O+') selected @endif>O Positive (O+)</option>
-            <option value="O-" @if ($user->blood_group == 'O-') selected @endif>O Negative (O-)</option>
-            <option value="AB+" @if ($user->blood_group == 'AB+') selected @endif>AB Positive (AB+)</option>
-            <option value="AB-" @if ($user->blood_group == 'AB-') selected @endif>AB Negative (AB-)</option>
+            <option value="A+" @if ($user->blood_group == 'A+') selected @endif>{{get_phrase('A Positive')}} (A+)</option>
+            <option value="A-" @if ($user->blood_group == 'A-') selected @endif>{{get_phrase('A Negative')}} (A-)</option>
+            <option value="B+" @if ($user->blood_group == 'B+') selected @endif>{{get_phrase('B Positive')}} (B+)</option>
+            <option value="B-" @if ($user->blood_group == 'B-') selected @endif>{{get_phrase('B Negative')}} (B-)</option>
+            <option value="O+" @if ($user->blood_group == 'O+') selected @endif>{{get_phrase('O Positive')}} (O+)</option>
+            <option value="O-" @if ($user->blood_group == 'O-') selected @endif>{{get_phrase('O Negative')}} (O-)</option>
+            <option value="AB+" @if ($user->blood_group == 'AB+') selected @endif>{{get_phrase('AB Positive')}} (AB+)</option>
+            <option value="AB-" @if ($user->blood_group == 'AB-') selected @endif>{{get_phrase('AB Negative')}} (AB-)</option>
         </select>
     </div>
     <div class="fpb-7">
@@ -90,7 +90,7 @@
         <textarea name="bio" class="form-control eForm-control" id="eInputTextarea">{{ $user->bio }}</textarea>
     </div>
     <div class="fpb-7">
-        <label for="photo" class="eForm-label">Photo</label>
+        <label for="photo" class="eForm-label">{{get_phrase('Photo')}}</label>
         <input type="file" name="photo" class="form-control eForm-control-file" id="photo" accept="image/*">
     </div>
 

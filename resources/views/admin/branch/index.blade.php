@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Branches</p>
+                <p class="column-title mb-2">{{get_phrase('Branches')}}</p>
                 <div class="table-responsive">
                     <table class="table eTable">
                         <thead>

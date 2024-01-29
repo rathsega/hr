@@ -34,14 +34,18 @@
                     <table class="table eTable">
                         <thead>
                             <tr>
+                                <th class="">#</th>
                                 <th class="">{{ get_phrase('Criteria') }}</th>
                                 <th class="">{{ get_phrase('Description') }}</th>
                                 <th class="text-center">{{ get_phrase('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (App\Models\Performance_type::get() as $performance_type)
+                            @foreach (App\Models\Performance_type::get() as $key => $performance_type)
                                 <tr>
+                                    <td>
+                                        {{ ++$key }}
+                                    </td>
                                     <td>
                                         {{ $performance_type->title }}
                                     </td>

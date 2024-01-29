@@ -20,7 +20,7 @@
         <form action="{{ route('admin.my.profile', 'timesheet') }}" method="get" id="filterForm">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label class="eForm-label">Selected Year</label>
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                         @for ($year = date('Y'); $year >= 2022; $year--)
                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="eForm-label">Selected Month</label>
+                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                         @for ($month = 1; $month <= 12; $month++)
                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -58,9 +58,9 @@
             <div class="table-responsive">
                 <table class="table eTable">
                     <thead>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Work Description</th>
+                        <th>{{get_phrase('Date')}}</th>
+                        <th>{{get_phrase('Time')}}</th>
+                        <th>{{get_phrase('Work Description')}}</th>
                     </thead>
                     <tbody>
                         @php $pre_date = ''; @endphp
@@ -171,7 +171,7 @@
 </div>
 
 <script>
-    "Use strict";
+    "use strict";
     
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {

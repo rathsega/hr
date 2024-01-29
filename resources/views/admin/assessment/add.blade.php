@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="staffId" class="eForm-label">Select an employee</label>
+                <label for="staffId" class="eForm-label">{{get_phrase('Select an employee')}}</label>
                 <select name="user_id" class="form-select eForm-select select2" id="staffId" required>
                     <option value="">{{ get_phrase('Select a user') }}</option>
                     @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
@@ -15,7 +15,7 @@
 
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="eInputText" class="eForm-label">Description of incident</label>
+                <label for="eInputText" class="eForm-label">{{get_phrase('Description of incident')}}</label>
                 <textarea rows="2" class="form-control" name="description" required>{{ old('description') }}</textarea>
                 @if ($errors->has('description'))
                     <small class="text-danger">
@@ -27,10 +27,10 @@
 
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="toDate" class="eForm-label">Date</label>
+                <label for="toDate" class="eForm-label">{{get_phrase('Date')}}</label>
                 <input type="datetime-local" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" name="date_time" id="toDate" />
             </div>
-            <button type="submit" class="btn-form mt-2 mb-3">Add incident</button>
+            <button type="submit" class="btn-form mt-2 mb-3">{{get_phrase('Add incident')}}</button>
         </div>
     </div>
 </form>

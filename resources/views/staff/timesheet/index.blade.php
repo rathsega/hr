@@ -19,7 +19,20 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4 order-md-2">
+            <div class="eSection-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (isset($_GET['id']) && $_GET['id'] > 0)
+                            @include('staff.timesheet.edit')
+                        @else
+                            @include('staff.timesheet.add')
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
             <div class="eSection-wrap">
                 <div class="row">
 
@@ -42,7 +55,7 @@
                         <form action="{{ route('staff.timesheet') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -53,7 +66,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -77,6 +90,7 @@
                                             ->where('user_id', auth()->user()->id)
                                             ->where('from_date', '>=', $timestamp)
                                             ->where('to_date', '<=', strtotime(date('Y-m-t 23:59:59', $timestamp)))
+                                            ->orderBy('from_date', 'desc')
                                             ->get();
                                     @endphp
                                     @php $pre_date = ''; @endphp
@@ -84,11 +98,12 @@
                                         @php
                                             $r_start_date = strtotime(date('d M Y', $timesheet->from_date));
                                             $r_end_date = strtotime(date('d M Y 23:59:59', $timesheet->to_date));
-                                            $rowspan = DB::table('timesheets')
+                                            
+                                            $day_wise_query = DB::table('timesheets')
                                                 ->where('user_id', auth()->user()->id)
                                                 ->where('from_date', '>=', $r_start_date)
-                                                ->where('to_date', '<=', $r_end_date)
-                                                ->count();
+                                                ->where('to_date', '<=', $r_end_date);
+                                            $rowspan = $day_wise_query->count();
                                             if ($pre_date == date('d-M-Y', $r_start_date)) {
                                                 $rowspan = 0;
                                             }
@@ -101,7 +116,7 @@
                                                     <p class="text-13px p-0 text-center mb-2">
                                                         <span class="badge bg-secondary" title="{{ get_phrase('Working time') }}" data-bs-toggle="tooltip">
                                                             @php
-                                                                $total_working_time = $timesheets->sum('working_time');
+                                                                $total_working_time = $day_wise_query->sum('working_time');
                                                                 $hr = gmdate('G', $total_working_time);
                                                                 $min = gmdate('i', $total_working_time);
                                                                 if ($hr > 0) {
@@ -175,7 +190,7 @@
                                                 </span>
                                             </td>
                                             <td class="ps-3 align-baseline p-0">
-                                                {!! script_checker($timesheet->description, false) !!}
+                                                {!! script_checker($timesheet->description) !!}
                                             </td>
                                             <td class="p-0 ">
                                                 <div class="invisible-layout">
@@ -216,25 +231,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="eSection-wrap">
-                <div class="row">
-                    <div class="col-md-12">
-                        @if (isset($_GET['id']) && $_GET['id'] > 0)
-                            @include('staff.timesheet.edit')
-                        @else
-                            @include('staff.timesheet.add')
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
 @push('js')
     <script>
-        "Use strict";
+        "use strict";
         
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {

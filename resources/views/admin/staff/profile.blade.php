@@ -6,6 +6,24 @@
 @endpush
 
 @section('content')
+    <div class="mainSection-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column">
+                <h4>{{ get_phrase('Employee Profile') }}</h4>
+                <ul class="d-flex align-items-center eBreadcrumb-2">
+                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="{{route('admin.staffs')}}">{{ get_phrase('Employee') }}</a></li>
+                    <li><a href="#">{{ get_phrase('Profile') }}</a></li>
+                </ul>
+            </div>
+            <div class="export-btn-area d-flex ">
+                <a href="{{route('admin.staffs')}}" class="export_btn ms-3">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Back') }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Start User Profile area -->
     <div class="row">
         <div class="col-md-4 col-xl-3">
@@ -87,43 +105,43 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['task', $user->id])}}');" class="nav-link  @if($tab == 'task') active @endif" type="button">
-                                Task
+                                {{get_phrase('Task')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['attendance', $user->id])}}');" class="nav-link @if($tab == 'attendance') active @endif" type="button">
-                                Attendance
+                                {{get_phrase('Attendance')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['timesheet', $user->id])}}');" class="nav-link @if($tab == 'timesheet') active @endif" type="button">
-                                Timesheet
+                                {{get_phrase('Timesheet')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['payslip', $user->id])}}');" class="nav-link @if($tab == 'payslip') active @endif" type="button">
-                                Payslip
+                                {{get_phrase('Payslip')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['assessment', $user->id])}}');" class="nav-link @if($tab == 'assessment') active @endif" type="button">
-                                Assessment
+                                {{get_phrase('Assessment')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['performance', $user->id])}}');" class="nav-link @if($tab == 'performance') active @endif" type="button">
-                                Performance
+                                {{get_phrase('Performance')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{route('admin.staff.profile', ['leave', $user->id])}}');" class="nav-link @if($tab == 'leave') active @endif" type="button">
-                                Leave
+                                {{get_phrase('Leave')}}
                                 <span></span>
                             </button>
                         </li>

@@ -20,7 +20,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="48" height="48" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="M64.671 146.502C27.711 188.049 3.457 241.62 0 300.62h60.76c3.259-42.488 20.112-81.161 46.32-111.709l-42.409-42.409zM249.305 332.188c-5.113 2.581-8.305 7.726-8.305 13.432.015 12.598 17.783 19.438 26.191 9.99l52.427-58.608-70.313 35.186zM85.882 125.291l42.409 42.409c30.548-26.208 70.221-43.061 112.709-46.32v-60c-59 3.456-113.57 26.951-155.118 63.911zM271 61.38v60c42.488 3.259 82.161 20.112 112.709 46.32l42.409-42.409C384.57 88.331 330 64.836 271 61.38zM447.329 146.502l-42.409 42.409c26.208 30.547 43.061 69.221 46.32 111.709H512c-3.457-59-27.711-112.571-64.671-154.118z" fill="#000000" data-original="#000000" class=""></path><path d="M450.731 330.62c-1.307 17.011-4.142 33.83-9.835 49.98a15.007 15.007 0 0 1-19.131 9.17c-7.822-2.754-11.924-11.323-9.17-19.131a165.1 165.1 0 0 0 9.404-55.02c0-45.487-18.501-86.733-48.375-116.611a.027.027 0 0 0-.007-.004l-.007-.011C343.733 169.12 301.487 150.62 256 150.62s-87.733 18.501-117.611 48.375l-.004.007-.011.007C108.501 228.886 90 270.133 90 315.62a165.1 165.1 0 0 0 9.404 55.02c2.754 7.808-1.348 16.377-9.17 19.131-7.749 2.739-16.362-1.362-19.131-9.17-5.693-16.15-8.527-32.968-9.835-49.98H0c2.146 36.632 11.7 67.637 25.107 95.464 7.178 14.897 22.939 24.536 40.151 24.536h381.468c17.227 0 32.988-9.639 40.181-24.551 13.239-27.556 23.031-60.256 25.093-95.449h-61.269zm-55.333-72.217L289.545 375.62c-27.25 30.48-78.545 11.411-78.545-30 0-17.124 9.525-32.536 24.838-40.23.02-.009.029-.029.049-.038l141.625-70.371c.049-.024.101-.016.15-.04 14.508-7.072 28.789 10.752 17.736 23.462z" fill="#000000" data-original="#000000" class=""></path></g></svg>
                     </div>
                     <span class="link_name">
-                        Dashboard
+                        {{get_phrase('Dashboard')}}
                     </span>
                 </a>
             </div>
@@ -49,7 +49,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Task Manager
+                        {{get_phrase('Task Manager')}}
                     </span>
                 </a>
             </div>
@@ -80,7 +80,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Attendance
+                        {{get_phrase('Attendance')}}
                     </span>
                 </a>
             </div>
@@ -103,7 +103,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Timesheet
+                        {{get_phrase('Timesheet')}}
                     </span>
                 </a>
             </div>
@@ -157,7 +157,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Leave Report
+                        {{get_phrase('Leave Report')}}
                     </span>
                     @php
                         $total_pending_leave_requests = \App\Models\Leave_application::where('status', 'pending')->count();
@@ -195,7 +195,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Performance
+                        {{get_phrase('Performance')}}
                     </span>
                 </a>
             </div>
@@ -217,7 +217,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Assessment
+                        {{get_phrase('Assessment')}}
                     </span>
                 </a>
             </div>
@@ -237,7 +237,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Employees
+                        {{get_phrase('Employees')}}
                     </span>
                 </a>
             </div>
@@ -275,7 +275,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Payslip
+                        {{get_phrase('Payslip')}}
                     </span>
                 </a>
             </div>
@@ -301,7 +301,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Inventory
+                        {{get_phrase('Inventory')}}
                     </span>
                 </a>
             </div>
@@ -339,7 +339,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        Branch
+                        {{get_phrase('Branch')}}
                     </span>
                 </a>
             </div>
@@ -409,7 +409,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        My Profile
+                        {{get_phrase('My Profile')}}
                     </span>
                 </a>
             </div>

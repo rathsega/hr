@@ -16,9 +16,6 @@
     @stack('meta')
     <!-- End meta -->
 
-
-    <!-- all the css files -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/bootstrap-5.1.3/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/swiper-bundle.min.css') }}" />
@@ -46,7 +43,7 @@
     @stack('css')
 
     <!--Main Jquery-->
-    <script src="{{ asset('assets/vendors/jquery/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/jquery/jquery-3.7.1.min.js') }}"></script>
 </head>
 
 <body>

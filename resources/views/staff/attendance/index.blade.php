@@ -19,7 +19,21 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4 order-md-2">
+            <div class="eSection-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        @if (isset($_GET['id']) && $_GET['id'] > 0)
+                            @include('staff.attendance.edit')
+                        @else
+                            @include('staff.attendance.add')
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
             <div class="eSection-wrap">
                 <div class="row">
 
@@ -42,7 +56,7 @@
                         <form action="{{ route('staff.attendance') }}" method="get" id="filterForm">
                             <div class="row mb-4">
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Year</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -53,7 +67,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="eForm-label">Selected Month</label>
+                                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
                                     <select onchange="$('#filterForm').submit();" name="month" class="form-select eForm-select select2">
                                         @for ($month = 1; $month <= 12; $month++)
                                             <option value="{{ $month }}" @if ($selected_month == $month) selected @endif>
@@ -74,16 +88,17 @@
                                 
                                 $attendances = App\Models\Attendance::where('checkin', '>=', $start_timestamp)
                                     ->where('checkin', '<=', $end_timestamp)
-                                    ->where('user_id', auth()->user()->id);
+                                    ->where('user_id', auth()->user()->id)
+                                    ->orderBy('checkin', 'desc');
                             @endphp
                             <div class="table-responsive">
                                 <table class="table eTable">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
-                                            <th class="text-center">Checkin</th>
-                                            <th class="text-center">Checkout</th>
-                                            <th>Note</th>
+                                            <th>{{get_phrase('Date')}}</th>
+                                            <th class="text-center">{{get_phrase('Checkin')}}</th>
+                                            <th class="text-center">{{get_phrase('Checkout')}}</th>
+                                            <th>{{get_phrase('Note')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,7 +179,7 @@
 
                                                     @if ($att_report->late_entry == 1)
                                                         <br>
-                                                        <span class="badge bg-warning fw-700">Late entry</span>
+                                                        <span class="badge bg-warning fw-700">{{get_phrase('Late entry')}}</span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center text-nowrap align-baseline">
@@ -237,7 +252,7 @@
 
                                                         @if ($att_report->early_leave == 1)
                                                             <br>
-                                                            <span class="badge bg-danger fw-700">Early leave</span>
+                                                            <span class="badge bg-danger fw-700">{{get_phrase('Early leave')}}</span>
                                                         @endif
                                                     @endif
                                                 </td>
@@ -287,26 +302,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="eSection-wrap">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        @if (isset($_GET['id']) && $_GET['id'] > 0)
-                            @include('staff.attendance.edit')
-                        @else
-                            @include('staff.attendance.add')
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
 @push('js')
     <script>
-        "Use strict";
+        "use strict";
         
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {

@@ -18,7 +18,7 @@
     array_key_exists('id', $session_data) && $session_data['id'] != ''
     )
     <script>
-        "Use strict";
+        "use strict";
 
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -31,7 +31,7 @@
 @endif
 
 <script>
-    "Use strict";
+    "use strict";
 
     $(function() {
         $('a[href="#"]').on('click', function(event) {

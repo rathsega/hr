@@ -27,7 +27,7 @@
         <div class="row h-100">
             <div class="col-lg-6 d-none d-lg-block p-0 h-100">
                 <div class="bg-image w-inherit h-100 position-fixed"
-                    style="background-image: url('{{ asset('assets/images/login.png') }}'); background-size: cover; background-position: center;">
+                    style="background-image: url('{{ asset('assets/images/login.jpeg') }}'); background-size: cover; background-position: center; filter: grayscale(1);">
                 </div>
             </div>
             <div class="col-lg-6 p-0 h-100 position-relative">
@@ -56,7 +56,7 @@
                                                     </div>
                                                     @if ($errors->has('email'))
                                                         <small class="text-danger">
-                                                            {{ __($errors->first('email')) }}
+                                                            {{ get_phrase($errors->first('email')) }}
                                                         </small>
                                                     @endif
                                                 </div>
@@ -69,7 +69,7 @@
                                                     </div>
                                                     @if ($errors->has('password'))
                                                         <small class="text-danger">
-                                                            {{ __($errors->first('password')) }}
+                                                            {{ get_phrase($errors->first('password')) }}
                                                         </small>
                                                     @endif
                                                 </div>
@@ -79,7 +79,7 @@
                                                         <label class="cursor-pointer" for="remember_me">{{get_phrase('Remember me')}}</label>
 
                                                         @if (Route::has('password.request'))
-                                                            <a href="{{ route('password.request') }}" class="float-end">{{ __('Forgot your password?') }}</a>
+                                                            <a href="{{ route('password.request') }}" class="float-end">{{ get_phrase('Forgot your password?') }}</a>
                                                         @endif
 
                                                     </div>
@@ -97,7 +97,7 @@
         </div>
     </div>
     <!--Main Jquery-->
-    <script src="{{ asset('assets/vendors/jquery/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/jquery/jquery-3.7.1.min.js') }}"></script>
     <!--Bootstrap bundle with popper-->
     <script src="{{ asset('assets/vendors/bootstrap-5.1.3/js/bootstrap.bundle.min.js') }}"></script>
 

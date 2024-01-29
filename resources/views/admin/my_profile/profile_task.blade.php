@@ -5,13 +5,13 @@
 <ul class="nav nav-tabs eNav-Tabs-custom p-0" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link @if ($task_type == 'running') active @endif" onclick="redirectTo('{{ route('admin.my.profile',['tab' => 'task', 'task_type' => 'running']) }}')">
-            Running Tasks
+            {{get_phrase('Running Tasks')}}
             <span></span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link @if ($task_type == 'archive') active @endif" onclick="redirectTo('{{ route('admin.my.profile',['tab' => 'task', 'task_type' => 'archive']) }}')">
-            Archive Tasks
+            {{get_phrase('Archive Tasks')}}
             <span></span>
         </button>
     </li>
@@ -36,7 +36,7 @@
                 @Csrf
                 <div class="input-group px-1">
                     <input type="text" name="description" class="form-control py-2 text-13px ms-3 border-1" placeholder="Enter a new task" aria-label="Enter a new task">
-                    <button class="input-group-text text-12px text-dark me-3 border-1">Add</button>
+                    <button class="input-group-text text-12px text-dark me-3 border-1">{{get_phrase('Add')}}</button>
                 </div>
             </form>
         </li>
@@ -48,7 +48,7 @@
     </ul>
 </div>
 <script>
-    "Use strict";
+    "use strict";
 
     $(function() {
         $('#user-task-list{{ $user->id }}').sortable({

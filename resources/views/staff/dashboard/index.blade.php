@@ -34,7 +34,7 @@
                         <div class="dsBody d-flex justify-content-between align-items-center">
                             <div class="ds_item_details">
                                 @php
-                                    $leave_request_in_this_month = App\Models\Leave_application::where('from_date', '>=', strtotime(date('d M Y 00:00:00')))
+                                    $leave_request_in_this_month = App\Models\Leave_application::where('from_date', '>=', strtotime(date('1 M Y 00:00:00')))
                                         ->where('from_date', '<=', strtotime(date('t M Y 23:59:59')))->where('user_id', auth()->user()->id);
                                 @endphp
                                 <h4 class="total_no">{{ $leave_request_in_this_month->count() }}</h4>
@@ -61,7 +61,7 @@
                         <div class="dsBody d-flex justify-content-between align-items-center">
                             <div class="ds_item_details">
                                 @php
-                                    $total_presents_in_this_month = App\Models\Attendance::where('checkin', '>=', strtotime(date('d M Y 00:00:00')))
+                                    $total_presents_in_this_month = App\Models\Attendance::where('checkin', '>=', strtotime(date('1 M Y 00:00:00')))
                                         ->where('checkin', '<=', strtotime(date('t M Y 23:59:59')))->where('user_id', auth()->user()->id);
                                 @endphp
                                 <h4 class="total_no">{{ $total_presents_in_this_month->count() }}</h4>

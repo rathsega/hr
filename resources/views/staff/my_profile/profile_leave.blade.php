@@ -10,7 +10,7 @@
         <form action="{{ route('staff.my.profile', 'leave') }}" method="get" id="filterForm">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <label class="eForm-label">Selected Year</label>
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                         @for ($year = date('Y'); $year >= 2022; $year--)
                             <option value="{{ $year }}" @if ($selected_year == $year) selected @endif>
@@ -28,9 +28,9 @@
             <table class="table eTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Reason</th>
-                        <th>Status</th>
+                        <th>{{get_phrase('Date')}}</th>
+                        <th>{{get_phrase('Reason')}}</th>
+                        <th>{{get_phrase('Status')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,11 +74,11 @@
                             </td>
                             <td class="w-80px">
                                 @if ($leave_report->status == 'pending')
-                                    <span class="badge bg-danger">Pending</span>
+                                    <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
                                 @elseif($leave_report->status == 'rejected')
-                                    <span class="badge bg-secondary">Rejected</span>
+                                    <span class="badge bg-secondary">{{get_phrase('Rejected')}}</span>
                                 @else
-                                    <span class="badge bg-success">Approved</span>
+                                    <span class="badge bg-success">{{get_phrase('Approved')}}</span>
                                 @endif
                             </td>
                         </tr>

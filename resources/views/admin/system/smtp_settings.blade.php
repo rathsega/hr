@@ -35,12 +35,12 @@
                         @endphp
                         
                         <div class="fpb-7">
-                            <label for="protocol" class="eForm-label">{{get_phrase('Protocol')}}  <small>(smtp or mail)</small></label>
+                            <label for="protocol" class="eForm-label">{{get_phrase('Protocol')}}  <small>({{get_phrase('smtp or mail')}})</small></label>
                             <input value="{{$smtp['protocol']}}" name="smtp_settings[protocol]" type="text" class="form-control eForm-control" id="protocol" placeholder="{{get_phrase('Enter SMTP Protocol')}}" aria-label="{{get_phrase('Enter SMTP Protocol')}}">
                         </div>
 
                         <div class="fpb-7">
-                            <label for="security" class="eForm-label">{{get_phrase('Security')}} <small>(ssl or tls)</small></label>
+                            <label for="security" class="eForm-label">{{get_phrase('Security')}} <small>({{get_phrase('ssl or tls')}})</small></label>
                             <input value="{{$smtp['security']}}" name="smtp_settings[security]" type="text" class="form-control eForm-control" id="security">
                         </div>
 

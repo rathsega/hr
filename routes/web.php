@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminController, StaffController, ModalController};
+use App\Http\Controllers\{InstallController, ModalController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,12 +15,6 @@ use App\Http\Controllers\{AdminController, StaffController, ModalController};
 use Illuminate\Routing\Router;
 //Cache clearing route
 Route::get('/clear-cache', function (Router $route) {
-    $r = $route->getRoutes();
-    foreach ($r as $value) {
-        echo $value->uri();
-        echo "<br/>";
-    }
-
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('route:clear');
@@ -50,19 +44,6 @@ Route::controller(ModalController::class)->group(function () {
     Route::any('/right-modal/{view_path}', 'right_modal')->name('right_modal');
 });
 
-
-// Route::get('/location-validity-check', function (Request $request) {
-// 	$session_data = session();
-//     if(
-//         is_array($session_data) && 
-//         array_key_exists('table', $session_data) && $session_data['table'] != '' &&
-//         array_key_exists('location', $session_data) && $session_data['location'] != '' &&
-//         array_key_exists('id', $session_data) && $session_data['id'] != ''
-//     ){
-//         \DB::table($session_data['table'])->where('id', $session_data['id'])->update(['location' => getCurrentLocation($request->lat, $request->lon)]);
-//         session(['table' => '', 'location' => '', 'id' => '']);
-//     }
-// })->name('location.validity.check');
 
 
 require __DIR__.'/auth.php';

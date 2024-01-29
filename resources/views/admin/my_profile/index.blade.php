@@ -102,49 +102,49 @@
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['task']) }}');" class="nav-link  @if ($tab == 'task') active @endif"
                                 type="button">
-                                Task
+                                {{get_phrase('Task')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['attendance']) }}');"
                                 class="nav-link @if ($tab == 'attendance') active @endif" type="button">
-                                Attendance
+                                {{get_phrase('Attendance')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['timesheet']) }}');"
                                 class="nav-link @if ($tab == 'timesheet') active @endif" type="button">
-                                Timesheet
+                                {{get_phrase('Timesheet')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['payslip']) }}');"
                                 class="nav-link @if ($tab == 'payslip') active @endif" type="button">
-                                Payslip
+                                {{get_phrase('Payslip')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['assessment']) }}');"
                                 class="nav-link @if ($tab == 'assessment') active @endif" type="button">
-                                Assessment
+                                {{get_phrase('Assessment')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['performance']) }}');"
                                 class="nav-link @if ($tab == 'performance') active @endif" type="button">
-                                Performance
+                                {{get_phrase('Performance')}}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button onclick="redirectTo('{{ route('admin.my.profile', ['leave']) }}');" class="nav-link @if ($tab == 'leave') active @endif"
                                 type="button">
-                                Leave
+                                {{get_phrase('Leave')}}
                                 <span></span>
                             </button>
                         </li>

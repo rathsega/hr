@@ -27,7 +27,7 @@ class PerformanceController extends Controller
 
         $data['user_id'] = $request->user_id;
         $data['remarks'] = $request->remarks;
-        $data['ratings'] = json_encode($request->ratings);
+        $data['ratings'] = json_encode(array_filter($request->ratings));
         $data['created_at'] = $request->created_at;
 
         Performance::insertGetId($data);

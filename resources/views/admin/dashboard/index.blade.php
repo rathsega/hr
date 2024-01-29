@@ -143,8 +143,8 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
-                            <th class="">Type</th>
-                            <th class="">Quantity</th>
+                            <th class="">{{get_phrase('Type')}}</th>
+                            <th class="">{{get_phrase('Quantity')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,7 +174,7 @@
 
         <div class="col-md-12">
             <div class="eSection-wrap">
-                <p class="column-title mb-2">Branches</p>
+                <p class="column-title mb-2">{{get_phrase('Branches')}}</p>
                 <div class="table-responsive">
                     <table class="table eTable">
                         <thead>
