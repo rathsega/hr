@@ -28,7 +28,7 @@
 
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Check in time') }}</label>
+                <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Login time') }}</label>
                 <input type="datetime-local" name="check_in_time" value="{{ date('Y-m-d H:i', $attendance->checkin) }}"
                     class="form-control eForm-control date-time-picker" id="eInputDateTime" />
             </div>
@@ -37,7 +37,7 @@
         @if ($attendance->checkout)
             <div class="col-md-12">
                 <div class="fpb-7">
-                    <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Check out time') }}</label>
+                    <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Logout time') }}</label>
                     <input type="datetime-local" name="check_out_time" value="{{ date('Y-m-d H:i', $attendance->checkout) }}"
                         class="form-control eForm-control date-time-picker" id="eInputDateTime" />
                 </div>

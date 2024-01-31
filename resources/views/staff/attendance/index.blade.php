@@ -96,8 +96,8 @@
                                     <thead>
                                         <tr>
                                             <th>{{get_phrase('Date')}}</th>
-                                            <th class="text-center">{{get_phrase('Checkin')}}</th>
-                                            <th class="text-center">{{get_phrase('Checkout')}}</th>
+                                            <th class="text-center">{{get_phrase('Login')}}</th>
+                                            <th class="text-center">{{get_phrase('Logout')}}</th>
                                             <th>{{get_phrase('Note')}}</th>
                                         </tr>
                                     </thead>

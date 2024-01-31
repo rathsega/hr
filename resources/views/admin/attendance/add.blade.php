@@ -28,8 +28,8 @@
                 <div class="fpb-7">
                     <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Type') }}</label>
                     <select class="form-select eForm-select select2" name="check_in_out">
-                        <option value="checkin">{{ get_phrase('Check in') }}</option>
-                        <option value="checkout">{{ get_phrase('Check out') }}</option>
+                        <option value="checkin">{{ get_phrase('Login') }}</option>
+                        <option value="checkout">{{ get_phrase('Logout') }}</option>
                     </select>
                 </div>
             </div>
