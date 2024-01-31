@@ -153,7 +153,7 @@
                                                     </a>
 
                                                     <a href="../public/uploads/payslip-attachment/{{$payslip->value('attachment')}}" download
-                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Download Invoice') }}" data-bs-toggle="tooltip">
+                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Download Payslip') }}" data-bs-toggle="tooltip">
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="18" version="1.1" viewBox="-53 1 511 511.99906" width="18"
                                                             id="fi_1092004">
                                                             <g id="surface1">

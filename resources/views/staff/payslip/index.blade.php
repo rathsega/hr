@@ -81,7 +81,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ route('staff.payslip.download', ['invoice_id' => $payslip->id, 'user_id' => $user->id]) }}" class="btn btn p-0 px-1"
-                                                    title="{{ get_phrase('Download Invoice') }}" data-bs-toggle="tooltip">
+                                                    title="{{ get_phrase('Download Payslip') }}" data-bs-toggle="tooltip">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="18" version="1.1" viewBox="-53 1 511 511.99906" width="18" id="fi_1092004">
                                                         <g id="surface1">
                                                             <path
