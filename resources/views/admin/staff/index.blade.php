@@ -54,11 +54,15 @@
                             <tr>
                                 <th>{{get_phrase('Name')}}</th>
                                 <th>{{get_phrase('Role')}}</th>
+                                <th>{{get_phrase('Department')}}</th>
                                 <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($active_staffs as $active_staff)
+                                @php
+                                    $department = \App\Models\Department::where('id', $active_staff->department);
+                                @endphp
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -71,6 +75,9 @@
                                     </td>
                                     <td>
                                         <span class="badge ebg-soft-success text-capitalize">{{ $active_staff->role }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge ebg-soft-success text-capitalize">{{ $department->value('title') }}</span>
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('admin.staff.profile', ['info', $active_staff->id]) }}" class="btn btn p-0 px-1" title="View profile info"
@@ -143,11 +150,15 @@
                             <tr>
                                 <th>{{get_phrase('Name')}}</th>
                                 <th>{{get_phrase('Role')}}</th>
+                                <th>{{get_phrase('Department')}}</th>
                                 <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($inactive_staffs as $inactive_staff)
+                                @php
+                                    $department = \App\Models\Department::where('id', $inactive_staff->department);
+                                @endphp
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -160,6 +171,9 @@
                                     </td>
                                     <td>
                                         <span class="badge ebg-soft-dark text-capitalize">{{ $inactive_staff->role }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge ebg-soft-dark text-capitalize">{{ $department->value('role') }}</span>
                                     </td>
                                     <td class="text-center">
 

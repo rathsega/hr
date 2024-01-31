@@ -24,7 +24,9 @@ class StaffController extends Controller
             'name'=>'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
-            'role' => 'required'
+            'role' => 'required',
+            'manager' => 'required',
+            'department' => 'required'
         ]);
 
 
@@ -33,6 +35,7 @@ class StaffController extends Controller
         $data['password'] = Hash::make($request->password);
         $data['role'] = $request->role;
         $data['manager'] = $request->manager;
+        $data['department'] = $request->department;
         $data['status'] = 'active';
         $data['designation'] = $request->designation;
         $data['created_at'] = date('Y-m-d H:i:s');
@@ -63,11 +66,14 @@ class StaffController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'email' => "required|email|unique:users,email,$user_id",
-            'role' => 'required'
+            'role' => 'required',
+            'manager' => 'required',
+            'department' => 'required'
         ]);
 
         $data['name'] = $request->name;
         $data['manager'] = $request->manager;
+        $data['department'] = $request->department;
         $data['email'] = $request->email;
         $data['designation'] = $request->designation;
         $data['updated_at'] = date('Y-m-d H:i:s');

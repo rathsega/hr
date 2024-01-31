@@ -16,10 +16,7 @@
                 </ul>
             </div>
             <div class="export-btn-area d-flex ">
-                <a href="#" class="export_btn" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.staff.add']) }}', '{{ __('Add new employee') }}')">
-                    <i class="bi bi-plus me-2"></i>
-                    <span class="d-none d-sm-inline-block">{{ get_phrase('Add new employee') }}</span>
-                </a>
+                
                 <a href="#" class="export_btn ms-3"
                     onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.staff.sorting']) }}', '{{ __('Sort by drag and drop') }}')">
                     <i class="bi bi-plus me-2"></i>

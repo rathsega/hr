@@ -29,6 +29,16 @@
 	</div>
 
 	<div class="fpb-7">
+		<label for="department" class="eForm-label">{{get_phrase('Select Department')}}</label>
+		<select name="department" class="form-select eForm-select select2" id="department" required>
+			<option value="">{{ get_phrase('Select a department') }}</option>
+			@foreach (App\Models\Department::orderBy('title')->get() as $department)
+				<option value="{{ $department->id }}" @if($department->id == $user_details->department) selected @endif>{{ $department->title }}</option>
+			@endforeach
+		</select>
+	</div>
+
+	<div class="fpb-7">
 		<label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>
 		<input type="text" name="designation"  value="{{$user_details->designation}}" class="form-control eForm-control" id="designation">
 	</div>

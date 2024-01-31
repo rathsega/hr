@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -73,6 +73,12 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('branch/store', [BranchController::class, 'store'])->name('branch.store');
     Route::post('branch/update/{id}', [BranchController::class, 'update'])->name('branch.update');
     Route::get('branch/delete/{id}', [BranchController::class, 'delete'])->name('branch.delete');
+
+    //Department
+    Route::get('department', [DepartmentController::class, 'index'])->name('department');
+    Route::post('department/store', [DepartmentController::class, 'store'])->name('department.store');
+    Route::post('department/update/{id}', [DepartmentController::class, 'update'])->name('department.update');
+    Route::get('department/delete/{id}', [DepartmentController::class, 'delete'])->name('department.delete');
 
     //Inventory
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
