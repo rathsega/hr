@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -13,8 +13,8 @@ class StaffController extends Controller
 {
 
     function index(){
-        $page_data['active_staffs'] = User::where('status', 'active')->whereIn('role', array('staff', 'manager'))->orderBy('sort')->get();
-        $page_data['inactive_staffs'] = User::where('status', 'inactive')->whereIn('role', array('staff', 'manager'))->orderBy('sort')->get();
+        $page_data['active_staffs'] = User::where('status', 'active')->where('manager', auth()->user()->id)->whereIn('role', array('staff', 'manager'))->orderBy('sort')->get();
+        $page_data['inactive_staffs'] = User::where('status', 'inactive')->where('manager', auth()->user()->id)->whereIn('role', array('staff', 'manager'))->orderBy('sort')->get();
         return view(auth()->user()->role.'.staff.index', $page_data);
     }
 

@@ -1,52 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{InstallController, ModalController};
 use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController};
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-use Illuminate\Routing\Router;
-//Cache clearing route
-Route::get('/clear-cache', function (Router $route) {
-    Artisan::call('cache:clear');
-    Artisan::call('config:clear');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    return 'Application cache cleared';
-});
-
-//Root route
-Route::get('/', function () {
-
-	if(auth()->user()->role == 'admin'){
-		return redirect(route('admin.dashboard'));
-	}elseif(auth()->user()->role == 'manager'){
-		return redirect(route('manager.dashboard'));
-	}elseif(auth()->user()->role == 'staff'){
-		return redirect(route('staff.dashboard'));
-	}
-    return view('auth/login');
-})->middleware(['auth', 'verified'])->name('root');
-
-//Logout route
-Route::get('/logout', function () {
-	Auth::logout();
-	return redirect(route('login'));
-})->name('logout');
-
-//Modal controllers group routing
-Route::controller(ModalController::class)->group(function () {
-    Route::any('/right-modal/{view_path}', 'right_modal')->name('right_modal');
-});
 
 //Admin's routes
 Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'verified'])->group(function () {
@@ -133,6 +88,3 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::get('password/change', [MyProfileController::class, 'change_password'])->name('change.password');
     Route::post('password/update', [MyProfileController::class, 'password_update'])->name('password.update');
 });
-
-
-require __DIR__.'/auth.php';

@@ -1,4 +1,4 @@
-<form action="{{route('admin.staff.store')}}" method="post" enctype="multipart/form-data">
+<form action="{{route('manager.staff.store')}}" method="post" enctype="multipart/form-data">
 @Csrf
 	<div class="fpb-7">
 		<label for="name" class="eForm-label">{{get_phrase('Name')}}</label>

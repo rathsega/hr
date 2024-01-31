@@ -10,7 +10,6 @@
     <div class="closeIcon">
         <span><i class="bi bi-x-circle"></i></span>
     </div>
-    
     <ul class="nav-links">
         <!-- menu starts here -->
         <li class="nav-links-li @if ($current_route == 'admin.dashboard') showMenu @endif">
