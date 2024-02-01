@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -79,6 +79,12 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('department/store', [DepartmentController::class, 'store'])->name('department.store');
     Route::post('department/update/{id}', [DepartmentController::class, 'update'])->name('department.update');
     Route::get('department/delete/{id}', [DepartmentController::class, 'delete'])->name('department.delete');
+
+    //Holidays
+    Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays');
+    Route::post('holidays/store', [HolidaysController::class, 'store'])->name('holidays.store');
+    Route::post('holidays/update/{id}', [HolidaysController::class, 'update'])->name('holidays.update');
+    Route::get('holidays/delete/{id}', [HolidaysController::class, 'delete'])->name('holidays.delete');
 
     //Inventory
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');

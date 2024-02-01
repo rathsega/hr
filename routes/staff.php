@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController};
+use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController};
 
 //Staff's routes
 Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified'])->group(function () {
@@ -54,4 +54,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
     //Change Password
     Route::get('password/change', [MyProfileController::class, 'change_password'])->name('change.password');
     Route::post('password/update', [MyProfileController::class, 'password_update'])->name('password.update');
+
+    //Holidays
+    Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays');
 });

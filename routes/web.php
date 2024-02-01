@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController};
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +132,9 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     //Change Password
     Route::get('password/change', [MyProfileController::class, 'change_password'])->name('change.password');
     Route::post('password/update', [MyProfileController::class, 'password_update'])->name('password.update');
+
+    //Holidays
+    Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays');
 });
 
 
