@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController};
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +135,9 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
 
     //Holidays
     Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays');
+
+    //Holidays
+    Route::get('birthdays', [BirthdaysController::class, 'index'])->name('birthdays');
 });
 
 

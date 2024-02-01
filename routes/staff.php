@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController};
+use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController, BirthdaysController};
 
 //Staff's routes
 Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified'])->group(function () {
@@ -57,4 +57,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
 
     //Holidays
     Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays');
+
+    //Holidays
+    Route::get('birthdays', [BirthdaysController::class, 'index'])->name('birthdays');
 });
