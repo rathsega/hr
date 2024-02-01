@@ -42,6 +42,24 @@
 			@endforeach
 		</select>
 	</div>
+	<div class="col-md-12 mt-3">
+			<label for="billingtype" class="eForm-label">{{get_phrase('Billing Type')}} : </label></br>
+            <input type="radio" data-bs-toggle="tooltip" value="billable" name="billingtype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Billable')}}</label>
+            <input type="radio" data-bs-toggle="tooltip" value="non-billable" name="billingtype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Non Billable')}}</label>
+
+    </div>
+
+	<div class="col-md-12 mt-3">
+			<label for="employmenttype" class="eForm-label">{{get_phrase('Employment Type')}} : </label></br>
+
+            <input type="radio" data-bs-toggle="tooltip" value="contract" name="employmenttype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Contact')}}</label>
+            <input type="radio" data-bs-toggle="tooltip" value="full time" name="employmenttype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Full Time')}}</label>
+
+    </div>
 
 	<div class="fpb-7">
 		<label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>

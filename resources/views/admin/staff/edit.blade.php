@@ -38,6 +38,25 @@
 		</select>
 	</div>
 
+	<div class="col-md-12 mt-3">
+			<label for="billingtype" class="eForm-label">{{get_phrase('Billing Type')}} : </label></br>
+            <input type="radio" data-bs-toggle="tooltip"  value="billable" @if($user_details->billingtype == 'billable') checked @endif name="billingtype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Billable')}}</label>
+            <input type="radio" data-bs-toggle="tooltip"  value="non-billable" @if($user_details->billingtype == 'non-billable') checked @endif name="billingtype" />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Non Billable')}}</label>
+
+    </div>
+
+	<div class="col-md-12 mt-3">
+			<label for="employmenttype" class="eForm-label">{{get_phrase('Employment Type')}} : </label></br>
+
+            <input type="radio" data-bs-toggle="tooltip" name="employmenttype" value="contract" @if($user_details->employmenttype == 'contract') checked @endif />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Contact')}}</label>
+            <input type="radio" data-bs-toggle="tooltip" name="employmenttype" value="full time"  @if($user_details->employmenttype == 'full time') checked @endif />
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Full Time')}}</label>
+
+    </div>
+
 	<div class="fpb-7">
 		<label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>
 		<input type="text" name="designation"  value="{{$user_details->designation}}" class="form-control eForm-control" id="designation">

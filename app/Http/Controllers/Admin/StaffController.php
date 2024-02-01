@@ -25,6 +25,8 @@ class StaffController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'required',
+            'billingtype' => 'required',
+            'employmenttype' => 'required',
             'manager' => 'required',
             'department' => 'required'
         ]);
@@ -34,6 +36,8 @@ class StaffController extends Controller
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role'] = $request->role;
+        $data['billingtype'] = $request->billingtype;
+        $data['employmenttype'] = $request->employmenttype;
         $data['manager'] = $request->manager;
         $data['department'] = $request->department;
         $data['status'] = 'active';
@@ -67,6 +71,8 @@ class StaffController extends Controller
             'name'=>'required',
             'email' => "required|email|unique:users,email,$user_id",
             'role' => 'required',
+            'billingtype' => 'required',
+            'employmenttype' => 'required',
             'manager' => 'required',
             'department' => 'required'
         ]);
@@ -75,6 +81,8 @@ class StaffController extends Controller
         $data['manager'] = $request->manager;
         $data['department'] = $request->department;
         $data['email'] = $request->email;
+        $data['billingtype'] = $request->billingtype;
+        $data['employmenttype'] = $request->employmenttype;
         $data['designation'] = $request->designation;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
