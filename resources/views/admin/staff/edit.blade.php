@@ -57,6 +57,11 @@
 
     </div>
 
+	<div class="col-md-12 mt-3">
+        <label for="eBrithDay" class="eForm-label">{{ get_phrase('Birthday') }}</label>
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="birthday" value="{{ date('m/d/Y', strtotime($user_details->birthday)) }}" />
+    </div>
+
 	<div class="fpb-7">
 		<label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>
 		<input type="text" name="designation"  value="{{$user_details->designation}}" class="form-control eForm-control" id="designation">

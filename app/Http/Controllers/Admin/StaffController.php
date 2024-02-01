@@ -28,7 +28,8 @@ class StaffController extends Controller
             'billingtype' => 'required',
             'employmenttype' => 'required',
             'manager' => 'required',
-            'department' => 'required'
+            'department' => 'required',
+            'birthday' => 'required'
         ]);
 
 
@@ -40,6 +41,7 @@ class StaffController extends Controller
         $data['employmenttype'] = $request->employmenttype;
         $data['manager'] = $request->manager;
         $data['department'] = $request->department;
+        $data['birthday'] = $request->birthday;
         $data['status'] = 'active';
         $data['designation'] = $request->designation;
         $data['created_at'] = date('Y-m-d H:i:s');
@@ -74,7 +76,8 @@ class StaffController extends Controller
             'billingtype' => 'required',
             'employmenttype' => 'required',
             'manager' => 'required',
-            'department' => 'required'
+            'department' => 'required',
+            'birthday' => 'required'
         ]);
 
         $data['name'] = $request->name;
@@ -84,6 +87,7 @@ class StaffController extends Controller
         $data['billingtype'] = $request->billingtype;
         $data['employmenttype'] = $request->employmenttype;
         $data['designation'] = $request->designation;
+        $data['birthday'] = $request->birthday;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         if($request->photo){
