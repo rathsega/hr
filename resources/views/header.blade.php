@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="px-2 text-start">
                                     <span class="user-name">{{ auth()->user()->name }}</span>
-                                    <span class="user-title text-capitalize">{{ auth()->user()->role }}</span>
+                                    <span class="user-title text-capitalize">{{ auth()->user()->designation }}</span>
                                 </div>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end eDropdown-menu" aria-labelledby="defaultDropdown">
