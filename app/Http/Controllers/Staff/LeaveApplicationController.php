@@ -28,7 +28,7 @@ class LeaveApplicationController extends Controller
         $start_timestamp = strtotime($request->from_date);
         $end_timestamp = strtotime($request->to_date);
 
-        if($start_timestamp > $end_timestamp || $start_timestamp == $end_timestamp){
+        if($start_timestamp > $end_timestamp){
             return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
         }
 
@@ -37,13 +37,15 @@ class LeaveApplicationController extends Controller
             'from_date' => 'required',
             'to_date' => 'required',
             'reason' => 'required',
+            'leave_type' => 'required',
         ]);
 
         $data['status'] = 'pending';
         $data['from_date'] = $start_timestamp;
         $data['to_date'] = $end_timestamp;
+        $data['leave_type'] = $request->leave_type;
 
-        $data['working_day'] = (($end_timestamp - $start_timestamp) + 1) / 86400;
+        $data['working_day'] = ((($end_timestamp - $start_timestamp) + 1) / 86400)+1;
         $data['reason'] = $request->reason;
 
         if($request->attachment){

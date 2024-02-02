@@ -52,6 +52,7 @@
             type: 'get',
             url: url,
             success: function(response) {
+                console.log(response);
                 $('#rightOffcanvasBody').html(response);
             }
         });

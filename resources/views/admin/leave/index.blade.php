@@ -15,6 +15,158 @@
                     <li><a href="#">{{ get_phrase('Leave') }}</a></li>
                 </ul>
             </div>
+            <div class="export-btn-area d-flex ">
+                <a href="#" class="export_btn" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.leave.leave_count_manager']) }}', '{{ get_phrase('Manage Leave Count') }}')">
+                    <i class="bi bi-gear me-2"></i>
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Manage Leave Count') }}</span>
+                </a>
+            </div>
+
+            @php
+                $carry_forwarded_leave_count = DB::table('carry_forwarded_leaves_count')->where('user_id',auth()->user()->id)->get();
+                if(!$carry_forwarded_leave_count->isEmpty()){
+                    $carry_forwarded_leave_count = $carry_forwarded_leave_count[0]->count;
+                }else{
+                    $carry_forwarded_leave_count = 0;
+                }
+                $leaves_count = App\Models\Leaves_count::get()->First();
+                $sick_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','sick_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $casual_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','casual_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $meternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','meternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $feternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','feternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                
+                //check any holidays in the leave days
+                $holidays_list = App\Models\Holidays::orderBy('name')->get();
+                function numberOfHolidayExisted($holidays_list, $from_date, $to_date){
+                    $no_of_holidays = 0;
+                    foreach($holidays_list as $holiday){
+                        if ((date('Y-m-d', strtotime($holiday->date)) >= date('Y-m-d', strtotime($from_date))) && (date('Y-m-d', strtotime($holiday->date)) <= date('Y-m-d', strtotime($to_date))) && !$holiday->optional){
+                            $no_of_holidays += 1;
+                        }
+                    }
+
+                    return $no_of_holidays;
+
+                }
+                
+                function countSundaysAndEvenSaturdays($startDate, $endDate) {
+                    $startDateTime = new DateTime($startDate);
+                    $endDateTime = new DateTime($endDate);
+                    
+                    $sundays = 0;
+                    $evenSaturdays = 0;
+
+                    while ($startDateTime <= $endDateTime) {
+                        $dayOfWeek = $startDateTime->format('w'); // 0 (Sunday) to 6 (Saturday)
+                        
+                        if ($dayOfWeek == 0) { // Sunday
+                            $sundays++;
+                        } elseif ($dayOfWeek == 6) { // Even Saturday
+                            $dayOfMonth = $startDateTime->format('d');
+                            $weekNum = ceil($dayOfMonth / 7);
+                            if ($weekNum % 2 == 0) { //check that the week number is even
+                                $evenSaturdays += 1;
+                            }
+                            
+                        }
+
+                        $startDateTime->modify('+1 day');
+                    }
+
+                    return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
+                }
+                
+                //Calculate Sick Leave Count
+                $sick_leave_count = 0;
+                if(!$sick_leaves->isEmpty()){
+                    foreach ($sick_leaves as $sick_leave){
+                        $from_year = date('Y', $sick_leave->from_date);
+                        $from_date = date('Y-m-d', $sick_leave->from_date);
+                        $to_year = date('Y', $sick_leave->to_date);
+                        $to_date = date('Y-m-d', $sick_leave->to_date);
+                        $current_year = date('Y');
+                        if($from_year == $current_year || $to_year == $current_year){
+                            if($from_year == $current_year && $to_year == $current_year ){
+                                $datediff = strtotime($to_date) - strtotime($from_date);
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year && $to_year == $current_year+1){
+                                $your_date = strtotime($from_date);
+                                $datediff = strtotime($current_year."-12-31") - $your_date;
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date,date(strtotime($current_year."-12-31")));
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, date('Y-m-d',strtotime($current_year."-12-31")));
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year-1 && $to_year == $current_year){
+                                $your_date = strtotime($to_date);
+                                $datediff = $your_date - strtotime($current_year."-01-01");
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, date(strtotime($current_year."-01-01")), $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays(date('Y-m-d',strtotime($current_year."-01-01")), $to_date);
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }
+                        }
+
+                    }
+                }
+                
+
+                //Calculate Casual Leave Count
+                $casual_leave_count = 0;
+                if(!$casual_leaves->isEmpty()){
+                    foreach ($casual_leaves as $casual_leave){
+                        $from_year = date('Y', $casual_leave->from_date);
+                        $from_date = date('Y-m-d', $casual_leave->from_date);
+                        $to_year = date('Y', $casual_leave->to_date);
+                        $to_date = date('Y-m-d', $casual_leave->to_date);
+                        $current_year = date('Y');
+                        if($from_year == $current_year || $to_year == $current_year){
+                            if($from_year == $current_year && $to_year == $current_year ){
+                                $datediff = strtotime($to_date) - strtotime($from_date);
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year && $to_year == $current_year+1){
+                                $your_date = strtotime($from_date);
+                                $datediff = strtotime($current_year."-12-31") - $your_date;
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date,date(strtotime($current_year."-12-31")));
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, date('Y-m-d',strtotime($current_year."-12-31")));
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year-1 && $to_year == $current_year){
+                                $your_date = strtotime($to_date);
+                                $datediff = $your_date - strtotime($current_year."-01-01");
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, date(strtotime($current_year."-01-01")), $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays(date('Y-m-d',strtotime($current_year."-01-01")), $to_date);
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }
+                        }
+
+                    }
+                }
+                
+            @endphp
+            <div class="export-btn-area d-flex ">
+                <a href="#" class="export_btn">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Carry Forwarded Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{ $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0 }}</span></span>
+                </a>
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Sick Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->sick - $sick_leave_count}}</span></span>
+                </a>                
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Casual Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual }}</span></span>
+                </a>
+                <!-- <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Meternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->meternity - count($meternity_leaves)}}</span></span>
+                </a>
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Feternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->feternity - count($feternity_leaves)}}</span></span>
+                </a> -->
+            </div>
         </div>
     </div>
 
@@ -207,13 +359,17 @@
                                                                     <td class="text-center position-relative w-80px">
                                                                         @if ($leave_report->status == 'pending')
                                                                             <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
-                                                                        @elseif($leave_report->status == 'rejected')
-                                                                            <span class="badge bg-secondary">{{get_phrase('Rejected')}}</span>
-                                                                        @else
-                                                                            <span class="badge bg-success">{{get_phrase('Approved')}}</span>
+                                                                        @elseif($leave_report->status == 'manager_rejected')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
+                                                                        @elseif($leave_report->status == 'hr_rejected')
+                                                                            <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
+                                                                        @elseif($leave_report->status == 'manager_approved')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
+                                                                        @elseif($leave_report->status == 'hr_approved')
+                                                                            <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
                                                                         @endif
                                                                         <div class="contant-overlay">
-                                                                            @if ($leave_report->status != 'approved')
+                                                                            @if ($leave_report->status == 'manager_approved' || $leave_report->status == 'hr_rejected')
                                                                                 <a href="#"
                                                                                     onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.leave.leave_accept_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send message') }}')"
                                                                                     class="btn btn p-0" title="{{ get_phrase('Approve') }}" data-bs-placement="right"
@@ -229,7 +385,7 @@
                                                                                 </a>
                                                                             @endif
 
-                                                                            @if ($leave_report->status != 'rejected')
+                                                                            @if ($leave_report->status == 'hr_approved' || $leave_report->status == 'manager_approved')
                                                                                 <a href="#"
                                                                                     onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.leave.leave_rejection_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send a reason for this rejection') }}')"
                                                                                     class="btn btn p-1" title="{{ get_phrase('Reject') }}" data-bs-placement="right"
@@ -244,21 +400,22 @@
                                                                                     </svg>
                                                                                 </a>
                                                                             @endif
-
-                                                                            <a href="#" onclick="confirmModal('{{ route('admin.leave.report.delete', $leave_report->id) }}')"
-                                                                                class="btn btn p-0" title="{{ get_phrase('Delete') }}" data-bs-placement="right"
-                                                                                data-bs-toggle="tooltip">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
-                                                                                    height="15" viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
-                                                                                    </path>
-                                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
-                                                                                    </path>
-                                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                                </svg>
-                                                                            </a>
+                                                                            @if($leave_report->user_id == auth()->user()->id)
+                                                                                <a href="#" onclick="confirmModal('{{ route('admin.leave.report.delete', $leave_report->id) }}')"
+                                                                                    class="btn btn p-0" title="{{ get_phrase('Delete') }}" data-bs-placement="right"
+                                                                                    data-bs-toggle="tooltip">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15"
+                                                                                        height="15" viewBox="0 0 24 24">
+                                                                                        <path
+                                                                                            d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                                        </path>
+                                                                                        <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                                        </path>
+                                                                                        <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                        <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                                    </svg>
+                                                                                </a>
+                                                                            @endif
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -309,6 +466,19 @@
                                             </select>
                                         </div>
                                     @endif
+                                </div>
+                                <div class="col-md-12">
+                                        <div class="fpb-7">
+                                            <label class="eForm-label">{{get_phrase('Leave type')}}</label>
+                                            <select name="leave_type" class="form-select eForm-select select2" required>
+                                                <option value="">{{ get_phrase('Select a type') }}</option>
+                                                <option value="casual_leave">{{ get_phrase('Casual Leave') }}</option>
+                                                <option value="sick_leave">{{ get_phrase('Sick Leave') }}</option>
+                                                <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
+                                                <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
+                                                
+                                            </select>
+                                        </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">

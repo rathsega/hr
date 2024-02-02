@@ -15,6 +15,152 @@
                     <li><a href="#">{{ get_phrase('Leave') }}</a></li>
                 </ul>
             </div>
+            @php
+                $carry_forwarded_leave_count = DB::table('carry_forwarded_leaves_count')->where('user_id',auth()->user()->id)->get();
+                if($carry_forwarded_leave_count){
+                    $carry_forwarded_leave_count = $carry_forwarded_leave_count[0]->count;
+                }else{
+                    $carry_forwarded_leave_count = 0;
+                }
+                $leaves_count = App\Models\Leaves_count::get()->First();
+                $sick_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','sick_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $casual_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','casual_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $meternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','meternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $feternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','feternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                //$casual_leaves = App\Models\Leave_application::where('leave_type','casual_leave')->where('leave_applications.status', 'hr_approved')->where(YEAR(FROM_UNIXTIME(from_date)), YEAR(CURRENT_DATE()))->where(YEAR(FROM_UNIXTIME(to_date)), YEAR(CURRENT_DATE()));
+                //$meternity_leaves = App\Models\Leave_application::where('leave_type','meternity_leave')->where('leave_applications.status', 'hr_approved')->where(YEAR(FROM_UNIXTIME(from_date)), YEAR(CURRENT_DATE()))->where(YEAR(FROM_UNIXTIME(to_date)), YEAR(CURRENT_DATE()));
+                //$feternity_leaves = App\Models\Leave_application::where('leave_type','sick_leave')->where('leave_applications.status', 'hr_approved')->where(YEAR(FROM_UNIXTIME(from_date)), YEAR(CURRENT_DATE()))->where(YEAR(FROM_UNIXTIME(to_date)), YEAR(CURRENT_DATE()));
+                
+                //check any holidays in the leave days
+                $holidays_list = App\Models\Holidays::orderBy('name')->get();
+                function numberOfHolidayExisted($holidays_list, $from_date, $to_date){
+                    $no_of_holidays = 0;
+                    foreach($holidays_list as $holiday){
+                        if ((date('Y-m-d', strtotime($holiday->date)) >= date('Y-m-d', strtotime($from_date))) && (date('Y-m-d', strtotime($holiday->date)) <= date('Y-m-d', strtotime($to_date))) && !$holiday->optional){
+                            $no_of_holidays += 1;
+                        }
+                    }
+
+                    return $no_of_holidays;
+
+                }
+                
+                function countSundaysAndEvenSaturdays($startDate, $endDate) {
+                    $startDateTime = new DateTime($startDate);
+                    $endDateTime = new DateTime($endDate);
+                    
+                    $sundays = 0;
+                    $evenSaturdays = 0;
+
+                    while ($startDateTime <= $endDateTime) {
+                        $dayOfWeek = $startDateTime->format('w'); // 0 (Sunday) to 6 (Saturday)
+                        
+                        if ($dayOfWeek == 0) { // Sunday
+                            $sundays++;
+                        } elseif ($dayOfWeek == 6) { // Even Saturday
+                            $dayOfMonth = $startDateTime->format('d');
+                            $weekNum = ceil($dayOfMonth / 7);
+                            if ($weekNum % 2 == 0) { //check that the week number is even
+                                $evenSaturdays += 1;
+                            }
+                            
+                        }
+
+                        $startDateTime->modify('+1 day');
+                    }
+
+                    return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
+                }
+                
+                //Calculate Sick Leave Count
+                $sick_leave_count = 0;
+                if($sick_leaves && count($sick_leaves) > 0){
+                    foreach ($sick_leaves as $sick_leave){
+                        $from_year = date('Y', $sick_leave->from_date);
+                        $from_date = date('Y-m-d', $sick_leave->from_date);
+                        $to_year = date('Y', $sick_leave->to_date);
+                        $to_date = date('Y-m-d', $sick_leave->to_date);
+                        $current_year = date('Y');
+                        if($from_year == $current_year || $to_year == $current_year){
+                            if($from_year == $current_year && $to_year == $current_year ){
+                                $datediff = strtotime($to_date) - strtotime($from_date);
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year && $to_year == $current_year+1){
+                                $your_date = strtotime($from_date);
+                                $datediff = strtotime($current_year."-12-31") - $your_date;
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date,date(strtotime($current_year."-12-31")));
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, date('Y-m-d',strtotime($current_year."-12-31")));
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year-1 && $to_year == $current_year){
+                                $your_date = strtotime($to_date);
+                                $datediff = $your_date - strtotime($current_year."-01-01");
+                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, date(strtotime($current_year."-01-01")), $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays(date('Y-m-d',strtotime($current_year."-01-01")), $to_date);
+                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }
+                        }
+
+                    }
+                }
+
+                //Calculate Casual Leave Count
+                $casual_leave_count = 0;
+                if($casual_leaves && count($casual_leaves) > 0){
+                    foreach ($casual_leaves as $casual_leave){
+                        $from_year = date('Y', $casual_leave->from_date);
+                        $from_date = date('Y-m-d', $casual_leave->from_date);
+                        $to_year = date('Y', $casual_leave->to_date);
+                        $to_date = date('Y-m-d', $casual_leave->to_date);
+                        $current_year = date('Y');
+                        if($from_year == $current_year || $to_year == $current_year){
+                            if($from_year == $current_year && $to_year == $current_year ){
+                                $datediff = strtotime($to_date) - strtotime($from_date);
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year && $to_year == $current_year+1){
+                                $your_date = strtotime($from_date);
+                                $datediff = strtotime($current_year."-12-31") - $your_date;
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date,date(strtotime($current_year."-12-31")));
+                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, date('Y-m-d',strtotime($current_year."-12-31")));
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }else if($from_year == $current_year-1 && $to_year == $current_year){
+                                $your_date = strtotime($to_date);
+                                $datediff = $your_date - strtotime($current_year."-01-01");
+                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                $no_of_holidays = numberOfHolidayExisted($holidays_list, date(strtotime($current_year."-01-01")), $to_date);
+                                $saturday_sunday = countSundaysAndEvenSaturdays(date('Y-m-d',strtotime($current_year."-01-01")), $to_date);
+                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                            }
+                        }
+
+                    }
+                }
+            @endphp
+            <div class="export-btn-area d-flex ">
+                <a href="#" class="export_btn">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Carry Forwarded Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{ $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0 }}</span></span>
+                </a>
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Sick Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->sick - $sick_leave_count}}</span></span>
+                </a>                
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Casual Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual }}</span></span>
+                </a>
+                <!-- <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Meternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->meternity - count($meternity_leaves)}}</span></span>
+                </a>
+                <a href="#" class="export_btn  ms-1">
+                    <span class="d-none d-sm-inline-block">{{ get_phrase('Feternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->feternity - count($feternity_leaves)}}</span></span>
+                </a> -->
+            </div>
         </div>
     </div>
 
@@ -139,10 +285,14 @@
                                             <td class="text-center position-relative w-80px">
                                                 @if ($leave_report->status == 'pending')
                                                     <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
-                                                @elseif($leave_report->status == 'rejected')
-                                                    <span class="badge bg-secondary">{{get_phrase('Rejected')}}</span>
-                                                @else
-                                                    <span class="badge bg-success">{{get_phrase('Approved')}}</span>
+                                                @elseif($leave_report->status == 'manager_rejected')
+                                                    <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
+                                                @elseif($leave_report->status == 'hr_rejected')
+                                                    <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
+                                                @elseif($leave_report->status == 'manager_approved')
+                                                    <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
+                                                @elseif($leave_report->status == 'hr_approved')
+                                                    <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
                                                 @endif
 
                                                 @if ($leave_report->status == 'pending')
@@ -200,16 +350,29 @@
                                         </div>
                                     @endif
                                 </div>
+                                <div class="col-md-12">
+                                        <div class="fpb-7">
+                                            <label class="eForm-label">{{get_phrase('Leave type')}}</label>
+                                            <select name="leave_type" class="form-select eForm-select select2" required>
+                                                <option value="">{{ get_phrase('Select a type') }}</option>
+                                                <option value="casual_leave">{{ get_phrase('Casual Leave') }}</option>
+                                                <option value="sick_leave">{{ get_phrase('Sick Leave') }}</option>
+                                                <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
+                                                <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
+                                                
+                                            </select>
+                                        </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
-                                        <input type="datetime-local" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="date" name="from_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
-                                        <input type="datetime-local" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="date" name="to_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">

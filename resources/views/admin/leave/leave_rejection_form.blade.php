@@ -1,4 +1,4 @@
-<form action="{{ route('admin.leave.report.status', ['id' => $id, 'status' => 'rejected']) }}" method="post">
+<form action="{{ route('admin.leave.report.status', ['id' => $id, 'status' => 'hr_rejected']) }}" method="post">
     @csrf
     <div class="mb-3">
         <label for="rejection_message" class="eForm-label">{{get_phrase('Message')}}  <small>({{get_phrase('Optional')}})</small></label>

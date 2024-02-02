@@ -40,11 +40,13 @@ class LeaveApplicationController extends Controller
             'from_date' => 'required',
             'to_date' => 'required',
             'reason' => 'required',
+            'leave_type' => 'required',
         ]);
 
         $data['status'] = 'pending';
         $data['from_date'] = $start_timestamp;
         $data['to_date'] = $end_timestamp;
+        $data['leave_type'] = $request->leave_type;
 
         $data['working_day'] = (($end_timestamp - $start_timestamp) + 1) / 86400;
         $data['reason'] = $request->reason;
@@ -72,12 +74,18 @@ class LeaveApplicationController extends Controller
         $leave_report = Leave_application::where('id', $id)->first();
         $to = User::where('id', $leave_report->user_id)->first();
 
-        if($request->status == 'approved'){
-            $data['status'] = 'approved';
-            $subject = get_phrase("Your Leave Request Has Been Approved");
-        }elseif($request->status == 'rejected'){
-            $data['status'] = 'rejected';
-            $subject = get_phrase("Leave Request Denied");
+        if($request->status == 'hr_approved'){
+            $data['status'] = 'hr_approved';
+            $subject = get_phrase("Your Leave Request Has Been Approved By HR");
+        }elseif($request->status == 'manager_approved'){
+            $data['status'] = 'manager_approved';
+            $subject = get_phrase("Your leave request has been approved by your manager, Yet to approved by HR");
+        }elseif($request->status == 'manager_rejected'){
+            $data['status'] = 'manager_rejected';
+            $subject = get_phrase("Leave Request Denied By Your Manager");
+        }elseif($request->status == 'hr_rejected'){
+            $data['status'] = 'hr_rejected';
+            $subject = get_phrase("Leave Request Denied By HR");
         }elseif($request->status == 'pending'){
             $data['status'] = 'pending';
         }
