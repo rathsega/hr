@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -89,6 +89,9 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
 
     //Holidays
     Route::get('birthdays', [BirthdaysController::class, 'index'])->name('birthdays');
+
+    //Organization
+    Route::get('organisation', [OrganisationController::class, 'index'])->name('organisation');
 
     //Inventory
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');

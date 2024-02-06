@@ -60,7 +60,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
 
     //Holidays
     Route::get('birthdays', [BirthdaysController::class, 'index'])->name('birthdays');
-
+    
     //Organization
     Route::get('organisation', [OrganisationController::class, 'index'])->name('organisation');
 

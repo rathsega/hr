@@ -40,6 +40,9 @@
     <!-- Toastr -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/toastr/toastr.min.css') }}">
 
+    <!-- Org chart -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.orgchart.css') }}">
+
     @stack('css')
 
     <!--Main Jquery-->
@@ -79,6 +82,9 @@
     <!--Custom Script-->
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+
+    <!-- Org Chart -->
+    <script src="{{ asset('assets/js/jquery.orgchart.js') }}"></script>
 
     @include('modal')
     @include('common_scripts')
