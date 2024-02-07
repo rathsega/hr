@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -128,4 +128,9 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     //Change Password
     Route::get('password/change', [MyProfileController::class, 'change_password'])->name('change.password');
     Route::post('password/update', [MyProfileController::class, 'password_update'])->name('password.update');
+    
+    //Organization
+    Route::get('uploadusers', [UploadUsersController::class, 'index'])->name('uploadusers');
+    Route::post('uploadusers/store', [UploadUsersController::class, 'store'])->name('uploadusers.store');
+
 });
