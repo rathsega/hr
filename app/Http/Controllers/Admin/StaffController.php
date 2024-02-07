@@ -42,6 +42,15 @@ class StaffController extends Controller
         $data['manager'] = $request->manager;
         $data['department'] = $request->department;
         $data['birthday'] = $request->birthday;
+        $data['aadhar_number'] = $request->aadhar_number;
+        $data['pan_number'] = $request->pan_number;
+        $data['uan_number'] = $request->uan_number;
+        $data['pf_number'] = $request->pf_number;
+        $data['passport_number'] = $request->passport_number;
+        $data['passport_expiry_date'] = $request->passport_expiry_date;
+        $data['bank_name'] = $request->bank_name;
+        $data['bank_account_number'] = $request->bank_account_number;
+        $data['ifsc_code'] = $request->ifsc_code;
         $data['status'] = 'active';
         $data['designation'] = $request->designation;
         $data['created_at'] = date('Y-m-d H:i:s');

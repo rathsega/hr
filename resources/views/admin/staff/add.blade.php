@@ -76,6 +76,52 @@
 		<input type="file" name="photo" class="form-control eForm-control-file" id="photo" accept="image/*">
 	</div>
 
+	<div class="fpb-7">
+		<label for="aadhar_number" class="eForm-label">{{get_phrase('Aadhar Number')}}</label>
+		<input type="text" name="aadhar_number" class="form-control eForm-control" id="aadhar_number">
+	</div>
+
+	<div class="fpb-7">
+		<label for="pan_number" class="eForm-label">{{get_phrase('PAN Number')}}</label>
+		<input type="text" name="pan_number" class="form-control eForm-control" id="pan_number">
+	</div>
+
+	<div class="fpb-7">
+		<label for="uan_number" class="eForm-label">{{get_phrase('UAN Number')}}</label>
+		<input type="text" name="uan_number" class="form-control eForm-control" id="uan_number">
+	</div>
+
+	<div class="fpb-7">
+		<label for="pf_number" class="eForm-label">{{get_phrase('PF Number')}}</label>
+		<input type="text" name="pf_number" class="form-control eForm-control" id="pf_number">
+	</div>
+
+	<div class="fpb-7">
+		<label for="passport_number" class="eForm-label">{{get_phrase('Passport Number')}}</label>
+		<input type="text" name="passport_number" class="form-control eForm-control" id="passport_number">
+	</div>
+
+
+	<div class="fpb-7">
+        <label for="passport_expiry_date" class="eForm-label">{{ get_phrase('Passport Expiry Date') }}</label>
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="passport_expiry_date" value="{{ date('m/d/Y') }}" />
+    </div>
+
+	<div class="fpb-7">
+		<label for="bank_name" class="eForm-label">{{get_phrase('Bank Number')}}</label>
+		<input type="text" name="bank_name" class="form-control eForm-control" id="bank_name">
+	</div>
+
+	<div class="fpb-7">
+		<label for="bank_account_number" class="eForm-label">{{get_phrase('Bank Account Number')}}</label>
+		<input type="text" name="bank_account_number" class="form-control eForm-control" id="bank_account_number">
+	</div>
+
+	<div class="fpb-7">
+		<label for="ifsc_code" class="eForm-label">{{get_phrase('IFSC Code')}}</label>
+		<input type="text" name="ifsc_code" class="form-control eForm-control" id="ifsc_code">
+	</div>
+
 	<button type="submit" class="btn-form mt-2 mb-3">{{get_phrase('Apply')}}</button>
 </form>
 
