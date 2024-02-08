@@ -36,7 +36,8 @@ class ExcelReader implements ToModel, WithHeadingRow
             'passport_expiry_date' => gmdate('Y-m-d', ($row['passport_expiry_date'] - 25569) * 86400),
             'bank_name' => $row['bank_name'],
             'bank_account_number' => $row['bank_account_number'],
-            'ifsc_code' => $row['ifsc_code'],
+            'ifsc_code' => $row['ifsc_code'], 
+            'emp_id' => $row['emp_id'], 
             'password'=>Hash::make('Workplace@123')
             // Add more columns as needed
         ]);

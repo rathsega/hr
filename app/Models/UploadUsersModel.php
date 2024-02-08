@@ -28,7 +28,9 @@ class UploadUsersModel extends Model
         'passport_expiry_date',
         'bank_name',
         'bank_account_number',
-        'ifsc_code'
+        'ifsc_code',
+        'role',
+        'emp_id'
         // Add more columns as needed
     ];
 
