@@ -30,7 +30,12 @@ class UploadUsersModel extends Model
         'bank_account_number',
         'ifsc_code',
         'role',
-        'emp_id'
+        'emp_id',
+        'carry_forwarded_leaves_count',
+        'salary_package',
+        'joining_date',
+        'status',
+        'role'
         // Add more columns as needed
     ];
 

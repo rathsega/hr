@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -68,6 +68,8 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('payslip/deleteAttachment', [PayslipController::class, 'deleteAttachment'])->name('payslip.deleteAttachment');
     Route::get('payslip/download', [PayslipController::class, 'payslip_download'])->name('payslip.download');
     Route::get('payslip/send', [PayslipController::class, 'payslip_send_to_email'])->name('payslip.send');
+    Route::get('payslip/viewPayslip', [PayslipController::class, 'view_payslip'])->name('payslip.viewPayslip');
+    Route::get('payslip/download_new_payslip', [PayslipController::class, 'download_new_payslip'])->name('payslip.download_new_payslip');
 
     //Branch
     Route::get('branch', [BranchController::class, 'index'])->name('branch');
@@ -132,5 +134,10 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     //Organization
     Route::get('uploadusers', [UploadUsersController::class, 'index'])->name('uploadusers');
     Route::post('uploadusers/store', [UploadUsersController::class, 'store'])->name('uploadusers.store');
+    
+    //Payroll Configuration
+    Route::get('payrollconfiguration', [PayrollConfigurationController::class, 'index'])->name('payrollconfiguration');
+    Route::post('payrollconfiguration/store', [PayrollConfigurationController::class, 'store'])->name('payrollconfiguration.store');
+    Route::post('payrollconfiguration/generate', [PayrollConfigurationController::class, 'generate'])->name('payrollconfiguration.generate');
 
 });

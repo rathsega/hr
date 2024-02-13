@@ -33,6 +33,7 @@ class UploadUsersController extends Controller
             // Use Laravel Excel to import data
         $data = [];
         Excel::import(new ExcelReader, $path);
+        User::where('email', 'test@zettamine.com')->delete();
         return redirect()->back()->with('success_message', __('New staff added successfully'));
     }
     

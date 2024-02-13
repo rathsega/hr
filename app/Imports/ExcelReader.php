@@ -18,14 +18,15 @@ class ExcelReader implements ToModel, WithHeadingRow
         $department_id = Department::select('id')->where('title',$row['department'])->first();
         // var_dump($row['dob']);exit;
         // Define how the data should be mapped to your model
+        
         return new UploadUsersModel([
-            'name' => $row['name'],
-            'email' => $row['email'],
+            'name' => $row['name'] ? $row['name'] : 'test',
+            'email' => $row['email'] ? $row['email'] : 'test@zettamine.com',
             'role' => $row['role'],
-            'manager' => $manager_id->id,
-            'department' => $department_id->id,
-            'billingtype' => $row['billing'],
-            'employmenttype' => $row['employment'],
+            'manager' => $manager_id ? $manager_id->id : 0,
+            'department' => $department_id ? $department_id->id : 0,
+            'billingtype' => $row['billing'] == 'Non - Billable' ? 'non-billable' : 'billable',
+            'employmenttype' => $row['employment'] == 'Fulltime' ? 'full time' : 'contract',
             'birthday' => gmdate('Y-m-d', ($row['dob'] - 25569) * 86400),
             'designation' => $row['designation'],
             'pan_number' => $row['pan_number'],
@@ -38,7 +39,12 @@ class ExcelReader implements ToModel, WithHeadingRow
             'bank_account_number' => $row['bank_account_number'],
             'ifsc_code' => $row['ifsc_code'], 
             'emp_id' => $row['emp_id'], 
-            'password'=>Hash::make('Workplace@123')
+            'password'=>Hash::make('Workplace@123'),
+            'carry_forwarded_leaves_count'=>$row['carry_forwarded_leaves_count'],
+            'salary_package'=>$row['salary_package'],
+            'joining_date'=>gmdate('Y-m-d', ($row['joining_date'] - 25569) * 86400),
+            'role'=> 'staff',
+            'status'=> 'active',
             // Add more columns as needed
         ]);
     }
