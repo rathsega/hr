@@ -11,7 +11,7 @@
             <div class="d-flex flex-column">
                 <h4>{{ get_phrase('Attendance') }}</h4>
                 <ul class="d-flex align-items-center eBreadcrumb-2">
-                    <li><a href="{{route('admin.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="{{route('staff.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
                     <li><a href="#">{{ get_phrase('Attendance') }}</a></li>
                 </ul>
             </div>

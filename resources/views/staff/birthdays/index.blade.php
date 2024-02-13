@@ -12,7 +12,7 @@
             <div class="d-flex flex-column">
                 <h4>{{ get_phrase('Birthdays') }}</h4>
             <ul class="d-flex align-items-center eBreadcrumb-2">
-                    <li><a href="#">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="{{route('staff.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
                     <li><a href="#">{{ get_phrase('Birthdays') }}</a></li>
                 </ul>
             </div>
