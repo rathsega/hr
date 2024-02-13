@@ -294,6 +294,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center">Employee</th>
+                                                            <th class="text-center">Type</th>
                                                             <th class="text-center">{{get_phrase('Date')}}</th>
                                                             <th>{{get_phrase('Reason')}}</th>
                                                             <th class="text-center">{{get_phrase('Status')}}</th>
@@ -325,6 +326,19 @@
                                                                                 <small class="badge bg-secondary">{{ $staff_details->designation }}</small>
                                                                             </div>
                                                                         </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($leave_report->leave_type == 'sick_leave')
+                                                                            <span class="badge bg-danger">{{get_phrase('Sick Leave')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'casual_leave')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Casual Leave')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'meternity_leave')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Meternity Leave')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'feternity_leave')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Feternity Leave')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'loss_of_pay')
+                                                                            <span class="badge bg-success">{{get_phrase('Loss Of Pay')}}</span>
+                                                                        @endif
                                                                     </td>
                                                                     <td class="text-center w-255px">
                                                                         @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
@@ -476,6 +490,7 @@
                                                 <option value="sick_leave">{{ get_phrase('Sick Leave') }}</option>
                                                 <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
                                                 <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
+                                                <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
                                                 
                                             </select>
                                         </div>

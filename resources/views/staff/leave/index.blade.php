@@ -17,7 +17,7 @@
             </div>
             @php
                 $carry_forwarded_leave_count = DB::table('carry_forwarded_leaves_count')->where('user_id',auth()->user()->id)->get();
-                if($carry_forwarded_leave_count){
+                if(!$carry_forwarded_leave_count->isEmpty()){
                     $carry_forwarded_leave_count = $carry_forwarded_leave_count[0]->count;
                 }else{
                     $carry_forwarded_leave_count = 0;
@@ -74,7 +74,7 @@
                 
                 //Calculate Sick Leave Count
                 $sick_leave_count = 0;
-                if($sick_leaves && count($sick_leaves) > 0){
+                if(!$sick_leaves->isEmpty()){
                     foreach ($sick_leaves as $sick_leave){
                         $from_year = date('Y', $sick_leave->from_date);
                         $from_date = date('Y-m-d', $sick_leave->from_date);
@@ -110,7 +110,7 @@
 
                 //Calculate Casual Leave Count
                 $casual_leave_count = 0;
-                if($casual_leaves && count($casual_leaves) > 0){
+                if(!$casual_leaves->isEmpty()){
                     foreach ($casual_leaves as $casual_leave){
                         $from_year = date('Y', $casual_leave->from_date);
                         $from_date = date('Y-m-d', $casual_leave->from_date);
@@ -237,6 +237,7 @@
                             <table class="table eTable">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">{{get_phrase('Type')}}</th>
                                         <th class="text-center">{{get_phrase('Date')}}</th>
                                         <th>{{get_phrase('Reason')}}</th>
                                         <th class="text-center">{{get_phrase('Status')}}</th>
@@ -249,71 +250,86 @@
                                             ->where('from_date', '<=', strtotime(date('Y-m-t 23:59:59', $timestamp)))
                                             ->orderBy('id', 'desc');
                                     @endphp
-                                    @foreach ($leave_reports->get() as $leave_report)
-                                        <tr>
+                                    @if(!$leave_reports->get()->isEmpty())
+                                        @foreach ($leave_reports->get() as $leave_report)
+                                            <tr>
+                                                <td>
+                                                    @if ($leave_report->leave_type == 'sick_leave')
+                                                        <span class="badge bg-danger">{{get_phrase('Sick Leave')}}</span>
+                                                    @elseif($leave_report->leave_type == 'casual_leave')
+                                                        <span class="badge bg-secondary">{{get_phrase('Casual Leave')}}</span>
+                                                    @elseif($leave_report->leave_type == 'meternity_leave')
+                                                        <span class="badge bg-secondary">{{get_phrase('Meternity Leave')}}</span>
+                                                    @elseif($leave_report->leave_type == 'feternity_leave')
+                                                        <span class="badge bg-secondary">{{get_phrase('Feternity Leave')}}</span>
+                                                    @elseif($leave_report->leave_type == 'loss_of_pay')
+                                                        <span class="badge bg-success">{{get_phrase('Loss Of Pay')}}</span>
+                                                    @endif
+                                                </td>
 
-                                            <td class="text-center w-255px">
-                                                @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
-                                                    {{ date('d M Y', $leave_report->from_date) }}
-                                                    <hr class="my-0">
-                                                    {{ date('h:i A', $leave_report->from_date) }} - {{ date('h:i A', $leave_report->to_date) }}
-                                                @else
-                                                    {{ date('d M Y, h:i A', $leave_report->from_date) }}
-                                                    <hr class="my-0">
-                                                    {{ date('d M Y, h:i A', $leave_report->to_date) }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @php echo script_checker($leave_report->reason); @endphp
+                                                <td class="text-center w-255px">
+                                                    @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
+                                                        {{ date('d M Y', $leave_report->from_date) }}
+                                                        <hr class="my-0">
+                                                        {{ date('h:i A', $leave_report->from_date) }} - {{ date('h:i A', $leave_report->to_date) }}
+                                                    @else
+                                                        {{ date('d M Y, h:i A', $leave_report->from_date) }}
+                                                        <hr class="my-0">
+                                                        {{ date('d M Y, h:i A', $leave_report->to_date) }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @php echo script_checker($leave_report->reason); @endphp
 
-                                                @if ($leave_report->attachment)
-                                                    <a href="{{ asset($leave_report->attachment) }}" download>
-                                                        <br>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                            xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0" viewBox="0 0 128 128"
-                                                            style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                                            <g>
-                                                                <path
-                                                                    d="M128 65c0 15.439-12.563 28-28 28H80c-2.211 0-4-1.791-4-4s1.789-4 4-4h20c11.027 0 20-8.973 20-20s-8.973-20-20-20h-4c-2.211 0-4-1.791-4-4 0-15.439-12.563-28-28-28S36 25.561 36 41c0 2.209-1.789 4-4 4h-4C16.973 45 8 53.973 8 65s8.973 20 20 20h20c2.211 0 4 1.791 4 4s-1.789 4-4 4H28C12.563 93 0 80.439 0 65s12.563-28 28-28h.223C30.219 19.025 45.5 5 64 5s33.781 14.025 35.777 32H100c15.438 0 28 12.561 28 28zm-50.828 37.172L68 111.344V61c0-2.209-1.789-4-4-4s-4 1.791-4 4v50.344l-9.172-9.172c-1.563-1.563-4.094-1.563-5.656 0s-1.563 4.094 0 5.656l16 16c.781.781 1.805 1.172 2.828 1.172s2.047-.391 2.828-1.172l16-16c1.563-1.563 1.563-4.094 0-5.656s-4.094-1.563-5.656 0z"
-                                                                    fill="#000000" data-original="#000000" class=""></path>
-                                                            </g>
-                                                        </svg>
-                                                        {{ get_phrase('Download') }}
-                                                    </a>
-                                                @endif
-                                            </td>
-                                            <td class="text-center position-relative w-80px">
-                                                @if ($leave_report->status == 'pending')
-                                                    <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
-                                                @elseif($leave_report->status == 'manager_rejected')
-                                                    <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
-                                                @elseif($leave_report->status == 'hr_rejected')
-                                                    <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
-                                                @elseif($leave_report->status == 'manager_approved')
-                                                    <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
-                                                @elseif($leave_report->status == 'hr_approved')
-                                                    <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
-                                                @endif
-
-                                                @if ($leave_report->status == 'pending')
-                                                    <div class="contant-overlay">
-                                                        <a href="#" onclick="confirmModal('{{ route('staff.leave.report.delete', $leave_report->id) }}')" class="btn btn p-0"
-                                                            title="{{ get_phrase('Delete') }}" data-bs-placement="right" data-bs-toggle="tooltip">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15" viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
-                                                                </path>
-                                                                <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
-                                                                </path>
-                                                                <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                    @if ($leave_report->attachment)
+                                                        <a href="{{ asset($leave_report->attachment) }}" download>
+                                                            <br>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0" viewBox="0 0 128 128"
+                                                                style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                                <g>
+                                                                    <path
+                                                                        d="M128 65c0 15.439-12.563 28-28 28H80c-2.211 0-4-1.791-4-4s1.789-4 4-4h20c11.027 0 20-8.973 20-20s-8.973-20-20-20h-4c-2.211 0-4-1.791-4-4 0-15.439-12.563-28-28-28S36 25.561 36 41c0 2.209-1.789 4-4 4h-4C16.973 45 8 53.973 8 65s8.973 20 20 20h20c2.211 0 4 1.791 4 4s-1.789 4-4 4H28C12.563 93 0 80.439 0 65s12.563-28 28-28h.223C30.219 19.025 45.5 5 64 5s33.781 14.025 35.777 32H100c15.438 0 28 12.561 28 28zm-50.828 37.172L68 111.344V61c0-2.209-1.789-4-4-4s-4 1.791-4 4v50.344l-9.172-9.172c-1.563-1.563-4.094-1.563-5.656 0s-1.563 4.094 0 5.656l16 16c.781.781 1.805 1.172 2.828 1.172s2.047-.391 2.828-1.172l16-16c1.563-1.563 1.563-4.094 0-5.656s-4.094-1.563-5.656 0z"
+                                                                        fill="#000000" data-original="#000000" class=""></path>
+                                                                </g>
                                                             </svg>
+                                                            {{ get_phrase('Download') }}
                                                         </a>
-                                                    </div>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                    @endif
+                                                </td>
+                                                <td class="text-center position-relative w-80px">
+                                                    @if ($leave_report->status == 'pending')
+                                                        <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
+                                                    @elseif($leave_report->status == 'manager_rejected')
+                                                        <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
+                                                    @elseif($leave_report->status == 'hr_rejected')
+                                                        <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
+                                                    @elseif($leave_report->status == 'manager_approved')
+                                                        <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
+                                                    @elseif($leave_report->status == 'hr_approved')
+                                                        <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
+                                                    @endif
+
+                                                    @if ($leave_report->status == 'pending')
+                                                        <div class="contant-overlay">
+                                                            <a href="#" onclick="confirmModal('{{ route('staff.leave.report.delete', $leave_report->id) }}')" class="btn btn p-0"
+                                                                title="{{ get_phrase('Delete') }}" data-bs-placement="right" data-bs-toggle="tooltip">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                    </path>
+                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                    </path>
+                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
 
@@ -359,6 +375,7 @@
                                                 <option value="sick_leave">{{ get_phrase('Sick Leave') }}</option>
                                                 <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
                                                 <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
+                                                <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
                                                 
                                             </select>
                                         </div>
