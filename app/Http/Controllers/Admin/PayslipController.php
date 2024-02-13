@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -131,10 +132,16 @@ class PayslipController extends Controller
         $page_data['invoice_id'] = $request->invoice_id;
         $page_data['user_id'] = $request->user_id;
 
+        $data = [];
+        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id where p.id=".$request->invoice_id);
+        // instantiate and use the dompdf class
         $dompdf = new Dompdf();
-        $html_content = view('admin.payslip.invoice', ['invoice_id' => $request->invoice_id, 'user_id' => $request->user_id])->render();
-        $dompdf->loadHtml($html_content); // Load the HTML content
-        $dompdf->render(); // Render the PDF
+        $html_content = view(auth()->user()->role . '.payslip.generateinvoicefulltime', $data)->render();
+        $dompdf->loadHtml($html_content);
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF to Browser
+        $dompdf->stream('Payslip-' . date('F-Y', strtotime($data['payslip'][0]->month_of_salary)) . '.pdf');
 
         $attachment = $payslip->attachment; 
         if( $attachment){
@@ -166,5 +173,34 @@ class PayslipController extends Controller
         Payslip::where('id', $payslip->id)->update(['email_sent' => 1]);
 
         return redirect()->back()->with('success_message', get_phrase('Invoice sent successfully'));
+    }
+
+    function view_payslip(Request $request){
+        $data = [];
+        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id where p.id=".$request->id);
+        
+        if($data['payslip'][0]->employmenttype == 'full time'){
+            return view(auth()->user()->role . '.payslip.viewpayslipfulltime', $data);
+        }else if($data['payslip'][0]->employmenttype == 'contract'){
+            return view(auth()->user()->role . '.payslip.viewpayslipcontract', $data);
+        }
+    }
+
+    function download_new_payslip(Request $request)
+    {
+        $data = [];
+        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id where p.id=".$request->id);
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        if($data['payslip'][0]->employmenttype == 'full time'){
+            $html_content = view(auth()->user()->role . '.payslip.generateinvoicefulltime', $data)->render();
+        }else if($data['payslip'][0]->employmenttype == 'contract'){
+            $html_content = view(auth()->user()->role . '.payslip.generateinvoicecontract', $data)->render();
+        }
+        $dompdf->loadHtml($html_content);
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF to Browser
+        $dompdf->stream('Payslip-' . date('F-Y', strtotime($data['payslip'][0]->month_of_salary)) . '.pdf');
     }
 }

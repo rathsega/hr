@@ -74,7 +74,6 @@
                                 <thead>
                                     <tr>
                                         <th class="">Employee</th>
-                                        <th class="">{{get_phrase('Status')}}</th>
                                         <th class="text-center">{{get_phrase('Action')}}</th>
                                     </tr>
                                 </thead>
@@ -111,16 +110,9 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                @if ($payslip->value('status') == 1)
-                                                    <span class="badge bg-success">{{get_phrase('Paid')}}</span>
-                                                @else
-                                                    <span class="badge bg-danger">{{get_phrase('Unpaid')}}</span>
-                                                @endif
-                                            </td>
                                             <td class="text-center">
                                                 @if ($payslip->count() == 0)
-                                                    <a href="{{ route('admin.payslip', ['user_id' => $user->id, 'year' => $selected_year, 'month' => $selected_month]) }}"
+                                                    <!-- <a href="{{ route('admin.payslip', ['user_id' => $user->id, 'year' => $selected_year, 'month' => $selected_month]) }}"
                                                         class="btn btn p-0 px-1" title="{{ get_phrase('Generate Invoice') }}" data-bs-toggle="tooltip">
                                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                             xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
@@ -131,16 +123,16 @@
                                                                     fill="#000000" data-original="#000000" class=""></path>
                                                             </g>
                                                         </svg>
-                                                    </a>
+                                                    </a> -->
                                                 @else
-                                                    <a href="{{ route('admin.payslip', ['id' => $payslip->value('id')]) }}" class="btn btn p-0 px-1"
-                                                        title="{{ get_phrase('Edit Invoice') }}" data-bs-toggle="tooltip">
+                                                    <a href="{{ route('admin.payslip.viewPayslip', ['id' => $payslip->value('id')]) }}" class="btn btn p-0 px-1" target="_blank"
+                                                        title="{{ get_phrase('View Payslip') }}" data-bs-toggle="tooltip">
                                                         <i class="fi-rr-blog-pencil"></i>
                                                     </a>
 
-                                                    <a href="#"
+                                                    <!-- <a href="#"
                                                         onclick="confirmModal('{{ route('admin.payslip.send', ['invoice_id' => $payslip->value('id'), 'user_id' => $user->id]) }}')"
-                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Send Invoice') }}" data-bs-toggle="tooltip">
+                                                        class="btn btn p-0 px-1" title="{{ get_phrase('Send Payslip') }}" data-bs-toggle="tooltip">
                                                         <svg xmlns="http://www.w3.org/2000/svg" id="fi_2907795" data-name="Layer 1" viewBox="0 0 24 24" width="18"
                                                             height="18">
                                                             <path
@@ -150,9 +142,9 @@
                                                                 d="M9.67,15.08a.71.71,0,0,1-.53-.22.74.74,0,0,1,0-1.06L20.9,2A.75.75,0,0,1,22,3.1L10.2,14.86A.74.74,0,0,1,9.67,15.08Z">
                                                             </path>
                                                         </svg>
-                                                    </a>
+                                                    </a> -->
 
-                                                    <a href="../public/uploads/payslip-attachment/{{$payslip->value('attachment')}}" download
+                                                    <a href="{{ route('admin.payslip.download_new_payslip', ['id' => $payslip->value('id')]) }}"
                                                         class="btn btn p-0 px-1" title="{{ get_phrase('Download Payslip') }}" data-bs-toggle="tooltip">
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="18" version="1.1" viewBox="-53 1 511 511.99906" width="18"
                                                             id="fi_1092004">
