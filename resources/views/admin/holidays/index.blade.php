@@ -41,7 +41,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (App\Models\Holidays::orderBy('name')->get() as $key => $holidays)
+                            @foreach (App\Models\Holidays::orderBy('date')->get() as $key => $holidays)
                                 <tr>
                                     <td>
                                         {{ ++$key }}
