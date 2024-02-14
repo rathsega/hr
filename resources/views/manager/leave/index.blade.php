@@ -148,17 +148,14 @@
                     <span class="d-none d-sm-inline-block">{{ get_phrase('Carry Forwarded Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{ $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0 }}</span></span>
                 </a>
                 <a href="#" class="export_btn  ms-1">
+                    @php $available_sick_leave_count = $leaves_count->sick = (($leaves_count->sick/12)*date("m")) @endphp
                     <span class="d-none d-sm-inline-block">{{ get_phrase('Sick Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->sick - $sick_leave_count}}</span></span>
                 </a>                
                 <a href="#" class="export_btn  ms-1">
+                    @php $leaves_count->casual = (($leaves_count->casual/12)*date("m")) @endphp
+                    @php $available_casual_leave_count = $carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual @endphp
                     <span class="d-none d-sm-inline-block">{{ get_phrase('Casual Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual }}</span></span>
                 </a>
-                <!-- <a href="#" class="export_btn  ms-1">
-                    <span class="d-none d-sm-inline-block">{{ get_phrase('Meternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->meternity - count($meternity_leaves)}}</span></span>
-                </a>
-                <a href="#" class="export_btn  ms-1">
-                    <span class="d-none d-sm-inline-block">{{ get_phrase('Feternity Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{$leaves_count->feternity - count($feternity_leaves)}}</span></span>
-                </a> -->
             </div>
             
         </div>
@@ -463,8 +460,8 @@
                                             <label class="eForm-label">{{get_phrase('Leave type')}}</label>
                                             <select name="leave_type" class="form-select eForm-select select2" required>
                                                 <option value="">{{ get_phrase('Select a type') }}</option>
-                                                <option value="casual_leave">{{ get_phrase('Casual Leave') }}</option>
-                                                <option value="sick_leave">{{ get_phrase('Sick Leave') }}</option>
+                                                <option value="casual_leave" {{$available_casual_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Casual Leave') }}</option>
+                                                <option value="sick_leave" {{$available_sick_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Sick Leave') }}</option>
                                                 <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
                                                 <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
                                                 <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
