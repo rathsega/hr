@@ -22,11 +22,13 @@ class LeaveApplicationController extends Controller
 
     function store(Request $request){
 
-        if(auth()->user()->role == 'admin'){
+        /*if(auth()->user()->role == 'admin'){
             $data['user_id'] = $request->user_id;
         }else{
             $data['user_id'] = auth()->user()->id;
-        }
+        }*/
+
+        $data['user_id'] = auth()->user()->id;
 
         $start_timestamp = strtotime($request->from_date);
         $end_timestamp = strtotime($request->to_date);

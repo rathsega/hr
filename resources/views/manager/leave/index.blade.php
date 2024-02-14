@@ -457,24 +457,7 @@
                             @Csrf
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    @if (auth()->user()->role == 'manager')
-                                        <div class="fpb-7">
-                                            <label class="eForm-label">{{get_phrase('Select User')}}</label>
-                                            <select name="user_id" class="form-select eForm-select select2" required>
-                                                <option value="">{{ get_phrase('Select a user') }}</option>
-                                                @foreach ($users as $user)
-                                                    <option value="{{ $user->id }}" @if ($user->id == auth()->user()->id) selected @endif>
-                                                        {{ $user->name }}
-                                                        @if ($user->id == auth()->user()->id)
-                                                            <small>({{get_phrase('Me')}})</small>
-                                                        @endif
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                </div>
+                                
                                 <div class="col-md-12">
                                         <div class="fpb-7">
                                             <label class="eForm-label">{{get_phrase('Leave type')}}</label>
