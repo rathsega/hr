@@ -83,12 +83,71 @@ class PayrollConfigurationController extends Controller
         return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
     }
 
-    /*function getNumberOfLeavesTakenByUser($year, $month, $days){
-        $from_date = strtotime($year . '-' . $month . '-1 00:00:00');
-        $to_date = strtotime($year .'-' . $month. '-' . $days .' 23:59:59');
-        $loss_of_pay = Leave_application::where('user_id', auth()->user()->id)->where('from_date>=', $from_date)->where('to_date>=', $to_date)->where('leave_type','loss_of_pay')->where('leave_applications.status', 'hr_approved')->get();
-          
-    }*/
+    function getDaysInMonthForPeriod($startDate, $endDate, $year, $month) {
+        $startDateObj = new \DateTime($startDate);
+        $endDateObj = new \DateTime($endDate);
+    
+        $currentDate = clone $startDateObj;
+        $totalDays = 0;
+    
+        while ($currentDate <= $endDateObj) {
+            $currentYear = $currentDate->format('Y');
+            $currentMonth = $currentDate->format('m');
+    
+            if ($currentYear == $year && $currentMonth == $month) {
+                $totalDays += 1;
+            }
+    
+            $currentDate->modify('+1 day');
+        }
+    
+        return $totalDays;
+    }
+
+    function getNumberOfLossffOfPayLeavesTakenByUser($selected_year, $selected_month, $days, $user_id){
+        $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
+        $to_date = strtotime($selected_year .'-' . $selected_month. '-' . $days .' 23:59:59');
+        $loss_of_pays = Leave_application::where('user_id', $user_id)->where('from_date','>=', $from_date)->where('to_date','<=', $to_date)->where('leave_type','loss_of_pay')->where('status', 'hr_approved')->get();
+        $loss_of_pay_count = 0;
+        if(!$loss_of_pays->isEmpty()){
+            foreach($loss_of_pays as $loss_of_pay){
+                $from_date = date('Y-m-d', $loss_of_pay->from_date);
+                $to_date = date('Y-m-d', $loss_of_pay->to_date);
+                $loss_of_pay_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+            }
+        }
+        return $loss_of_pay_count;
+    }
+
+    function getNumberOfSickLeavesTakenByUser($selected_year, $selected_month, $days, $user_id){
+        $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
+        $to_date = strtotime($selected_year .'-' . $selected_month. '-' . $days .' 23:59:59');
+        $sick_leaves = Leave_application::where('user_id', $user_id)->where('from_date','>=', $from_date)->where('to_date','<=', $to_date)->where('leave_type','sick_leave')->where('status', 'hr_approved')->get();
+        $sick_leave_count = 0;
+        if(!$sick_leaves->isEmpty()){
+            foreach($sick_leaves as $sick_leave){
+                $from_date = date('Y-m-d', $sick_leave->from_date);
+                $to_date = date('Y-m-d', $sick_leave->to_date);
+                $sick_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+            }
+        }
+        return $sick_leave_count;
+    }
+
+    function getNumberOfCasualLeavesTakenByUser($selected_year, $selected_month, $days, $user_id){
+        $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
+        $to_date = strtotime($selected_year .'-' . $selected_month. '-' . $days .' 23:59:59');
+        $casual_leaves = Leave_application::where('user_id', $user_id)->where('from_date','>=', $from_date)->where('to_date','<=', $to_date)->where('leave_type','casual_leave')->where('status', 'hr_approved')->get();
+        $casual_leave_count = 0;
+        if(!$casual_leaves->isEmpty()){
+            foreach($casual_leaves as $casual_leave){
+                $from_date = date('Y-m-d', $casual_leave->from_date);
+                $to_date = date('Y-m-d', $casual_leave->to_date);
+                $casual_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+            }
+        }
+        return $casual_leave_count;
+    }
 
     function getNumberOfWorkedDays($user_id, $selected_year, $selected_month, $days){
         $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
@@ -158,6 +217,15 @@ class PayrollConfigurationController extends Controller
             $no_of_saturday_sunday = $this->countSundaysAndEvenSaturdays($selected_year . '-' . $selected_month . '-1', $selected_year . '-' . $selected_month .'-' . $days );
             $number_of_working_days = $days - $no_of_holidays - $no_of_saturday_sunday['sundays'] - $no_of_saturday_sunday['evenSaturdays'];
             foreach($active_users as $active_user){
+                //Tally Days
+                $number_of_worked_days = $this->getNumberOfWorkedDays($active_user->id, $selected_year, $selected_month, $days);
+                $loss_of_pay_days = $this->getNumberOfLossffOfPayLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
+                $sick_leave_days = $this->getNumberOfSickLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
+                $casual_leave_days = $this->getNumberOfCasualLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
+                //echo "user id : " . $active_user->id . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_worked_days. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
+                if($number_of_working_days != ($number_of_worked_days + $loss_of_pay_days + $sick_leave_days + $casual_leave_days)){
+                    continue;
+                }
                 //Check is payslip genearted for users for selected year and month
                 $payslip = Payslip::where('user_id', $active_user->id)->whereDate('month_of_salary', $selected_year . '-' . $selected_month . '-1 00:00:00')->first();
                 //if payslip is empty then generate payslip
@@ -165,8 +233,6 @@ class PayrollConfigurationController extends Controller
                 if($salary_package != null && $salary_package != 0){
                     if($active_user->employmenttype == 'full time'){
                         //calculate number of worked days
-                        $number_of_worked_days = $this->getNumberOfWorkedDays($active_user->id, $selected_year, $selected_month, $days);
-                        $loss_of_pay_days = $number_of_working_days - $number_of_worked_days;
                         $payable_days = $days - $loss_of_pay_days;
 
                         //calculate payable amount                    
@@ -269,25 +335,42 @@ class PayrollConfigurationController extends Controller
                         $data['tds'] = 0;
 
                     }else if($active_user->employmenttype == 'contract'){
-                        //calculate number of worked days
-                        $number_of_worked_days = $this->getNumberOfWorkedDays($active_user->id, $selected_year, $selected_month, $days);
-                        $loss_of_pay_days = $number_of_working_days - $number_of_worked_days;
-                        $payable_days = $days - $loss_of_pay_days;
-
                         //calculate payable amount                    
                         $monthly_salary_amount = floor($salary_package/12);
                         $payable_amount = ($days - $loss_of_pay_days) * ($monthly_salary_amount/$days);
 
+                        $data = [];
+                        $data['payroll_year'] = $selected_year;
+                        $data['payroll_month'] = $selected_month;
+                        $data['workingdays'] = $days;
+                        $data['loss_of_pay'] = $loss_of_pay_days;
+                        $data['basic'] = 0;
+                        $data['hra'] = 0;
+                        $data['conveyance'] = 0;
+                        $data['medical'] = 0;
+                        $data['lta'] = 0;
+                        $data['education_allowance'] = 0;
+                        $data['statutory_bonus'] = 0;
+                        $data['pf'] = 0;
+                        $data['employee_esi'] = 0;
+                        $data['employer_esi'] = 0;
+                        $data['pt'] = 0;
+                        $data['gratuity'] = 0;
+                        $data['special_allowance'] = 0;
+                        $data['user_id'] = $active_user->id;
+                        $data['month_of_salary'] = date('Y-m-d 00:00:00', strtotime($selected_year.'-'.$selected_month.'-01'));
                         $data['total_earnings'] = $data['payable_amount'] = floor($payable_amount);
                         $data['tds'] = $data['deductions']  = floor(($payable_amount/100)*10);
-                        $data['net_salary'] = floor(($payable_amount/100)*10);
+                        $data['net_salary'] = floor($payable_amount) - floor(($payable_amount/100)*10);
+                    }
+                    if($number_of_working_days > $loss_of_pay_days){
+                        if(empty($payslip) ){
+                            Payslip::insert($data);
+                        }else{
+                            Payslip::where('id', $payslip->id)->update($data);
+                        }
                     }
                     
-                    if(empty($payslip) ){
-                        Payslip::insert($data);
-                    }else{
-                        Payslip::where('id', $payslip->id)->update($data);
-                    }
                 }
             }
         }

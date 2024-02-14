@@ -177,7 +177,7 @@ class PayslipController extends Controller
 
     function view_payslip(Request $request){
         $data = [];
-        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id where p.id=".$request->id);
+        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id inner join departments as d on d.id = u.department where p.id=".$request->id);
         
         if($data['payslip'][0]->employmenttype == 'full time'){
             return view(auth()->user()->role . '.payslip.viewpayslipfulltime', $data);

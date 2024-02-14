@@ -72,7 +72,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Department </th>
-                                    <td>{{$payslip[0]->department}}</td>
+                                    <td>{{$payslip[0]->title}}</td>
                                     <td><b> UAN Number</b></td>
                                     <td>{{$payslip[0]->uan_number}}</td>
                                 </tr>

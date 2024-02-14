@@ -126,10 +126,9 @@
                 <p>Designation &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; : {{$payslip[0]->designation}}</p>
                 <p>Date of Joining &nbsp; &nbsp;: {{date('d-m-Y', strtotime($payslip[0]->joining_date))}}</p>
                 <p>Pay Period &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 1-{{date("M", strtotime("01-".$payslip[0]->payroll_month."-".$payslip[0]->payroll_year))}}-{{$payslip[0]->payroll_year}} to {{$payslip[0]->workingdays}} -{{date("M", strtotime("01-".$payslip[0]->payroll_month."-".$payslip[0]->payroll_year))}}-{{$payslip[0]->payroll_year}}</p>
-                <p>Pay Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 05-Sep-2023</p>
             </td>
             <td style="border-right: thin;">
-                <p class="para">Contract Employee Net Pay</p>
+                <p class="para">Employee Net Pay</p>
                 <p><b>&#8377;{{$payslip[0]->net_salary}}</b></p>
                 <p>Paid Days: {{$payslip[0]->workingdays - $payslip[0]->loss_of_pay}} | LOP Days: {{$payslip[0]->loss_of_pay}}</p>
             </td>
