@@ -383,13 +383,13 @@
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
-                                        <input type="date" name="from_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="datetime-local" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
-                                        <input type="date" name="to_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="datetime-local" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
