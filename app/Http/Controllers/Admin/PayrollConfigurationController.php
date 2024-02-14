@@ -159,11 +159,21 @@ class PayrollConfigurationController extends Controller
                 $login = $worked_day->checkin;
                 $logout = $worked_day->checkout;
                 $hourdiff = ($logout - $login)/3600;
-                if($hourdiff >= 8){
-                    $worked_days_count += 1;
-                }else if($hourdiff >= 4){
-                    $worked_days_count += 0.5;
+                $dayOfWeek = date('N', $worked_day->checkin);
+                if ($dayOfWeek == 6) {
+                    if($hourdiff >= 6){
+                        $worked_days_count += 1;
+                    }else if($hourdiff >= 3){
+                        $worked_days_count += 0.5;
+                    }
+                } else {
+                    if($hourdiff >= 8){
+                        $worked_days_count += 1;
+                    }else if($hourdiff >= 4){
+                        $worked_days_count += 0.5;
+                    }
                 }
+                
             }
         }
         return $worked_days_count;
