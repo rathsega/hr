@@ -36,16 +36,40 @@
 	.node {
 		height: 160px !important;
 		width: 160px !important;
-	}
-	.node img{
-		border-radius: 85px;
-		width: 100px;
-		height: 100px;
+		background:#e6eaf5 !important;
 	}
 
+	.node img{
+		border-radius: 85px;
+		width: 50px;
+		height: 50px;
+		margin-bottom:15px;
+		margin-top:15px;
+		
+	} 
+	
+	h2:hover {
+    background:#c0c0c052 !important;
+    cursor: text;
+}
+    .designation{
+		font-size:12px !important;
+		line-height:18px;
+		word-spacing:1px;
+		font-weight:500;
+	}
 	#orgChart{
 		overflow: scroll;
 	}
+	h2{
+		line-height:14px;
+		font-size:12px !important;
+
+	}
+	body{
+		color:#0395ab;
+	}
+
 
 </style>
 @endsection
@@ -86,7 +110,7 @@
 
 	$(document).ready(function(){
 		$(document).ready(function(){
-		var testData = <?php echo json_encode($single_structure); ?>;
+		var testData = <?php echo json_encode($all_users_structure); ?>;
 		var testData1 = [
 			{id: 1, name: '<img src="/hr/public/uploads/user-image/wRb1AWZzrh9pU286HDcq.jpg" height="42px"> </br> My Organization', parent: 0},
 			{id: 2, name: 'CEO Office', parent: 1},
@@ -99,7 +123,7 @@
 		];
 		console.log(testData);
 		console.log(testData1);
-		org_chart = $('#orgChart').orgChart({
+		var org_chart = $('#orgChart').orgChart({
 			data: testData, // your data
 			showControls: false, // display add or remove node button.
 			allowEdit: false, // click the node's title to edit
