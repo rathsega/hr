@@ -80,7 +80,30 @@ class PayrollConfigurationController extends Controller
             $startDateTime->modify('+1 day');
         }
 
-        return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
+        return ['sundays' => $sundays, 'saturdays' => $evenSaturdays];
+    }
+
+    function countSundaysAndSaturdays($startDate, $endDate) {
+        $startDateTime = new \DateTime($startDate);
+        $endDateTime = new \DateTime($endDate);
+        
+        $sundays = 0;
+        $saturdays = 0;
+
+        while ($startDateTime <= $endDateTime) {
+            $dayOfWeek = $startDateTime->format('w'); // 0 (Sunday) to 6 (Saturday)
+            
+            if ($dayOfWeek == 0) { // Sunday
+                $sundays++;
+            } elseif ($dayOfWeek == 6) { // Even Saturday
+                $saturdays += 1;
+                
+            }
+
+            $startDateTime->modify('+1 day');
+        }
+
+        return ['sundays' => $sundays, 'saturdays' => $saturdays];
     }
 
     function getDaysInMonthForPeriod($startDate, $endDate, $year, $month) {
@@ -104,6 +127,35 @@ class PayrollConfigurationController extends Controller
         return $totalDays;
     }
 
+    function getDayOfTheWeekNumberByDate($date){
+        $date_time = new \DateTime(date('Y-m-d', $date));
+        return $date_time->format('w');// 0 (Sunday) to 6 (Saturday)
+    }
+
+    function getHalfdayHourLimitForLeave($date_time_stamp){
+        if(date('N', $date_time_stamp) == 6){
+            return 3;
+        }else{
+            return 4.5;
+        }
+    }
+
+    function getHalfdayHourLimitForAttendance($date_time_stamp){
+        if(date('N', $date_time_stamp) == 6){
+            return 3;
+        }else{
+            return 4.5;
+        }
+    }
+
+    function getFulldayHourLimitForAttendance($date_time_stamp){
+        if(date('N', $date_time_stamp) == 6){
+            return 6;
+        }else{
+            return 9;
+        }
+    }
+
     function getNumberOfLossffOfPayLeavesTakenByUser($selected_year, $selected_month, $days, $user_id){
         $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
         $to_date = strtotime($selected_year .'-' . $selected_month. '-' . $days .' 23:59:59');
@@ -113,7 +165,17 @@ class PayrollConfigurationController extends Controller
             foreach($loss_of_pays as $loss_of_pay){
                 $from_date = date('Y-m-d', $loss_of_pay->from_date);
                 $to_date = date('Y-m-d', $loss_of_pay->to_date);
-                $loss_of_pay_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                if($from_date == $to_date){
+                    $half_day_hours = $this->getHalfdayHourLimitForLeave($loss_of_pay->from_date);
+                    if(($loss_of_pay->to_date - $loss_of_pay->from_date/3600) <= $half_day_hours){
+                        $loss_of_pay_count += 0.5;
+                    }else{
+                        $loss_of_pay_count += 1;
+                    }
+                }else{
+                    $loss_of_pay_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                }
+                
             }
         }
         return $loss_of_pay_count;
@@ -128,7 +190,16 @@ class PayrollConfigurationController extends Controller
             foreach($sick_leaves as $sick_leave){
                 $from_date = date('Y-m-d', $sick_leave->from_date);
                 $to_date = date('Y-m-d', $sick_leave->to_date);
-                $sick_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                if($from_date == $to_date){
+                    $half_day_hours = $this->getHalfdayHourLimitForLeave($sick_leave->from_date);
+                    if(($sick_leave->to_date - $sick_leave->from_date)/3600 <= $half_day_hours){
+                        $sick_leave_count += 0.5;
+                    }else{
+                        $sick_leave_count += 1;
+                    }
+                }else{
+                    $sick_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                }
             }
         }
         return $sick_leave_count;
@@ -143,37 +214,71 @@ class PayrollConfigurationController extends Controller
             foreach($casual_leaves as $casual_leave){
                 $from_date = date('Y-m-d', $casual_leave->from_date);
                 $to_date = date('Y-m-d', $casual_leave->to_date);
-                $casual_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                if($from_date == $to_date){
+                    $half_day_hours = $this->getHalfdayHourLimitForLeave($casual_leave->from_date);
+                    if(($casual_leave->to_date - $casual_leave->from_date)/3600 <= $half_day_hours){
+                        $casual_leave_count += 0.5;
+                    }else{
+                        $casual_leave_count += 1;
+                    }
+                }else{
+                    $casual_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
+                }
             }
         }
         return $casual_leave_count;
     }
 
-    function getNumberOfWorkedDays($user_id, $selected_year, $selected_month, $days){
+    function isSaturdayEven($timestamp) {
+        // Convert the date to a timestamp
+    
+        // Check if the day is Saturday
+        if (date('l', $timestamp) === 'Saturday') {
+            // Get the day of the month
+            $dayOfMonth = date('j', $timestamp);
+    
+            // Check if the day of the month is even or odd
+            if ($dayOfMonth % 2 == 0) {
+                return "Saturday is even.";
+            } else {
+                return "Saturday is odd.";
+            }
+        } else {
+            return "Not a Saturday.";
+        }
+    }
+
+    function getNumberOfWorkedDays($user_id, $selected_year, $selected_month, $days, $billing_type, $holidays_list){
         $from_date = strtotime($selected_year . '-' . $selected_month . '-1 00:00:00');
         $to_date = strtotime($selected_year .'-' . $selected_month. '-' . $days .' 23:59:59');
         $worked_days = Attendance::where('user_id', $user_id)->where('checkin','>=', $from_date)->where('checkout','<=', $to_date)->get();
         $worked_days_count = 0;
         if(!$worked_days->isEmpty()){
+            $holiday_dates = [];
+            foreach($holidays_list as $holiday){
+                $holiday_dates[] = date('Y-m-d', strtotime($holiday->date));
+            }
             foreach($worked_days as $worked_day){
+                if(date('l', $worked_day->checkin) == 'Sunday'){
+                    continue;
+                }
+                if($billing_type == 'billable' && date('l', $worked_day->checkin) == 'Saturday'){
+                    continue;
+                }
+                if(in_array( date('Y-m-d', $worked_day->checkin), $holiday_dates)){
+                    continue;
+                }
+
                 $login = $worked_day->checkin;
                 $logout = $worked_day->checkout;
                 $hourdiff = ($logout - $login)/3600;
-                $dayOfWeek = date('N', $worked_day->checkin);
-                if ($dayOfWeek == 6) {
-                    if($hourdiff >= 6){
-                        $worked_days_count += 1;
-                    }else if($hourdiff >= 3){
-                        $worked_days_count += 0.5;
-                    }
-                } else {
-                    if($hourdiff >= 8){
-                        $worked_days_count += 1;
-                    }else if($hourdiff >= 4){
-                        $worked_days_count += 0.5;
-                    }
+                $half_day_hours_limit = $this->getHalfdayHourLimitForAttendance($worked_day->checkin);
+                $full_day_hours_limit = $this->getFulldayHourLimitForAttendance($worked_day->checkin);
+                if($hourdiff >= $full_day_hours_limit){
+                    $worked_days_count += 1;
+                }else if($hourdiff >= $half_day_hours_limit){
+                    $worked_days_count += 0.5;
                 }
-                
             }
         }
         return $worked_days_count;
@@ -226,16 +331,21 @@ class PayrollConfigurationController extends Controller
             //Calculate number of working days
             $holidays_list = Holidays::orderBy('name')->get();
             $no_of_holidays = $this->numberOfHolidayExisted($holidays_list, $selected_year . '-' . $selected_month . '-1', $selected_year . '-' . $selected_month .'-' . $days );
-            $no_of_saturday_sunday = $this->countSundaysAndEvenSaturdays($selected_year . '-' . $selected_month . '-1', $selected_year . '-' . $selected_month .'-' . $days );
-            $number_of_working_days = $days - $no_of_holidays - $no_of_saturday_sunday['sundays'] - $no_of_saturday_sunday['evenSaturdays'];
+            
             foreach($active_users as $active_user){
+                if($active_user->billingtype == 'billable'){
+                    $no_of_saturday_sunday = $this->countSundaysAndSaturdays($selected_year . '-' . $selected_month . '-1', $selected_year . '-' . $selected_month .'-' . $days );
+                }else{
+                    $no_of_saturday_sunday = $this->countSundaysAndEvenSaturdays($selected_year . '-' . $selected_month . '-1', $selected_year . '-' . $selected_month .'-' . $days );
+                }
+                $number_of_working_days = $days - $no_of_holidays - $no_of_saturday_sunday['sundays'] - $no_of_saturday_sunday['saturdays'];
                 //Tally Days
-                $number_of_worked_days = $this->getNumberOfWorkedDays($active_user->id, $selected_year, $selected_month, $days);
+                $number_of_worked_days = $this->getNumberOfWorkedDays($active_user->id, $selected_year, $selected_month, $days, $active_user->billingtype, $holidays_list);
                 $loss_of_pay_days = $this->getNumberOfLossffOfPayLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
                 $sick_leave_days = $this->getNumberOfSickLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
                 $casual_leave_days = $this->getNumberOfCasualLeavesTakenByUser($selected_year, $selected_month, $days, $active_user->id); //$number_of_working_days - $number_of_worked_days; - modification
-                //echo "user id : " . $active_user->id . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_worked_days. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
-                if($number_of_working_days != ($number_of_worked_days + $loss_of_pay_days + $sick_leave_days + $casual_leave_days)){
+                
+                if(!($number_of_worked_days || $sick_leave_days || $casual_leave_days)){
                     continue;
                 }
                 //Check is payslip genearted for users for selected year and month
@@ -245,22 +355,24 @@ class PayrollConfigurationController extends Controller
                 if($salary_package != null && $salary_package != 0){
                     if($active_user->employmenttype == 'full time'){
                         //calculate number of worked days
-                        $payable_days = $days - $loss_of_pay_days;
-
+                        $payable_days = $number_of_worked_days + $no_of_holidays + $no_of_saturday_sunday['sundays'] + $no_of_saturday_sunday['saturdays'] + $sick_leave_days + $casual_leave_days;
+                        $loss_of_pay_days = $days - $payable_days;
                         //calculate payable amount                    
-                        $monthly_salary_amount = floor($salary_package/12);
-                        $payable_amount = ($days - $loss_of_pay_days) * ($monthly_salary_amount/$days);
+                        $monthly_salary_amount = floor($salary_package);
+                        $gross_salary = $payable_days * ($monthly_salary_amount/$days);
+
+                        echo "user id : " . $active_user->id . "--- Payable days : " . $payable_days . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_worked_days. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
 
                         //calculate salary component wise
 
                         //Basic 50% on Earned Salary.(after LOP).
-                        $basic = floor($payable_amount/2);
+                        $basic = floor($gross_salary/2);
                         //HRA 20%
-                        $hra = floor($payable_amount/5);
+                        $hra = floor($gross_salary/5);
                         //Conveyance : Earned >=50000,1600,IF(Earned salary >25000,800,0)
-                        if($payable_amount >= 50000){
+                        if($gross_salary >= 50000){
                             $conveyance = 1600;
-                        }else if($payable_amount > 25000){
+                        }else if($gross_salary > 25000){
                             $conveyance = 800;
                         }else{
                             $conveyance = 0;
@@ -268,10 +380,10 @@ class PayrollConfigurationController extends Controller
                         //Medical : 1250
                         $medical = 1250;
                         //LTA 5% on Earned Salary.
-                        $lta = floor($payable_amount/20);
+                        $lta = floor($gross_salary/20);
                         
                         //Education Allowances : IF(Earned Salary >50000,100*2,0).
-                        if($payable_amount > 50000){
+                        if($gross_salary > 50000){
                             $education_allowance = 200;
                         }else{
                             $education_allowance = 0;
@@ -286,18 +398,11 @@ class PayrollConfigurationController extends Controller
                         }else{
                             $pf = floor(($basic/100)*12);
                         }
-                        // ESI : IF(Total Earnings<=21000,(gross*0.75%),0)
-                        if($payable_amount <= 21000){
-                            $employee_esi = floor($payable_amount*0.75);
-                            $employer_esi = floor($payable_amount*3.25);
-                        }else{
-                            $employee_esi = 0;
-                            $employer_esi = 0;
-                        }
+                        
                         // PT : IF(Total Earnings >20000,200,IF(Gross>15000,150,0))
-                        if($payable_amount > 20000){
+                        if($gross_salary > 20000){
                             $pt = 200;
-                        }else if($payable_amount > 15000){
+                        }else if($gross_salary > 15000){
                             $pt = 150;
                         }else{
                             $pt = 0;
@@ -305,7 +410,7 @@ class PayrollConfigurationController extends Controller
                         //(01-Apr-23 , 31-Aug-23)
                         // Gratuity : (Basic salary/26 *15)/12
                         if(($selected_year == 2024 && $selected_month <= 3) || ($selected_year == 2023 && $selected_month >= 4)){
-                            if( date('Y-m-d', strtotime($active_user->joined_date)) <= date('Y-m-d', strtotime('2023-08-31' ))){
+                            if( date('Y-m-d', strtotime($active_user->joining_date)) <= date('Y-m-d', strtotime('2023-08-31' ))){
                                 $gratuity = 0;
                             }else{
                                 $gratuity = floor((($basic/26)*15)/12);
@@ -315,14 +420,25 @@ class PayrollConfigurationController extends Controller
                         }
 
                         //Special Allowances : Balance amount adjusted.
-                        $except_basic_and_hra = $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf + $employee_esi + $employer_esi + $pt + $gratuity;
-                        $total_earnings = $basic + $hra + $conveyance + $medical + $lta + $education_allowance + $pf + $employee_esi + $employer_esi + $gratuity;
-                        $special_allowance = $payable_amount - $total_earnings;
+                        //$except_basic_and_hra = $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf + $employee_esi  + $pt + $gratuity;
+                        $total_earnings_except_esi = $basic + $hra + $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf  + $gratuity;
+                        $special_allowance = $gross_salary - $total_earnings_except_esi;
                         $special_allowance = ceil($special_allowance);
+
+                        // ESI : IF(Total Earnings<=21000,(gross*0.75%),0)
+                        $total_earnings = floor($basic + $hra + $conveyance + $medical + $lta + $education_allowance + $special_allowance + $statutory_bonus);
+                        if($total_earnings <= 21000){
+                            $employee_esi = floor($total_earnings*0.0075);
+                            $employer_esi = floor($total_earnings*0.0325);
+                        }else{
+                            $employee_esi = 0;
+                            $employer_esi = 0;
+                        }
+
                         $data = [];
                         $data['payroll_year'] = $selected_year;
                         $data['payroll_month'] = $selected_month;
-                        $data['workingdays'] = $days;
+                        $data['workingdays'] = $days - $loss_of_pay_days;
                         $data['loss_of_pay'] = $loss_of_pay_days;
                         $data['basic'] = $basic;
                         $data['hra'] = $hra;
@@ -340,21 +456,24 @@ class PayrollConfigurationController extends Controller
                         $data['user_id'] = $active_user->id;
                         $data['month_of_salary'] = date('Y-m-d 00:00:00', strtotime($selected_year.'-'.$selected_month.'-01'));
 
-                        $data['deductions'] = floor($pf + $pt + $employee_esi + $employer_esi);
-                        $data['total_earnings'] = floor($basic + $hra + $conveyance + $medical + $lta + $education_allowance + $special_allowance);
+                        $data['deductions'] = floor($pf + $pt + $employee_esi);
+                        $data['total_earnings'] = floor($basic + $hra + $conveyance + $medical + $lta + $education_allowance + $special_allowance + $statutory_bonus);
                         $data['net_salary'] = floor($data['total_earnings'] - $data['deductions']);
-                        $data['payable_amount'] = floor($payable_amount);
+                        $data['gross_salary'] = floor($gross_salary);
                         $data['tds'] = 0;
 
                     }else if($active_user->employmenttype == 'contract'){
                         //calculate payable amount                    
-                        $monthly_salary_amount = floor($salary_package/12);
-                        $payable_amount = ($days - $loss_of_pay_days) * ($monthly_salary_amount/$days);
+                        $payable_days = $number_of_worked_days + $no_of_holidays + $no_of_saturday_sunday['sundays'] + $no_of_saturday_sunday['saturdays'] + $sick_leave_days + $casual_leave_days;
+                        $loss_of_pay_days = $days - $payable_days;
+                        //calculate payable amount                    
+                        $monthly_salary_amount = floor($salary_package);
+                        $gross_salary = $payable_days * ($monthly_salary_amount/$days);
 
                         $data = [];
                         $data['payroll_year'] = $selected_year;
                         $data['payroll_month'] = $selected_month;
-                        $data['workingdays'] = $days;
+                        $data['workingdays'] = $days - $loss_of_pay_days;
                         $data['loss_of_pay'] = $loss_of_pay_days;
                         $data['basic'] = 0;
                         $data['hra'] = 0;
@@ -371,9 +490,9 @@ class PayrollConfigurationController extends Controller
                         $data['special_allowance'] = 0;
                         $data['user_id'] = $active_user->id;
                         $data['month_of_salary'] = date('Y-m-d 00:00:00', strtotime($selected_year.'-'.$selected_month.'-01'));
-                        $data['total_earnings'] = $data['payable_amount'] = floor($payable_amount);
-                        $data['tds'] = $data['deductions']  = floor(($payable_amount/100)*10);
-                        $data['net_salary'] = floor($payable_amount) - floor(($payable_amount/100)*10);
+                        $data['total_earnings'] = $data['gross_salary'] = floor($gross_salary);
+                        $data['tds'] = $data['deductions']  = floor(($gross_salary/100)*10);
+                        $data['net_salary'] = floor($gross_salary) - floor(($gross_salary/100)*10);
                     }
                     if($number_of_working_days > $loss_of_pay_days){
                         if(empty($payslip) ){
@@ -385,7 +504,7 @@ class PayrollConfigurationController extends Controller
                     
                 }
             }
-        }
+        }//exit;
         return redirect()->back()->with('success_message', __('successfully'));
     }
     
