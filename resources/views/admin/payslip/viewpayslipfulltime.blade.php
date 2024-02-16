@@ -112,7 +112,7 @@
                                 <th scope="row">HRA</th>
                                 <td>{{$payslip[0]->hra}}</td>
                                 <td><b>ESI</b></td>
-                                <td>{{$payslip[0]->employee_esi + $payslip[0]->employer_esi}}</td>
+                                <td>{{$payslip[0]->employee_esi}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Conveyance</th>
