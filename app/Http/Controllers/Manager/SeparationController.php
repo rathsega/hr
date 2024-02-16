@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Staff;
+namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -46,5 +46,30 @@ class SeparationController extends Controller
         
         return view(auth()->user()->role.'.separation.view', $page_data);
     }
+
+    function manager_approvals(Request $request){
+        $this->validate($request,[
+            'action'=>'required'
+        ]);
+        $data = [];
+        $data['reporting_manager_comments'] = $request->reporting_manager_comments;
+        if($request->action == 'Approve'){
+            $data['reporting_manager_approval_status'] = 'approved';
+            $data['status'] = 'Pending at HR Manager';
+        }
+        if($request->action == 'Reject'){
+            $data['reporting_manager_approval_status'] = 'rejected';
+            $data['status'] = 'Rejected by Manager';
+        }
+        $data['reporting_manager_approved_or_rejected_date'] = date('Y-m-d');
+        $response = Separation::where('id',$request->id)->update($data);
+
+        if($response){
+            return redirect()->back()->with('success_message', __('Status updated successfully'));
+        }else{
+            return redirect()->back()->withInput()->with('error_message', __('Something is wrong!'));
+        }
+    }
+    
 
 }

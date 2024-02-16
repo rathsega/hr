@@ -9,7 +9,7 @@
 
 <div class="mainSection-title">
     @php
-    $separations = DB::table('separation')->where('user_id',auth()->user()->id)->get();
+    $separations = DB::table('separation')->get();
     $separation_existed = 0;
     if(!$separations->isEmpty()){
     $status = ["Pending at Manager",
@@ -35,22 +35,11 @@
         <div class="d-flex flex-column">
             <h4>{{ get_phrase('Separation') }}</h4>
             <ul class="d-flex align-items-center eBreadcrumb-2">
-                <li><a href="{{route('staff.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                <li><a href="{{route('admin.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
                 <li><a href="#">{{ get_phrase('Separation') }}</a></li>
             </ul>
         </div>
-        @if(!$separation_existed )
-        <div class="export-btn-area d-flex ">
-            <a href="#" class="export_btn" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'staff.separation.add']) }}', '{{ __('Separation Details') }}')">
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14.046" height="12.29" viewBox="0 0 14.046 12.29">
-                        <path id="Logout" d="M4.389,42.535H2.634a.878.878,0,0,1-.878-.878V34.634a.878.878,0,0,1,.878-.878H4.389a.878.878,0,0,0,0-1.756H2.634A2.634,2.634,0,0,0,0,34.634v7.023A2.634,2.634,0,0,0,2.634,44.29H4.389a.878.878,0,1,0,0-1.756Zm9.4-5.009-3.512-3.512a.878.878,0,0,0-1.241,1.241l2.015,2.012H5.267a.878.878,0,0,0,0,1.756H11.05L9.037,41.036a.878.878,0,1,0,1.241,1.241l3.512-3.512A.879.879,0,0,0,13.788,37.525Z" transform="translate(0 -32)" fill="#fff" />
-                    </svg>
-                </span>
-                &nbsp;{{get_phrase(' Exit From The Organization')}}
-            </a>
-        </div>
-        @endif
+        
 
     </div>
 </div>
@@ -87,7 +76,7 @@
                                 {{ $separation->status }}
                             </td>
                             <td>
-                                <a href="{{ route('staff.separation.view', $separation->id) }}" class="btn btn p-0 px-1" title="View Separation"
+                                <a href="{{ route('admin.separation.view', $separation->id) }}" class="btn btn p-0 px-1" title="View Separation"
                                     data-bs-toggle="tooltip">
                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"
                                         width="15" height="15" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512"

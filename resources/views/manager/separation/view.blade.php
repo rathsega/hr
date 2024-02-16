@@ -13,8 +13,8 @@
         <div class="d-flex flex-column">
             <h4>{{ get_phrase('Separation') }}</h4>
             <ul class="d-flex align-items-center eBreadcrumb-2">
-                <li><a href="{{route('staff.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
-                <li><a href="{{route('staff.separation')}}">{{ get_phrase('Separation') }}</a></li>
+                <li><a href="{{route('manager.dashboard')}}">{{ get_phrase('Dashboard') }}</a></li>
+                <li><a href="{{route('manager.separation')}}">{{ get_phrase('Separation') }}</a></li>
             </ul>
         </div>
     </div>
@@ -351,7 +351,7 @@
                             </fieldset>
                             <fieldset id="fieldset1" style="display: none;">
                                 <h2 class="fs-title">Manager Approval Details</h2>
-                                <form action="{{route('staff.separation.manager_approvals')}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('manager.separation.manager_approvals')}}" method="post" enctype="multipart/form-data">
                                     @Csrf
                                     @php
                                     $manager_details = App\Models\User::where('id', $separation[0]->manager)->get()->First();
@@ -391,7 +391,7 @@
                             </fieldset>
                             <fieldset id="fieldset2" style="display: none;">
                                 <h2 class="fs-title">HR Manager Approval Details</h2>
-                                <form action="{{route('staff.separation.hr_manager_approvals')}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('manager.separation.hr_manager_approvals')}}" method="post" enctype="multipart/form-data">
                                     @Csrf
                                     @php
                                     $hr_manager_details = App\Models\User::where('email', 'hr@zettamine.com')->get()->First();
@@ -436,7 +436,7 @@
                             </fieldset>
                             <fieldset id="fieldset3" style="display: none;">
                                 <h2 class="fs-title">IT Manager Approval Details</h2>
-                                <form action="{{route('staff.separation.it_manager_approvals')}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('manager.separation.it_manager_approvals')}}" method="post" enctype="multipart/form-data">
                                     @Csrf
                                     @php
                                     $it_manager_details = App\Models\User::where('email', 'it@zettamine.com')->get()->First();
@@ -474,7 +474,7 @@
                             </fieldset>
                             <fieldset id="fieldset4" style="display: none;">
                                 <h2 class="fs-title">Finance Manager Approval Details</h2>
-                                <form action="{{route('staff.separation.finance_manager_approvals')}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('manager.separation.finance_manager_approvals')}}" method="post" enctype="multipart/form-data">
                                     @Csrf
                                     @php
                                     $finance_manager_details = App\Models\User::where('email', 'accounts@zettamine.com')->get()->First();
