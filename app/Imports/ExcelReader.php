@@ -14,7 +14,13 @@ class ExcelReader implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        $manager_id = User::select('id')->where('email',$row['manager'])->first();
+        if($row['email'] == $row['manager']){
+            $manager_id = NULL;
+        }else{
+            $manager_id = User::select('id')->where('email',$row['manager'])->first();
+        }
+
+
         $department_id = Department::select('id')->where('title',$row['department'])->first();
         // var_dump($row['dob']);exit;
         // Define how the data should be mapped to your model
