@@ -75,6 +75,14 @@
 
                     return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
                 }
+
+                function getHalfdayHourLimitForLeave($date_time_stamp){
+                    if(date('N', $date_time_stamp) == 6){
+                        return 3;
+                    }else{
+                        return 4.5;
+                    }
+                }
                 
                 //Calculate Sick Leave Count
                 $sick_leave_count = 0;
@@ -88,10 +96,19 @@
                         if($from_year == $current_year || $to_year == $current_year){
                             if($from_year == $current_year && $to_year == $current_year ){
                                 $datediff = strtotime($to_date) - strtotime($from_date);
-                                $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
-                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
-                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
-                                $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                                if(date("Y-m-d", $sick_leave->from_date) == date("Y-m-d", $sick_leave->to_date)){
+                                    $hours = $datediff/3600;
+                                    if($hours > getHalfdayHourLimitForLeave($sick_leave->from_date)){
+                                        $sick_leave_count += 1;
+                                    }else{
+                                        $sick_leave_count += 0.5;
+                                    }
+                                }else{
+                                    $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                    $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                    $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                    $sick_leave_count = $sick_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                                }
                             }else if($from_year == $current_year && $to_year == $current_year+1){
                                 $your_date = strtotime($from_date);
                                 $datediff = strtotime($current_year."-12-31") - $your_date;
@@ -125,10 +142,19 @@
                         if($from_year == $current_year || $to_year == $current_year){
                             if($from_year == $current_year && $to_year == $current_year ){
                                 $datediff = strtotime($to_date) - strtotime($from_date);
-                                $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
-                                $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
-                                $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
-                                $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                                if(date("Y-m-d", $casual_leave->from_date) == date("Y-m-d", $casual_leave->to_date)){
+                                    $hours = $datediff/3600;
+                                    if($hours > getHalfdayHourLimitForLeave($casual_leave->from_date)){
+                                        $casual_leave_count += 1;
+                                    }else{
+                                        $casual_leave_count += 0.5;
+                                    }
+                                }else{
+                                    $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
+                                    $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
+                                    $saturday_sunday = countSundaysAndEvenSaturdays($from_date, $to_date);
+                                    $casual_leave_count = $casual_leave_count - $no_of_holidays - $saturday_sunday['sundays'] - $saturday_sunday['evenSaturdays'];
+                                }
                             }else if($from_year == $current_year && $to_year == $current_year+1){
                                 $your_date = strtotime($from_date);
                                 $datediff = strtotime($current_year."-12-31") - $your_date;
