@@ -108,7 +108,7 @@
     </div>
 
 	<div class="fpb-7">
-		<label for="bank_name" class="eForm-label">{{get_phrase('Bank Number')}}</label>
+		<label for="bank_name" class="eForm-label">{{get_phrase('Bank Name')}}</label>
 		<input type="text" name="bank_name" class="form-control eForm-control" id="bank_name">
 	</div>
 
