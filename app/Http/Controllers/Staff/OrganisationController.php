@@ -30,23 +30,23 @@ class OrganisationController extends Controller
         ->get();*/
 
         $all_users_structure = DB::select("WITH RECURSIVE ReportingStructure AS (
-            SELECT id, name, photo, 0 AS manager, 0 AS level
+            SELECT id, name, photo, designation, 0 AS manager, 0 AS level
             FROM users
             WHERE manager IS NULL  -- Assuming root employees have NULL in the manager column
           
             UNION ALL
           
-            SELECT u.id, u.name, u.photo, u.manager, rs.level + 1
+            SELECT u.id, u.name, u.photo, u.designation, u.manager, rs.level + 1
             FROM users u
             JOIN ReportingStructure rs ON u.manager = rs.id
           )
           
-          SELECT id, manager as parent, case when photo is null then CONCAT('<img src=/hr/public/uploads/user-image/placeholder/placeholder.png height=42px></br> ', name) else CONCAT('<img src=/hr/public/uploads/user-image/', photo,' height=42px></br> ', name) end as name 
+          SELECT id, manager as parent, case when photo is null then CONCAT('<img src=/hr/public/uploads/user-image/placeholder/placeholder.png></br> ', name,'<p class=designation>(',designation,')</p>') else CONCAT('<img src=/hr/public/uploads/user-image/', photo,'></br> ', name,'<p class=designation>(',designation,')</p>') end as name 
           FROM ReportingStructure");
         
         $page_data['all_users_structure'] = (array)$all_users_structure;
 
-        $page_data['single_structure'] = DB::select("WITH RECURSIVE EmployeeStructure AS ( SELECT id, name, manager, photo FROM users WHERE id = ". auth()->user()->id ." UNION ALL SELECT u.id, u.name, u.manager, u.photo FROM users u JOIN EmployeeStructure es ON u.id = es.manager ) SELECT id, case when photo is null then CONCAT('<img src=/hr/public/uploads/user-image/placeholder/placeholder.png height=42px></br> ', name) else CONCAT('<img src=/hr/public/uploads/user-image/', photo,' height=42px></br> ', name) end as name ,case when manager is NULL THEN 0 ELSE manager END as parent FROM EmployeeStructure");
+        $page_data['single_structure'] = DB::select("WITH RECURSIVE EmployeeStructure AS ( SELECT id, name, manager, photo FROM users WHERE id = ". auth()->user()->id ." UNION ALL SELECT u.id, u.name, u.manager, u.photo FROM users u JOIN EmployeeStructure es ON u.id = es.manager ) SELECT id, case when photo is null then CONCAT('<img src=/hr/public/uploads/user-image/placeholder/placeholder.png></br> ', name) else CONCAT('<img src=/hr/public/uploads/user-image/', photo,'></br> ', name) end as name ,case when manager is NULL THEN 0 ELSE manager END as parent FROM EmployeeStructure");
         
         $page_data['all_users'] = User::where('status', 'active')->orderBy('sort')->get();
         
