@@ -34,6 +34,26 @@ class MyProfileController extends Controller
         $data['designation'] = $request->designation;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
+        $data['blood_group'] = $request->blood_group;
+        $data['phone'] = $request->phone;
+        $data['alternative_phone'] = $request->alternative_phone;
+        $data['rel_of_alternative_phone'] = $request->rel_of_alternative_phone;
+        $data['blood_group'] = $request->blood_group;
+        $data['gender'] = $request->gender;
+        $data['birthday'] = date('Y-m-d H:i:s', strtotime($request->birthday));
+        $data['present_address'] = $request->present_address;
+        $data['permanent_address'] = $request->permanent_address;
+        $data['bio'] = $request->bio;
+        $data['aadhar_number'] = $request->aadhar_number;
+        $data['pan_number'] = $request->pan_number;
+        $data['uan_number'] = $request->uan_number;
+        $data['pf_number'] = $request->pf_number;
+        $data['passport_number'] = $request->passport_number;
+        $data['passport_expiry_date'] = $request->passport_expiry_date;
+        $data['bank_name'] = $request->bank_name;
+        $data['bank_account_number'] = $request->bank_account_number;
+        $data['ifsc_code'] = $request->ifsc_code;
+
         if($request->photo){
             remove_file('uploads/user-image/'.User::where('id', $user_id)->value('photo'));
 
