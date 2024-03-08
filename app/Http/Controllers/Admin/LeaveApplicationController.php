@@ -95,8 +95,10 @@ class LeaveApplicationController extends Controller
         Leave_application::where('id', $id)->update($data);
         
         if($request->message){
+            $message = $request->message;
+            $message = "Hi ". $to->name . ", \r\n\r\n". $message . "\r\n\r\nRegards, \r\nHR Team.";
             try{
-                Mail::raw($request->message, function ($message) use ($subject, $to) {
+                Mail::raw($message, function ($message) use ($subject, $to) {
                     $message->from(get_settings('system_email'), get_settings('website_title'))
                     ->to($to->email, $to->name)
                     ->subject($subject);
