@@ -101,76 +101,9 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="dashboard_ShortListItem">
-                <div class="dsHeader d-flex justify-content-between align-items-center">
-                    <h5 class="title">{{ get_phrase('Total Employees') }}</h5>
-                    <a href="{{ route('manager.staffs') }}" class="ds_link ds_parent">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10.146" height="4.764" viewBox="0 0 10.146 4.764">
-                            <path id="Read_more_icon" data-name="Read more icon" d="M11.337,5.978l-.84.84.941.947H3.573V8.955h7.865L10.5,9.9l.84.846L13.719,8.36Z"
-                                transform="translate(-3.573 -5.978)" fill="#000000"></path>
-                        </svg>
-                    </a>
-                </div>
-                <div class="dsBody d-flex justify-content-between align-items-center">
-                    <div class="ds_item_details">
-                        @php
-                            $total_employees = App\Models\User::query();
-                        @endphp
-                        <h4 class="total_no">{{ $total_employees->count() }}</h4>
-                        <p class="total_info">{{ get_phrase('Employees') }}</p>
-                    </div>
-                    <div class="ds_item_icon warning">
-                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="50"
-                            height="50" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                            <g>
-                                <path
-                                    d="M430.122 179.421c27.346-15.461 45.854-44.809 45.854-78.405 0-49.619-40.364-89.988-89.987-89.988-52.904 0-95.164 45.873-89.48 99.638-25.422-12.868-55.582-12.873-81.014 0 5.685-53.647-36.468-99.638-89.48-99.638-49.613 0-89.988 40.369-89.988 89.988 0 33.597 18.508 62.944 45.863 78.405C37.5 197.039 6.033 240.407 6.033 290.998v109.984c0 5.522 4.473 10.002 10 10.002h119.982v79.986c0 5.522 4.482 10.001 10 10.001h219.971c5.526 0 10-4.479 10-10.001v-79.986h119.991c5.519 0 9.99-4.479 9.99-10.002V290.998c.001-50.591-31.466-93.959-75.845-111.577zM385.987 31.023c38.598 0 69.985 31.399 69.985 69.992 0 38.597-31.389 69.996-69.985 69.996-18.938 0-36.586-7.433-49.849-20.92a90.615 90.615 0 0 0-13.653-19.67c-4.287-9.239-6.494-19.122-6.494-29.406 0-38.592 31.399-69.992 69.996-69.992zm-60.035 161.67c-1.24 39.11-32.884 68.307-69.947 68.307-38.734 0-69.996-31.58-69.996-69.996 0-38.588 31.398-69.987 69.996-69.987 38.938 0 70.904 32.092 69.947 71.676zM56.026 101.016c0-38.593 31.399-69.992 69.986-69.992 38.598 0 69.996 31.399 69.996 69.992 0 10.284-2.197 20.167-6.494 29.406a90.545 90.545 0 0 0-13.653 19.67c-13.263 13.487-30.901 20.92-49.849 20.92-38.586 0-69.986-31.4-69.986-69.996zM26.024 390.982v-99.984c0-55.137 44.857-99.994 99.988-99.994 14.133 0 27.688 2.861 40.404 8.497 2.822 30.002 20.432 55.767 45.453 69.908-44.389 17.618-75.855 60.991-75.855 111.577v9.996zm329.971 89.994H156.016v-99.989c0-55.137 44.857-99.988 99.989-99.988 55.133 0 99.99 44.854 99.99 99.988zm129.981-89.994h-109.99v-9.996c0-50.586-31.468-93.959-75.855-111.577 25.021-14.142 42.631-39.906 45.453-69.908 12.717-5.636 26.281-8.497 40.404-8.497 55.131 0 99.987 44.857 99.987 99.994v99.984z"
-                                    fill="#000000" data-original="#000000" class=""></path>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
-        <div class="col-md-12">
-            <div class="eSection-wrap table-responsive mt-4">
-                <p class="column-title mb-2">
-                    {{ get_phrase('Inventory items') }}
-                </p>
-                <table class="table eTable">
-                    <thead>
-                        <tr>
-                            <th class="">#</th>
-                            <th class="">{{get_phrase('Type')}}</th>
-                            <th class="">{{get_phrase('Quantity')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (App\Models\Inventory::get() as $key => $inventory)
-                            <tr>
-                                <td>
-                                    {{ ++$key }}
-                                </td>
-                                <td>
-                                    {{ $inventory->title }}
-                                </td>
-                                <td>
-                                    {{ App\Models\Inventory_item::orderBy('title')->where('type_id', $inventory->id)->count() }} {{ $inventory->title }}
-                                </td>
-                                <td class="text-center">
-                                    <a href="{{ route('manager.inventory.item', ['item_type' => $inventory->id]) }}" class="btn btn p-0 px-1" title="{{ get_phrase('Item list') }}"
-                                        data-bs-toggle="tooltip">
-                                        <i class="fi-rr-clipboard-list"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        
 
         <div class="col-md-12">
             <div class="eSection-wrap">
