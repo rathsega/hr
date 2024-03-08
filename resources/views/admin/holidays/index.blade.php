@@ -50,7 +50,7 @@
                                         {{ $holidays->name }}
                                     </td>
                                     <td>
-                                        {{ $holidays->date }}
+                                        {{ date("d, F, Y", strtotime($holidays->date)) }}
                                     </td>
                                     <td>
                                         {{ $holidays->optional }}
