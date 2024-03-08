@@ -5,8 +5,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
-use App\Models\{Separation};
+use App\Models\{Separation, User};
 use Session;
+use Mail;
 
 class SeparationController extends Controller
 {
@@ -56,15 +57,34 @@ class SeparationController extends Controller
         if($request->action == 'Approve'){
             $data['reporting_manager_approval_status'] = 'approved';
             $data['status'] = 'Pending at HR Manager';
+            $email_message = " Your Separation is approved by your manager, and it is pending at HR Manager";
         }
         if($request->action == 'Reject'){
             $data['reporting_manager_approval_status'] = 'rejected';
             $data['status'] = 'Rejected by Manager';
+            $email_message = " Your Separation is rejected by your manager.";
         }
         $data['reporting_manager_approved_or_rejected_date'] = date('Y-m-d');
         $response = Separation::where('id',$request->id)->update($data);
 
+        $separation = Separation::where('id', $request->id)->first();
+        $to = User::where('id', $separation->user_id)->first();
+
+        if($data['reporting_manager_comments']){
+            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your Manager Comments : " . $data['reporting_manager_comments'] . "\r\n\r\nRegards, \r\nHR Team.";
+        }
         if($response){
+            try{
+                $subject = "Your separation is  ".$data['status'];
+                Mail::raw($email_message, function ($message) use ($subject, $to) {
+                    $message->from(get_settings('system_email'), get_settings('website_title'))
+                    ->to($to->email, $to->name)
+                    ->subject($subject);
+                });
+                
+            } catch (\Exception $e) {
+                \Log::error('Email sending failed: ' . $e->getMessage());
+            }
             return redirect()->back()->with('success_message', __('Status updated successfully'));
         }else{
             return redirect()->back()->withInput()->with('error_message', __('Something is wrong!'));
