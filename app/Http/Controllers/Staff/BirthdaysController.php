@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 class BirthdaysController extends Controller
 {
     function index(){
-        return view('admin.birthdays.index');
+        return view('staff.birthdays.index');
     }
     
 }
