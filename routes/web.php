@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController};
 
 /*
 |--------------------------------------------------------------------------
@@ -150,6 +150,10 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::post('separation/it_manager_approvals}', [SeparationController::class, 'it_manager_approvals'])->name('separation.it_manager_approvals');
     Route::post('separation/finance_manager_approvals}', [SeparationController::class, 'finance_manager_approvals'])->name('separation.finance_manager_approvals');
     Route::post('separation/hr_manager_approvals}', [SeparationController::class, 'hr_manager_approvals'])->name('separation.hr_manager_approvals');
+
+    //Feedback
+    Route::get('feedback', [FeedbackController::class, 'index'])->name('feedback');
+    Route::post('feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
 

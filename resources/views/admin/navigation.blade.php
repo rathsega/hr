@@ -571,7 +571,7 @@
                         </svg>
                     </div>
                     <span class="link_name">
-                        {{get_phrase('Organisation')}}
+                        {{get_phrase('Organisation Chart')}}
                     </span>
                 </a>
             </div>

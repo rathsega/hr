@@ -1,5 +1,5 @@
 @extends('index')
-@push('title', get_phrase('Organization'))
+@push('title', get_phrase('Organization Chart'))
 @push('meta')
 @endpush
 @push('css')
@@ -12,7 +12,7 @@
 		<div class="d-flex flex-column">
 			<ul class="d-flex align-items-center eBreadcrumb-2">
 				<li><a href="{{ route('staff.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
-				<li><a href="#">{{ get_phrase('Organisation') }}</a></li>
+				<li><a href="#">{{ get_phrase('Organisation Chart') }}</a></li>
 			</ul>
 		</div>
 	</div>
