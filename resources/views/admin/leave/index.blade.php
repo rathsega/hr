@@ -222,7 +222,7 @@
                                     <select onchange="$('#filterForm').submit();" name="year" class="form-select eForm-select select2">
                                         @for ($year = date('Y'); $year >= 2022; $year--)
                                             @php
-                                                $pending_request = App\Models\Leave_application::where('leave_applications.status', 'pending')
+                                                $pending_request = App\Models\Leave_application::where('leave_applications.status', 'manager_approved')
                                                     ->where('from_date', '>=', strtotime($year . '-1-1 00:00:00'))
                                                     ->where('from_date', '<=', strtotime($year . '-12-31 23:59:59'));
                                                 $pending_req_counted = $pending_request->count();
@@ -242,7 +242,7 @@
                                         @for ($month = 1; $month <= 12; $month++)
                                             @php
                                                 $timestamp_month_wise = strtotime($selected_year . '-' . $month . '-1 00:00:00');
-                                                $pending_request = App\Models\Leave_application::where('leave_applications.status', 'pending')
+                                                $pending_request = App\Models\Leave_application::where('leave_applications.status', 'manager_approved')
                                                     ->where('from_date', '>=', strtotime($selected_year . '-' . $month . '-1 00:00:00'))
                                                     ->where('from_date', '<=', strtotime(date('Y-m-t 00:00:00', $timestamp_month_wise)));
                                                 $pending_req_counted = $pending_request->count();
@@ -284,7 +284,7 @@
                                     
                                     $pending_request = App\Models\Leave_application::where('from_date', '>=', $start_timestamp)
                                         ->where('from_date', '<=', $end_timestamp)
-                                        ->where('leave_applications.status', 'pending');
+                                        ->where('leave_applications.status', 'manager_approved');
                                     $approved_request = App\Models\Leave_application::where('from_date', '>=', $start_timestamp)
                                         ->where('from_date', '<=', $end_timestamp)
                                         ->where('leave_applications.status', 'approved');

@@ -222,7 +222,9 @@
                         {{get_phrase('Leave Report')}}
                     </span>
                     @php
-                        $total_pending_leave_requests = \App\Models\Leave_application::where('status', 'pending')->count();
+                        $total_pending_leave_requests = \App\Models\Leave_application::join('users', 'users.id', '=', 'leave_applications.user_id')
+                        ->where('users.manager', auth()->user()->id)
+                        ->where('status', 'pending')->count();
                     @endphp
                     @if ($total_pending_leave_requests > 0)
                         <span class="badge bg-danger ms-auto me-4">

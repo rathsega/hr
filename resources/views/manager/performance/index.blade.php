@@ -123,46 +123,48 @@
                                             <td class="position-relative">
                                                 {!! script_checker($remarks) !!}
                                                 <div class="contant-overlay">
-                                                    @if (!$performance_review)
-                                                        <a href="{{ route('manager.performance', ['user_id' => $user->id, 'year' => $selected_year, 'month' => $selected_month]) }}"
-                                                            class="btn btn p-1" title="{{ get_phrase('Give rating') }}" data-bs-toggle="tooltip" data-bs-placement="right">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
-                                                                viewBox="0 0 426.667 426.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                                                <g>
-                                                                    <path
-                                                                        d="M405.332 192H234.668V21.332C234.668 9.559 225.109 0 213.332 0 201.559 0 192 9.559 192 21.332V192H21.332C9.559 192 0 201.559 0 213.332c0 11.777 9.559 21.336 21.332 21.336H192v170.664c0 11.777 9.559 21.336 21.332 21.336 11.777 0 21.336-9.559 21.336-21.336V234.668h170.664c11.777 0 21.336-9.559 21.336-21.336 0-11.773-9.559-21.332-21.336-21.332zm0 0"
-                                                                        fill="#000000" data-original="#000000" class=""></path>
-                                                                </g>
-                                                            </svg>
-                                                        </a>
-                                                    @else
-                                                        <a href="{{ route('manager.performance', ['id' => $performance_review->id, 'user_id' => $user->id]) }}" class="btn btn p-1"
-                                                            title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="right">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
-                                                                viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                                                                <g>
-                                                                    <path
-                                                                        d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
-                                                                        fill="#000000" data-original="#000000" class=""></path>
-                                                                </g>
-                                                            </svg>
-                                                        </a>
+                                                    @if(auth()->user()->id != $user->id)
+                                                        @if (!$performance_review)
+                                                            <a href="{{ route('manager.performance', ['user_id' => $user->id, 'year' => $selected_year, 'month' => $selected_month]) }}"
+                                                                class="btn btn p-1" title="{{ get_phrase('Give rating') }}" data-bs-toggle="tooltip" data-bs-placement="right">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
+                                                                    viewBox="0 0 426.667 426.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                                    <g>
+                                                                        <path
+                                                                            d="M405.332 192H234.668V21.332C234.668 9.559 225.109 0 213.332 0 201.559 0 192 9.559 192 21.332V192H21.332C9.559 192 0 201.559 0 213.332c0 11.777 9.559 21.336 21.332 21.336H192v170.664c0 11.777 9.559 21.336 21.332 21.336 11.777 0 21.336-9.559 21.336-21.336V234.668h170.664c11.777 0 21.336-9.559 21.336-21.336 0-11.773-9.559-21.332-21.336-21.332zm0 0"
+                                                                            fill="#000000" data-original="#000000" class=""></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ route('manager.performance', ['id' => $performance_review->id, 'user_id' => $user->id]) }}" class="btn btn p-1"
+                                                                title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="right">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                    xmlns:svgjs="http://svgjs.com/svgjs" width="15" height="15" x="0" y="0"
+                                                                    viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                                                                    <g>
+                                                                        <path
+                                                                            d="m496.063 62.299-46.396-46.4c-21.199-21.199-55.689-21.198-76.888 0L27.591 361.113c-2.17 2.17-3.624 5.054-4.142 7.875L.251 494.268a15.002 15.002 0 0 0 17.48 17.482L143 488.549c2.895-.54 5.741-2.008 7.875-4.143l345.188-345.214c21.248-21.248 21.251-55.642 0-76.893zM33.721 478.276l14.033-75.784 61.746 61.75-75.779 14.034zm106.548-25.691L59.41 371.721 354.62 76.488l80.859 80.865-295.21 295.232zM474.85 117.979l-18.159 18.161-80.859-80.865 18.159-18.161c9.501-9.502 24.96-9.503 34.463 0l46.396 46.4c9.525 9.525 9.525 24.939 0 34.465z"
+                                                                            fill="#000000" data-original="#000000" class=""></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </a>
 
-                                                        <a href="#" onclick="confirmModal('{{ route('manager.performance.delete', ['id' => $performance_review->id]) }}')"
-                                                            class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="right">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
-                                                                </path>
-                                                                <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
-                                                                </path>
-                                                                <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                                <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
-                                                            </svg>
-                                                        </a>
+                                                            <a href="#" onclick="confirmModal('{{ route('manager.performance.delete', ['id' => $performance_review->id]) }}')"
+                                                                class="btn btn p-1" title="{{ get_phrase('Delete') }}" data-bs-toggle="tooltip" data-bs-placement="right">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" id="fi_3405244" data-name="Layer 2" width="15" height="15"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z">
+                                                                    </path>
+                                                                    <path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z">
+                                                                    </path>
+                                                                    <path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                    <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        @endif
                                                     @endif
                                                 </div>
                                             </td>
