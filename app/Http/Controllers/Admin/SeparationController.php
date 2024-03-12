@@ -26,7 +26,7 @@ class SeparationController extends Controller
 
 
         $data['reason'] = $request->reason;
-        $data['actual_last_working_day'] = date('Y-m-d', time() + (3600*24*auth()->user()->notice_period_in_days));
+        $data['actual_last_working_day'] = date('Y-m-d', time() + (3600*24*90));
         $data['user_proposed_last_working_day'] = $request->user_proposed_last_working_day;
         $data['user_id'] = auth()->user()->id;
         $data['status'] = 'Pending at Manager';

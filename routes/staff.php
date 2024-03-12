@@ -43,6 +43,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
     //Payslip
     Route::get('payslip', [PayslipController::class, 'index'])->name('payslip');
     Route::get('payslip/download', [PayslipController::class, 'payslip_download'])->name('payslip.download');
+    Route::get('payslip/download_new_payslip', [PayslipController::class, 'download_new_payslip'])->name('payslip.download_new_payslip');
 
     //Inventory
     Route::get('inventory/item', [InventoryItemController::class, 'index'])->name('inventory.item');

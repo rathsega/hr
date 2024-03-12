@@ -267,6 +267,8 @@
                                     $staff_leave_reports = App\Models\Leave_application::join('users', 'users.id', '=', 'leave_applications.user_id')
                                         ->where('from_date', '>=', $start_timestamp)
                                         ->where('from_date', '<=', $end_timestamp)
+                                        ->where('users.manager', auth()->user()->id)
+                                        ->orWhere('users.id', auth()->user()->id)
                                         ->select('leave_applications.user_id', DB::raw('count(*) as user_total_leave'))
                                         ->groupBy('leave_applications.user_id')
                                         ->orderBy('users.sort');
@@ -400,7 +402,7 @@
                                                                             <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
                                                                         @endif
                                                                         <div class="contant-overlay">
-                                                                            @if ($leave_report->status == 'pending' || $leave_report->status == 'manager_rejected')
+                                                                            @if (($leave_report->status == 'pending' || $leave_report->status == 'manager_rejected') && ($leave_report->user_id != auth()->user()->id))
                                                                                 <a href="#"
                                                                                     onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.leave.leave_accept_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send message') }}')"
                                                                                     class="btn btn p-0" title="{{ get_phrase('Approve') }}" data-bs-placement="right"
@@ -416,7 +418,7 @@
                                                                                 </a>
                                                                             @endif
 
-                                                                            @if ($leave_report->status == 'pending' || $leave_report->status == 'manager_approved')
+                                                                            @if (($leave_report->status == 'pending' || $leave_report->status == 'manager_approved') && ($leave_report->user_id != auth()->user()->id))
                                                                                 <a href="#"
                                                                                     onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.leave.leave_rejection_form', 'id' => $leave_report->id]) }}', '{{ get_phrase('Send a reason for this rejection') }}')"
                                                                                     class="btn btn p-1" title="{{ get_phrase('Reject') }}" data-bs-placement="right"

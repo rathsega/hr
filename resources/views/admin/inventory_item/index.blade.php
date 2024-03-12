@@ -59,7 +59,7 @@
                             <label for="assigned_user_id" class="eForm-label">{{ get_phrase('Assigned user') }}</label>
                             <select onchange="$(this).parent().parent().parent().submit()" name="assigned_user" class="form-select eForm-select select2" id="assigned_user_id" tabindex="-1">
                                 <option value="">{{ get_phrase('All user') }}</option>
-                                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
+                                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orWhere('role','manager')->orderBy('sort')->get() as $staff)
                                     <option @if ($assigned_user_id == $staff->id) selected @endif value="{{ $staff->id }}">{{ $staff->name }}</option>
                                 @endforeach
                             </select>
@@ -69,7 +69,7 @@
                             <label for="responsible_user_id" class="eForm-label">{{ get_phrase('Responsible user') }}</label>
                             <select onchange="$(this).parent().parent().parent().submit()" name="responsible_user" class="form-select eForm-select select2" id="responsible_user_id">
                                 <option value="">{{ get_phrase('All user') }}</option>
-                                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
+                                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orWhere('role','manager')->orderBy('sort')->get() as $staff)
                                     <option @if ($responsible_user_id == $staff->id) selected @endif value="{{ $staff->id }}">{{ $staff->name }}</option>
                                 @endforeach
                             </select>

@@ -14,7 +14,7 @@ class TasksController extends Controller
 
     function index($tasks_type = "archive"){
         if(auth()->user()->role == 'manager'){
-            $page_data['users'] = User::where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort')->get();
+            $page_data['users'] = User::where('manager', '=', auth()->user()->id)->orWhere('id', auth()->user()->id)->where('status', 'active')->orderBy('sort')->get();
         }elseif(auth()->user()->role == 'staff'){
             $page_data['users'] = User::where('id', auth()->user()->id)->get();
         }

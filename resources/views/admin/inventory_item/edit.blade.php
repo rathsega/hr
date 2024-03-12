@@ -24,7 +24,7 @@
             <label for="assigned_user_id" class="eForm-label">{{get_phrase('Assign user')}}</label>
             <select name="assigned_user_id" class="form-select eForm-select select2" id="assigned_user_id">
                 <option value="">{{ get_phrase('Select a user') }}</option>
-                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
+                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orWhere('role','manager')->orderBy('sort')->get() as $staff)
                     <option @if($staff->id == $inventory_item->assigned_user_id) selected @endif value="{{ $staff->id }}">{{ $staff->name }}</option>
                 @endforeach
             </select>
@@ -34,7 +34,7 @@
             <label for="responsible_user_id" class="eForm-label">{{get_phrase('Responsible user')}}</label>
             <select name="responsible_user_id" class="form-select eForm-select select2" id="responsible_user_id">
                 <option value="">{{ get_phrase('Select a user') }}</option>
-                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orderBy('sort')->get() as $staff)
+                @foreach (App\Models\User::where('status', 'active')->where('role', 'staff')->orWhere('role','manager')->orderBy('sort')->get() as $staff)
                     <option @if($staff->id == $inventory_item->responsible_user_id) selected @endif value="{{ $staff->id }}">{{ $staff->name }}</option>
                 @endforeach
             </select>

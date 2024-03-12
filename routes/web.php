@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController};
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +112,7 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::get('payslip/deleteAttachment', [PayslipController::class, 'deleteAttachment'])->name('payslip.deleteAttachment');
     Route::get('payslip/download', [PayslipController::class, 'payslip_download'])->name('payslip.download');
     Route::get('payslip/send', [PayslipController::class, 'payslip_send_to_email'])->name('payslip.send');
+    Route::get('payslip/download_new_payslip', [PayslipController::class, 'download_new_payslip'])->name('payslip.download_new_payslip');
 
     //Branch
     Route::get('branch', [BranchController::class, 'index'])->name('branch');
@@ -154,6 +155,9 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     //Feedback
     Route::get('feedback', [FeedbackController::class, 'index'])->name('feedback');
     Route::post('feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+
+    //Inventory
+    Route::get('inventory/item', [InventoryItemController::class, 'index'])->name('inventory.item');
 });
 
 

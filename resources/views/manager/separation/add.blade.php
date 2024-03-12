@@ -8,7 +8,7 @@
 
 	<div class="fpb-7">
 		<label for="email" class="eForm-label">{{get_phrase('Actual Last Working Day')}}</label>
-		{{date('d, F, Y', time() + (3600*24*$user_details->notice_period_in_days))}}
+		{{date('d, F, Y', time() + (3600*24*90))}}
 	</div>
 
 	<div class="fpb-7">

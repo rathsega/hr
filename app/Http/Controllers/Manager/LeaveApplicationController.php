@@ -13,7 +13,7 @@ class LeaveApplicationController extends Controller
 
     function index(Request $request){
         if(auth()->user()->role == 'manager'){
-            $page_data['users'] = User::where('role', '!=', 'admin')->where('manager', auth()->user()->id)->orWhere('id', auth()->user()->id)->where('status', 'active')->orderBy('sort')->get();
+            $page_data['users'] = User::where('manager', auth()->user()->id)->orWhere('id', auth()->user()->id)->where('status', 'active')->orderBy('sort')->get();
         }else{
             $page_data['users'] = User::where('id', auth()->user()->id)->get();
         }
