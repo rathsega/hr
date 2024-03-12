@@ -91,6 +91,10 @@
                                     $end_timestamp = strtotime($selected_year . '-' . $selected_month . '-' . $day . ' 23:59:59');
                                     
                                     $timesheet_staffs = App\Models\Timesheet::join('users', 'users.id', '=', 'timesheets.user_id')
+                                        ->where(function($query) {
+                                            $query->where('users.manager', auth()->user()->id)
+                                            ->orWhere('users.id', auth()->user()->id);
+                                        })
                                         ->where('timesheets.from_date', '>=', $start_timestamp)
                                         ->where('timesheets.to_date', '<=', $end_timestamp)
                                         ->select('timesheets.user_id', DB::raw('count(*) as user_work_list'))
@@ -216,6 +220,7 @@
                                                                     </td>
                                                                     <td class="p-0 ">
                                                                         <div class="invisible-layout">
+                                                                        @if($timesheet->user_id  == auth()->user()->id)
                                                                             <a href="{{ route('manager.timesheet', ['id' => $timesheet->id]) }}" class="btn btn p-1"
                                                                                 title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="top">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -244,6 +249,7 @@
                                                                                     <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                                                 </svg>
                                                                             </a>
+                                                                            @endif;
                                                                         </div>
                                                                     </td>
                                                                 </tr>

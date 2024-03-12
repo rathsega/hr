@@ -93,6 +93,11 @@
                                     $end_timestamp = strtotime($selected_year . '-' . $selected_month . '-' . $day . ' 23:59:59');
                                     
                                     $attendance_staffs = App\Models\Attendance::join('users', 'users.id', '=', 'attendances.user_id')
+                                        ->where(function($query) {
+                                            $query->where('users.manager', auth()->user()->id)
+                                        ->orWhere('users.id', auth()->user()->id);
+                                        })
+                                        
                                         ->where('checkin', '>=', $start_timestamp)
                                         ->where('checkin', '<=', $end_timestamp)
                                         ->select('attendances.user_id', DB::raw('count(*) as total_attendance'))
@@ -313,7 +318,7 @@
                                                                         @endif
 
                                                                         <div class="contant-overlay">
-
+                                                                        @if($att_report->user_id  == auth()->user()->id)
                                                                             <a href="{{ route('manager.attendance', ['id' => $att_report->id]) }}" class="btn btn p-1"
                                                                                 title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip" data-bs-placement="right">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -342,6 +347,7 @@
                                                                                     <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                                                 </svg>
                                                                             </a>
+                                                                            @endif;
                                                                         </div>
                                                                     </td>
                                                                 </tr>
