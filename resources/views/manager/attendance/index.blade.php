@@ -374,13 +374,62 @@
         
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
+                let location_warning_note = document.getElementById("location_warning_note");
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 $('.current-location-form').prepend('<input type="hidden" name="lat" value="' + lat + '"><input type="hidden" name="lon" value="' + lon + '">');
                 $('.current-location-form [type=submit]').removeClass('disabled');
                 $('.current-location-form [type=submit]').prop('disabled', false);
+                document.getElementById('locationButton').style.display = 'none';
+                location_warning_note.innerHTML = "";
 
             });
+        }
+
+        window.onload = function(){
+            // Check if geolocation is supported
+            let location_warning_note = document.getElementById("location_warning_note");
+            if ("geolocation" in navigator) {
+                // Check if location permission is granted
+                navigator.permissions.query({name:'geolocation'}).then(function(result) {
+                    console.log(result.state );
+                    if (result.state == 'granted') {
+                        // Location access granted, do nothing
+                        location_warning_note.innerHTML = "";
+                        document.getElementById('locationButton').style.display = 'none';
+                    } else {
+                        location_warning_note.innerHTML = "Since you haven't provided location access, you're unable to add your attendance. Please click the button below to provide location access.";
+                        // Location access not granted, show button
+                        document.getElementById('locationButton').style.display = 'block';
+                    }
+                });
+            } else {
+                // Geolocation not supported
+                console.log('Geolocation is not supported.');
+            }
+        }
+        
+
+        function requestLocationAccess() {
+            let location_warning_note = document.getElementById("location_warning_note");
+            // Check if geolocation is supported
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Success callback - user granted location access
+                    console.log("Location access granted:", position);
+                    // Do something with the position data if needed
+                    document.getElementById('locationButton').style.display = 'none';
+                    location_warning_note.innerHTML = "";
+                }, function(error) {
+                    // Error callback - user denied location access or an error occurred
+                    console.log("Location access denied or error:", error);
+                    location_warning_note.innerHTML = "Location access is blocked. Please reset your browser's location access permissions in the settings, and please reload the page.";
+                    document.getElementById('locationButton').style.display = 'none';
+                });
+            } else {
+                // Geolocation not supported
+                console.log('Geolocation is not supported.');
+            }
         }
     </script>
 @endpush

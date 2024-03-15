@@ -48,3 +48,6 @@
         </div>
     </div>
 </form>
+<label id="location_warning_note" class="eForm-label" style="color: red;"></label>
+
+<button id="locationButton" class="btn-form mt-2 mb-3" onclick="requestLocationAccess()">Grant Location Access</button>

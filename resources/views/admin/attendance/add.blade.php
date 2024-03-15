@@ -46,6 +46,10 @@
                     <textarea name="note" class="form-control" rows="2">{{ old('note') }}</textarea>
                 </div>
                 <button type="submit" class="btn-form mt-2 mb-3 w-100" disabled>{{get_phrase('Submit')}}</button>
+                
             </div>
         </div>
     </form>
+    <label id="location_warning_note" class="eForm-label" style="color: red;"></label>
+
+    <button id="locationButton" class="btn-form mt-2 mb-3" onclick="requestLocationAccess()">Grant Location Access</button>
