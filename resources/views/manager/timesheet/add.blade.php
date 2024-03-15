@@ -27,13 +27,13 @@
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="fromDate" class="eForm-label">{{get_phrase('From')}}</label>
-                <input type="datetime-local" value="{{ date('Y-m-d H:i') }}" name="from_date" class="form-control eForm-control" id="fromDate" />
+                <input type="datetime-local" max="<?php echo date('Y-m-d\TH:i'); ?>" value="{{ date('Y-m-d H:i') }}" name="from_date" class="form-control eForm-control" id="fromDate" />
             </div>
         </div>
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="toDate" class="eForm-label">{{get_phrase('To')}}</label>
-                <input type="datetime-local" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" name="to_date" id="toDate" />
+                <input type="datetime-local" max="<?php echo date('Y-m-d\TH:i'); ?>" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" name="to_date" id="toDate" />
             </div>
         </div>
         <div class="col-md-12">
