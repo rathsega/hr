@@ -36,7 +36,7 @@
         <div class="col-md-6">
             <div class="fpb-7">
                 <label for="eInputTextarea" class="eForm-label">{{get_phrase('Date & time')}}</label>
-                <input type="datetime-local" name="time" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control date-time-picker" id="eInputDateTime" />
+                <input type="datetime-local" name="time" value="{{ date('Y-m-d H:i') }}" max="<?php echo date('Y-m-d\TH:i:s'); ?>" class="form-control eForm-control date-time-picker" id="eInputDateTime" />
             </div>
         </div>
         <div class="col-md-12">
