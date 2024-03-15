@@ -631,7 +631,7 @@
         let warning_note = document.getElementById("warning_note");
         if(leave_type == 'sick_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_sick_leave_count; ?>)){
             leave_req_sub_but.disabled = true;
-            warning_note.innerHTML = "You don't have Sick leaves, please choose leave type as loss of pay"
+            warning_note.innerHTML = "You don't have Sick leaves, please choose leave type as loss of pay."
         }else if(leave_type == 'casual_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_casual_leave_count + (float)$available_cfl_count; ?>)){
             leave_req_sub_but.disabled = true;
             warning_note.innerHTML = "You don't have Casual leaves, please choose leave type as loss of pay."
