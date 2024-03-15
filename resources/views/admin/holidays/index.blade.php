@@ -34,9 +34,9 @@
                         <thead>
                             <tr>
                                 <th class="">#</th>
-                                <th class="">{{ get_phrase('name') }}</th>
-                                <th class="">{{ get_phrase('date') }}</th>
-                                <th class="">{{ get_phrase('optional(Can avail only one)') }}</th>
+                                <th class="">{{ get_phrase('Name') }}</th>
+                                <th class="">{{ get_phrase('Date') }}</th>
+                                <th class="">{{ get_phrase('Optional(Can avail only one)') }}</th>
                                 <th class="text-center">{{ get_phrase('Action') }}</th>
                             </tr>
                         </thead>
