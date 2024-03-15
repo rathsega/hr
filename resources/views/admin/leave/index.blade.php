@@ -194,6 +194,11 @@
                 </a>
             </div>
         </div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
+            <div class="d-flex flex-column eForm-label " style="margin-top: 20px;">
+                <i>Note : Your leave balance will be updated monthly with half a day of sick leave and one casual leave </i>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -532,7 +537,7 @@
                                     </div>
                                     <button type="submit" id="leave_request_submit_button" class="btn-form mt-2 mb-3">{{ get_phrase('Submit request') }}</button>
                                     <div class="fpb-7">
-                                        <label id="warning_note" class="eForm-label"></label>
+                                        <label id="warning_note" class="eForm-label" style="color: red;"></label>
                                     </div>
                                 </div>
                             </div>
