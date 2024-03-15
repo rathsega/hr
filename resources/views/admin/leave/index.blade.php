@@ -631,10 +631,10 @@
         let warning_note = document.getElementById("warning_note");
         if(leave_type == 'sick_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_sick_leave_count; ?>)){
             leave_req_sub_but.disabled = true;
-            warning_note.innerHTML = "The number of sick leave days you are applying for exceeds the available sick leave count."
+            warning_note.innerHTML = "You don't have Sick leaves, please choose leave type as loss of pay"
         }else if(leave_type == 'casual_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_casual_leave_count + (float)$available_cfl_count; ?>)){
             leave_req_sub_but.disabled = true;
-            warning_note.innerHTML = "The number of casual leave days you are applying for exceeds the available casual leave count."
+            warning_note.innerHTML = "You don't have Casual leaves, please choose leave type as loss of pay."
         }else{
             let button_disabled = leave_req_sub_but.hasAttribute('disabled');
             button_disabled ? leave_req_sub_but.removeAttribute('disabled') : '';
