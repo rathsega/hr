@@ -311,7 +311,7 @@
                         <div id="msform">
                             <!-- progressbar -->
                             <ul id="progressbar">
-                                <li onclick="toggleFieldset(0)" class="{{$initiated}}">Initiated</li>
+                                <li onclick="toggleFieldset(0)" class="{{$initiated}} underline">Initiated</li>
                                 <li onclick="toggleFieldset(1)" class="{{$manager}}">Manager</li>
                                 <li onclick="toggleFieldset(2)" class="{{$hr_manager}}">HR Manager</li>
                                 <li onclick="toggleFieldset(3)" class="{{$it_manager}}">IT Manager</li>
@@ -519,7 +519,11 @@
     </div>
 </div>
 @endsection
-
+<style>
+    .underline {
+            text-decoration: underline;
+        }
+        </style>
 <script>
     let currentVisibleIndex = 0;
 
@@ -529,6 +533,11 @@
 
         // Show the newly selected fieldset
         document.getElementById('fieldset' + index).style.display = 'block';
+        let listItems= document.getElementById("progressbar").getElementsByTagName("li");
+        for (var i = 0; i < listItems.length; i++) {
+                listItems[i].classList.remove('underline');
+            }
+        document.getElementById("progressbar").getElementsByTagName("li")[index].classList.add('underline');
 
         // Update the current visible index
         currentVisibleIndex = index;
