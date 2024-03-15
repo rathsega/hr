@@ -36,7 +36,7 @@
                                 <th class="">#</th>
                                 <th class="">{{ get_phrase('name') }}</th>
                                 <th class="">{{ get_phrase('date') }}</th>
-                                <th class="">{{ get_phrase('optional') }}</th>
+                                <th class="">{{ get_phrase('optional(Can avail only one)') }}</th>
                                 <th class="text-center">{{ get_phrase('Action') }}</th>
                             </tr>
                         </thead>
@@ -53,7 +53,7 @@
                                         {{ date("d, F, Y", strtotime($holidays->date)) }}
                                     </td>
                                     <td>
-                                        {{ $holidays->optional }}
+                                        {{ $holidays->optional ? "Yes" : "" }}
                                     </td>
                                     <td class="text-center">
                                         <a href="#"

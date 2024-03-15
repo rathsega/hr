@@ -98,6 +98,7 @@
                                             <th>{{get_phrase('Date')}}</th>
                                             <th class="text-center">{{get_phrase('Login')}}</th>
                                             <th class="text-center">{{get_phrase('Logout')}}</th>
+                                            <th class="text-center">{{get_phrase('Hours')}}</th>
                                             <th>{{get_phrase('Note')}}</th>
                                         </tr>
                                     </thead>
@@ -255,6 +256,10 @@
                                                             <span class="badge bg-danger fw-700">{{get_phrase('Early leave')}}</span>
                                                         @endif
                                                     @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @php $minutes = floor((($att_report->checkout - $att_report->checkin)%3600)/60) >= 10 ? floor((($att_report->checkout - $att_report->checkin)%3600)/60) : "0".floor((($att_report->checkout - $att_report->checkin)%3600)/60); @endphp
+                                                    {{floor(($att_report->checkout - $att_report->checkin)/3600)}} : {{floor((($att_report->checkout - $att_report->checkin)%3600)/60) == 0 ? "00" :  $minutes}}
                                                 </td>
                                                 <td class="position-relative">
                                                     @if ($att_report->note)

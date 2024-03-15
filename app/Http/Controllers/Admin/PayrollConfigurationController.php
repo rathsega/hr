@@ -395,7 +395,7 @@ class PayrollConfigurationController extends Controller
                 $sick_leave_days = $this->getNumberOfSickLeavesTakenByUser($selected_year, $selected_month, $active_user->id); //$number_of_working_days - $number_of_attendancedays; - modification
                 $casual_leave_days = $this->getNumberOfCasualLeavesTakenByUser($selected_year, $selected_month, $active_user->id); //$number_of_working_days - $number_of_attendancedays; - modification
                 
-                echo "Emp ID : " . $active_user->emp_id . "--- Newly : " . $newly_joined ."== Number Of Worked days :". $number_of_attendancedays . "=== Days : " . $total_working_days . "Saturdays : " . $no_of_saturday_sunday['saturdays'] . "== Sundays : " . $no_of_saturday_sunday['sundays'] . "===Holidays : ". $no_of_holidays . "</br>";
+                //echo "Emp ID : " . $active_user->emp_id . "--- Newly : " . $newly_joined ."== Number Of Worked days :". $number_of_attendancedays . "=== Days : " . $total_working_days . "Saturdays : " . $no_of_saturday_sunday['saturdays'] . "== Sundays : " . $no_of_saturday_sunday['sundays'] . "===Holidays : ". $no_of_holidays . "</br>";
 
 
                 if(!($number_of_attendancedays || $sick_leave_days || $casual_leave_days)){
@@ -421,7 +421,7 @@ class PayrollConfigurationController extends Controller
                         $monthly_salary_amount = floor($salary_package);
                         $earned_salary = $actual_working_days * ($monthly_salary_amount/cal_days_in_month(CAL_GREGORIAN,$selected_month,$selected_year));
 
-                        echo "user id : " . $active_user->emp_id . "--- actual working days : " . $actual_working_days . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_attendancedays. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
+                        //echo "user id : " . $active_user->emp_id . "--- actual working days : " . $actual_working_days . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_attendancedays. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
 
                         //calculate salary component wise
 
@@ -547,7 +547,7 @@ class PayrollConfigurationController extends Controller
                         $monthly_salary_amount = floor($salary_package);
                         $earned_salary = $actual_working_days * ($monthly_salary_amount/$total_working_days);
 
-                        echo "cont user id : " . $active_user->emp_id . " === Newly Joined : " . $newly_joined." -----Relieved : " . $relieved ." --days :". $total_working_days ."--- Payable days : " . $actual_working_days . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_attendancedays. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
+                        //echo "cont user id : " . $active_user->emp_id . " === Newly Joined : " . $newly_joined." -----Relieved : " . $relieved ." --days :". $total_working_days ."--- Payable days : " . $actual_working_days . "-- Number of Working days : " . $number_of_working_days . " -- Number of Worked days : " . $number_of_attendancedays. " -- Number of LOP days : " . $loss_of_pay_days. " -- Number of Sick days : " . $sick_leave_days. " -- Number of Casual days : " . $casual_leave_days . '</br>';
 
                         $data = [];
                         $data['payroll_year'] = $selected_year;
@@ -582,9 +582,13 @@ class PayrollConfigurationController extends Controller
                     }
                     
                 }
-            }exit;
+            }//exit;
         }
         return redirect()->back()->with('success_message', __('successfully'));
+    }
+
+    public function configure_extra_modules(){
+
     }
     
 

@@ -299,7 +299,7 @@
                     $hr_manager = "green";
                     $it_manager = "green";
                     $finance_manager = "red";
-                    }else if($separation[0]->status == "Approved by Finance Manager"){
+                    }else if($separation[0]->status == "Approved by Finance Manager"  || $separation[0]->status == "Relieved"){
                     $initiated = "green";
                     $manager = "green";
                     $hr_manager = "green";

@@ -19,13 +19,13 @@
     </div>
 
     <div class="fpb-7">
-        <label for="feternity" class="eForm-label">{{get_phrase('Feternity Leaves Count')}}</label>
-        <input name="feternity" type="number" class="form-control eForm-control" id="feternity"  value="{{$leaves_count->feternity}}" placeholder="{{get_phrase('Enter Feternity Leaves Count')}}">
+        <label for="paternity" class="eForm-label">{{get_phrase('Peternity Leaves Count')}}</label>
+        <input name="paternity" type="number" class="form-control eForm-control" id="paternity"  value="{{$leaves_count->paternity}}" placeholder="{{get_phrase('Enter Peternity Leaves Count')}}">
     </div>
 
     <div class="fpb-7">
         <label for="carry_forward" class="eForm-label">{{get_phrase('Carry Forward Leaves Count')}}</label>
-        <input name="carry_forward" type="number" class="form-control eForm-control" id="carry_forward"  value="{{$leaves_count->carry_forward}}" placeholder="{{get_phrase('Enter Carry Forward Feternity Leaves Count')}}">
+        <input name="carry_forward" type="number" class="form-control eForm-control" id="carry_forward"  value="{{$leaves_count->carry_forward}}" placeholder="{{get_phrase('Enter Carry Forward Peternity Leaves Count')}}">
     </div>
 
     <div class="fpb-7">

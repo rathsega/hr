@@ -139,6 +139,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('payrollconfiguration', [PayrollConfigurationController::class, 'index'])->name('payrollconfiguration');
     Route::post('payrollconfiguration/store', [PayrollConfigurationController::class, 'store'])->name('payrollconfiguration.store');
     Route::post('payrollconfiguration/generate', [PayrollConfigurationController::class, 'generate'])->name('payrollconfiguration.generate');
+    Route::post('payrollconfiguration/configure_extra_modules', [PayrollConfigurationController::class, 'configure_extra_modules'])->name('payrollconfiguration.configure_extra_modules');
 
     //Separation
     Route::get('separation', [SeparationController::class, 'index'])->name('separation');

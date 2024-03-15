@@ -11,7 +11,11 @@
     @php
 
     $user_id = auth()->user()->id;
-    $separations = DB::select("select *, s.id as id, u.id as user_id from separation as s inner join users as u on u.id = s.user_id where u.id = ".$user_id ." or u.manager = ". $user_id);
+    if(auth()->user()->email == 'it@zettamine.com' || auth()->user()->email == 'accounts@zettamine.com'){
+        $separations = DB::select("select *, s.id as id, u.id as user_id, u.name, u.emp_id, u.email as user_id from separation as s inner join users as u on u.id = s.user_id");
+    }else{
+        $separations = DB::select("select *, s.id as id, u.id as user_id, u.name, u.emp_id, u.email as user_id from separation as s inner join users as u on u.id = s.user_id where u.id = ".$user_id ." or u.manager = ". $user_id);
+    }
     $separation_existed = 0;
     if($separations){
     $status = ["Pending at Manager",
@@ -66,6 +70,7 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
+                            <th class="">{{ get_phrase('Employee') }}</th>
                             <th class="">{{ get_phrase('Initiated Date') }}</th>
                             <th class="">{{ get_phrase('Last Working Day') }}</th>
                             <th class="">{{ get_phrase('Status') }}</th>
@@ -80,10 +85,13 @@
                                 {{ ++$key }}
                             </td>
                             <td>
-                                {{ $separation->initiated_date }}
+                                {{ $separation->name }}({{$separation->emp_id}})
                             </td>
                             <td>
-                                {{ $separation->actual_last_working_day }}
+                                {{ date('d-m-Y H:i', strtotime($separation->initiated_date)) }}
+                            </td>
+                            <td>
+                                {{ date('d-m-Y', strtotime($separation->actual_last_working_day)) }}
                             </td>
                             <td>
                                 {{ $separation->status }}

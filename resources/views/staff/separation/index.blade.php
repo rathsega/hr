@@ -78,10 +78,10 @@
                                 {{ ++$key }}
                             </td>
                             <td>
-                                {{ $separation->initiated_date }}
+                                {{ date('d-m-Y H:i', strtotime($separation->initiated_date)) }}
                             </td>
                             <td>
-                                {{ $separation->actual_last_working_day }}
+                                {{ date('d-m-Y', strtotime($separation->actual_last_working_day)) }}
                             </td>
                             <td>
                                 {{ $separation->status }}

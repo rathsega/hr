@@ -31,7 +31,7 @@
                                 <th class="">#</th>
                                 <th class="">{{ get_phrase('name') }}</th>
                                 <th class="">{{ get_phrase('date') }}</th>
-                                <th class="">{{ get_phrase('optional') }}</th>
+                                <th class="">{{ get_phrase('optional(Can avail only one)') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +47,7 @@
                                     {{ date("d, F, Y", strtotime($holidays->date)) }}
                                     </td>
                                     <td>
-                                        {{ $holidays->optional }}
+                                        {{ $holidays->optional ? "Yes" : "" }}
                                     </td>
                                 </tr>
                             @endforeach

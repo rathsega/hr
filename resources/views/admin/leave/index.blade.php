@@ -30,10 +30,9 @@
                     $carry_forwarded_leave_count = 0;
                 }
                 $leaves_count = App\Models\Leaves_count::get()->First();
-                $sick_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','sick_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
-                $casual_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','casual_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
-                $meternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','meternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
-                $feternity_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','feternity_leave')->where('leave_applications.status', 'hr_approved')/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $sick_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','sick_leave')->whereNotIn('leave_applications.status', ['hr_rejected', 'manager_rejected'])/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+                $casual_leaves = App\Models\Leave_application::where('user_id', auth()->user()->id)->where('leave_type','casual_leave')->whereNotIn('leave_applications.status', ['hr_rejected', 'manager_rejected'])/*->whereYear("FROM_UNIXTIME(from_date)", now()->year)->whereYear("FROM_UNIXTIME(to_date)", now()->year)*/->get();
+
                 
                 //check any holidays in the leave days
                 $holidays_list = App\Models\Holidays::orderBy('name')->get();
@@ -73,7 +72,8 @@
                         $startDateTime->modify('+1 day');
                     }
 
-                    return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
+                    //return ['sundays' => $sundays, 'evenSaturdays' => $evenSaturdays];
+                    return ['sundays' => 0, 'evenSaturdays' => 0];
                 }
 
                 function getHalfdayHourLimitForLeave($date_time_stamp){
@@ -178,6 +178,9 @@
             @endphp
             <div class="export-btn-area d-flex ">
                 <a href="#" class="export_btn">
+                    @php 
+                        $available_cfl_count = $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0; 
+                    @endphp
                     <span class="d-none d-sm-inline-block">{{ get_phrase('Carry Forwarded Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{ $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0 }}</span></span>
                 </a>
                 <a href="#" class="export_btn  ms-1">
@@ -357,8 +360,8 @@
                                                                             <span class="badge bg-secondary">{{get_phrase('Casual Leave')}}</span>
                                                                         @elseif($leave_report->leave_type == 'meternity_leave')
                                                                             <span class="badge bg-secondary">{{get_phrase('Meternity Leave')}}</span>
-                                                                        @elseif($leave_report->leave_type == 'feternity_leave')
-                                                                            <span class="badge bg-secondary">{{get_phrase('Feternity Leave')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'paternity_leave')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Peternity Leave')}}</span>
                                                                         @elseif($leave_report->leave_type == 'loss_of_pay')
                                                                             <span class="badge bg-success">{{get_phrase('Loss Of Pay')}}</span>
                                                                         @endif
@@ -490,12 +493,12 @@
                                 <div class="col-md-12">
                                         <div class="fpb-7">
                                             <label class="eForm-label">{{get_phrase('Leave type')}}</label>
-                                            <select name="leave_type" class="form-select eForm-select select2" required>
+                                            <select name="leave_type" id="leave_type" onchange="resetFormLeave()" class="form-select eForm-select select2" required>
                                                 <option value="">{{ get_phrase('Select a type') }}</option>
                                                 <option value="casual_leave" {{$available_casual_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Casual Leave') }}</option>
                                                 <option value="sick_leave" {{$available_sick_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Sick Leave') }}</option>
                                                 <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
-                                                <option value="feternity_leave">{{ get_phrase('Feternity Leave') }}</option>
+                                                <option value="paternity_leave">{{ get_phrase('Peternity Leave') }}</option>
                                                 <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
                                                 
                                             </select>
@@ -504,13 +507,13 @@
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
-                                        <input type="datetime-local" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="datetime-local" onchange="resetFormLeave()" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputFromDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
-                                        <input type="datetime-local" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputDateTime" />
+                                        <input type="datetime-local" onchange="resetFormLeave()" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputToDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -527,7 +530,10 @@
                                         <label for="photo" class="eForm-label">{{ get_phrase('Attachment') }} <small>({{get_phrase('Optional')}} - {{get_phrase('image')}}, {{get_phrase('pdf')}})</small></label>
                                         <input type="file" name="attachment" class="form-control eForm-control-file mb-0" id="photo">
                                     </div>
-                                    <button type="submit" class="btn-form mt-2 mb-3">{{ get_phrase('Submit request') }}</button>
+                                    <button type="submit" id="leave_request_submit_button" class="btn-form mt-2 mb-3">{{ get_phrase('Submit request') }}</button>
+                                    <div class="fpb-7">
+                                        <label id="warning_note" class="eForm-label"></label>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -538,3 +544,101 @@
         </div>
     </div>
 @endsection
+
+<script>
+
+    function getHalfdayHourLimitForLeave(date_time_stamp) {
+        if (new Date(date_time_stamp).getDay() === 6) {
+            return 3;
+        } else {
+            return 4.5;
+        }
+    }
+
+    function countSundaysAndEvenSaturdays(startDate, endDate) {
+        var startDateTime = new Date(startDate);
+        var endDateTime = new Date(endDate);
+        var sundays = 0;
+        var evenSaturdays = 0;
+        while (startDateTime <= endDateTime) {
+            var dayOfWeek = startDateTime.getDay(); // 0 (Sunday) to 6 (Saturday)
+            if (dayOfWeek === 0) { // Sunday
+                sundays++;
+            } else if (dayOfWeek === 6) { // Even Saturday
+                var dayOfMonth = startDateTime.getDate();
+                var weekNum = Math.ceil(dayOfMonth / 7);
+                if (weekNum % 2 === 0) { // check that the week number is even
+                    evenSaturdays += 1;
+                }
+            }
+            startDateTime.setDate(startDateTime.getDate() + 1);
+        }
+        //return { sundays: sundays, evenSaturdays: evenSaturdays };
+        return { sundays: 0, evenSaturdays: 0 };
+    }
+
+
+
+    function resetFormLeave() {
+        let leave_type = $('#leave_type').val();
+        let leave_from_date = new Date($('#eInputFromDateTime').val());
+        let leave_to_date = new Date($('#eInputToDateTime').val());
+        if(!leave_type || !leave_from_date || !leave_to_date){
+            document.getElementById("leave_request_submit_button").disabled = false;
+            return true;
+        }
+
+        let from_year = new Date(leave_from_date).getFullYear();
+        let from_date = new Date(leave_from_date).toISOString().split('T')[0];
+        let to_year = new Date(leave_to_date).getFullYear();
+        let to_date = new Date(leave_to_date).toISOString().split('T')[0];
+        let current_year = new Date().getFullYear();
+        let taking_leave_count = 0;
+        if (from_year == current_year || to_year == current_year) {
+            if (from_year == current_year && to_year == current_year) {
+                let datediff = (leave_to_date - leave_from_date) / 1000;
+                if (new Date(leave_from_date).toISOString().split('T')[0] == new Date(leave_to_date).toISOString().split('T')[0]) {
+                    let hours = datediff / 3600;
+                    if (hours > getHalfdayHourLimitForLeave(leave_from_date)) {
+                        taking_leave_count += 1;
+                    } else {
+                        taking_leave_count += 0.5;
+                    }
+                } else {
+                    taking_leave_count += Math.round(datediff / (60 * 60 * 24)) + 1;
+                    let no_of_holidays = 0;
+                    let saturday_sunday = countSundaysAndEvenSaturdays(from_date, to_date);
+                    taking_leave_count = taking_leave_count - no_of_holidays - saturday_sunday.sundays - saturday_sunday.evenSaturdays;
+                }
+            } else if (from_year == current_year && to_year == current_year + 1) {
+                let your_date = new Date(from_date);
+                let datediff = new Date(current_year + "-12-31").getTime() - your_date.getTime();
+                taking_leave_count += Math.round(datediff / (60 * 60 * 24)) + 1;
+                let no_of_holidays = 0;
+                let saturday_sunday = countSundaysAndEvenSaturdays(from_date, new Date(current_year + "-12-31").toISOString().split('T')[0]);
+                taking_leave_count = taking_leave_count - no_of_holidays - saturday_sunday.sundays - saturday_sunday.evenSaturdays;
+            } else if (from_year == current_year - 1 && to_year == current_year) {
+                let your_date = new Date(to_date);
+                let datediff = your_date.getTime() - new Date(current_year + "-01-01").getTime();
+                taking_leave_count += Math.round(datediff / (60 * 60 * 24)) + 1;
+                let no_of_holidays = 0;
+                let saturday_sunday = countSundaysAndEvenSaturdays(new Date(current_year + "-01-01").toISOString().split('T')[0], to_date);
+                taking_leave_count = taking_leave_count - no_of_holidays - saturday_sunday.sundays - saturday_sunday.evenSaturdays;
+            }
+        }
+
+        let leave_req_sub_but = document.getElementById("leave_request_submit_button");
+        let warning_note = document.getElementById("warning_note");
+        if(leave_type == 'sick_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_sick_leave_count; ?>)){
+            leave_req_sub_but.disabled = true;
+            warning_note.innerHTML = "The number of sick leave days you are applying for exceeds the available sick leave count."
+        }else if(leave_type == 'casual_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_casual_leave_count + (float)$available_cfl_count; ?>)){
+            leave_req_sub_but.disabled = true;
+            warning_note.innerHTML = "The number of casual leave days you are applying for exceeds the available casual leave count."
+        }else{
+            let button_disabled = leave_req_sub_but.hasAttribute('disabled');
+            button_disabled ? leave_req_sub_but.removeAttribute('disabled') : '';
+            warning_note.innerHTML = ""
+        }
+    }
+</script>

@@ -86,7 +86,7 @@
                             <select class="form-select eForm-select select2" data-toggle="select2" name="timezone" id="timezone">
                                 @foreach (DateTimeZone::listIdentifiers(DateTimeZone::ALL) as $timezone):
                                     <option value="{{$timezone}}" @if(get_settings('timezone') == $timezone) selected @endif>{{$timezone}}</option>
-                                @endforeach;
+                                @endforeach
                             </select>
                         </div>
 

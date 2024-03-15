@@ -347,7 +347,7 @@
                                                                                     <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                                                 </svg>
                                                                             </a>
-                                                                            @endif;
+                                                                            @endif
                                                                         </div>
                                                                     </td>
                                                                 </tr>

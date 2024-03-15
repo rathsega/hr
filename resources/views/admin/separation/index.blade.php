@@ -9,9 +9,9 @@
 
 <div class="mainSection-title">
     @php
-    $separations = DB::table('separation')->get();
+    $separations = DB::select("select s.*, s.id as id, u.id as user_id, u.name, u.emp_id, u.email from separation as s inner join users as u on u.id = s.user_id");
     $separation_existed = 0;
-    if(!$separations->isEmpty()){
+    if($separations){
     $status = ["Pending at Manager",
     "Rejected by Manager",
     "Approved by Manager",
@@ -53,6 +53,7 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
+                            <th class="">{{ get_phrase('Employee') }}</th>
                             <th class="">{{ get_phrase('Initiated Date') }}</th>
                             <th class="">{{ get_phrase('Last Working Day') }}</th>
                             <th class="">{{ get_phrase('Status') }}</th>
@@ -60,17 +61,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(!$separations->isEmpty())
+                        @if($separations)
                         @foreach ($separations as $key => $separation)
                         <tr>
                             <td>
                                 {{ ++$key }}
                             </td>
                             <td>
-                                {{ $separation->initiated_date }}
+                                {{ $separation->name }}({{$separation->emp_id}})
                             </td>
                             <td>
-                                {{ $separation->actual_last_working_day }}
+                                {{ date('d-m-Y H:i', strtotime($separation->initiated_date)) }}
+                            </td>
+                            <td>
+                                {{ date('d-m-Y', strtotime($separation->actual_last_working_day)) }}
                             </td>
                             <td>
                                 {{ $separation->status }}

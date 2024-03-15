@@ -96,7 +96,7 @@ class LeaveApplicationController extends Controller
         
         if($request->message){
             $message = $request->message;
-            $message = "Hi ". $to->name . ", \r\n\r\n". $message . "\r\n\r\nRegards, \r\nHR Team.";
+            $message = "Hi ". $to->name . ", \r\n\r\n". $message . "\r\n\r\nRegards, \r\nZettamine Workplace.";
             try{
                 Mail::raw($message, function ($message) use ($subject, $to) {
                     $message->from(get_settings('system_email'), get_settings('website_title'))
@@ -118,14 +118,14 @@ class LeaveApplicationController extends Controller
             'sick' => 'required',
             'casual' => 'required',
             'meternity' => 'required',
-            'feternity' => 'required',
+            'paternity' => 'required',
             'carry_forward' => 'required',
         ]);
 
         $data['sick'] = $request->sick;
         $data['casual'] = $request->casual;
         $data['meternity'] = $request->meternity;
-        $data['feternity'] = $request->feternity;
+        $data['paternity'] = $request->paternity;
         $data['carry_forward'] = $request->carry_forward;
 
         Leaves_count::insert($data);

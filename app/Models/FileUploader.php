@@ -60,7 +60,7 @@ class FileUploader extends Model
                 }
             }
 
-            return str_replace(public_path('/'), '', $upload_to . '/' . $file_name);
+            return str_replace(public_path(''), '', $upload_to . '/' . $file_name);
         } else {
             //upload to amazon s3
             ini_set('max_execution_time', '600');

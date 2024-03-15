@@ -113,7 +113,7 @@ class SeparationController extends Controller
         $to = User::where('id', $separation_details->user_id)->first();
 
         if($data['it_manager_comments']){
-            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your IT Manager Comments : " . $data['it_manager_comments'] . "\r\n\r\nRegards, \r\nHR Team.";
+            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your IT Manager Comments : " . $data['it_manager_comments'] . "\r\n\r\nRegards, \r\nZettamine Workplace.";
         }
 
         if($response){
@@ -159,7 +159,7 @@ class SeparationController extends Controller
         $to = User::where('id', $separation_details->user_id)->first();
 
         if($data['finance_manager_comments']){
-            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your Finance Manager Comments : " . $data['finance_manager_comments'] . "\r\n\r\nRegards, \r\nHR Team.";
+            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your Finance Manager Comments : " . $data['finance_manager_comments'] . "\r\n\r\nRegards, \r\nZettamine Workplace.";
         }
 
         if($response){
@@ -208,7 +208,7 @@ class SeparationController extends Controller
         $to = User::where('id', $separation_details->user_id)->first();
 
         if($data['hr_manager_comments']){
-            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your HR Manager Comments : " . $data['hr_manager_comments'] . "\r\n\r\nRegards, \r\nHR Team.";
+            $email_message = "Hi ". $to->name . ", \r\n\r\n".$email_message ."\r\n\r\n" . "Your HR Manager Comments : " . $data['hr_manager_comments'] . "\r\n\r\nRegards, \r\nZettamine Workplace.";
         }
 
         if($response){
