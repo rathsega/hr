@@ -14,7 +14,239 @@
 .eGreenish {
   background-color: #aae1cb !important;
 }
+.quotes-heading{
+  color: #FF6632;
+  font-weight:500;
+}
+.quote-image-bg {
+  width: 404px;
+  background-image: url(../images/quote_employee.png);
+  height:250px;
+  background-size: cover;
+  position: absolute;
+  margin-left: 3%;
+}
+.quote-para{
+  color: white;
+  font-size: 11px;
+  line-height: 20px;
+  text-align-last: left;
+  width: 226px;
+    padding-left: 28px;
+    margin-top: 28px;
+}
+.quote-name{
+  color: #ffffff;
+  font-size:15px;
+}
+.details-sec{
+  margin-left: -80px;
+}
+.quote-role{
+  color: #ffffff;
+  font-size:11px;
+}
 
+.envelope-image-bg {
+  width: 580px;
+  background-image: url(../images/envelope.png) !important;
+  height: 399px;
+  background-size: cover;
+  /* position: absolute; */
+  margin-left: 3%;
+
+}
+.carousel-control-next-icon {
+  background-image: url(../images/rightslide.png) !important;
+  height: 60px !important;
+  width: 60px;
+}
+.carousel-control-prev-icon {
+  background-image: url(../images/leftslide.png) !important;  
+  height: 60px !important;
+  width: 60px;
+}
+.announcement-heading {
+  color: #00999F;
+  
+  padding-top: 20%;
+  font-weight: bolder;
+}
+.announcement-para {
+  color: black;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 20px;
+
+}
+
+
+.embelem{
+  height: 190px;
+}
+.ribbon {
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 10px 40px;
+  text-align: center;
+  background-image: linear-gradient(to right, #f0a707, #c7be7d);
+}
+
+.ribbon::before, .ribbon::after {
+  content: '';
+  width: 80px;
+  height: 100%;
+  background-color: #BF922E;
+
+  /* position ribbon ends behind and slightly lower */
+  position: absolute;
+  z-index: -1;
+  top: 20px;
+  
+  /* clip ribbon end shape */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25% 50%);
+
+  /* draw and position the folded ribbon bit */
+  background-image: linear-gradient(45deg, transparent 50%, #22231294 50%);
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+.horizontal-line {
+  margin: 0 auto;
+  display: block;
+  width:25%;
+  height: 2px;
+  background-color: black; /* You can adjust the color as needed */
+}
+.ribbon::before {
+  left: -60px;
+}
+
+.ribbon::after {
+  right: -60px;
+  transform: scaleX(-1); /* flip horizontally */
+}
+
+/* everything below is for demo appearances and not important to the concept */
+
+.ribbon {
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
+  width: 290px;
+  color: black;
+   font-size: 18px;
+   font-weight:900;
+}
+
+@media (max-width: 400px) {
+  h1 { font-size: 1.5rem; }
+}
+
+
+.b-day-text{
+  font-family: "Satisfy", cursive;
+  font-weight:400 !important;
+  font-style: normal;
+  font-size: 28px;
+  color: #CF0F41;
+  line-height: 35px;
+  letter-spacing: 3px !important;
+}
+.embelem{
+  height: 140px;
+}
+.bday-ballone{
+  height: 223px;
+  position: absolute;
+  margin-left: -4% !important;
+  margin-top: 15px !important;
+}
+.bday_box{
+  height:90px;
+  position: absolute;
+  margin-left: 68% !important;
+  margin-top: -90px !important;
+}
+.ribbon {
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 10px 40px;
+  text-align: center;
+  background-image: linear-gradient(to right, #CF0F41, #640c23fc);
+  margin-top: -3px !important;
+}
+/* .carousel-indicators {
+  margin-bottom: -2rem;
+}
+.carousel-control-prev-icon {
+  display: none !important;
+}
+.carousel-control-next-icon {
+  display: none !important;
+} */
+
+.bday-para{
+  font-size:12px;
+  line-height: 18px;
+}
+.carousel-indicators [data-bs-target] {
+  padding:1px;
+  border-radius: 29px;
+  background-color: #000;
+}
+.ribbon::before, .ribbon::after {
+  content: '';
+  width: 80px;
+  height: 100%;
+  background-color: #f6001b;
+
+
+  /* position ribbon ends behind and slightly lower */
+  position: absolute;
+  z-index: -1;
+  top: 20px;
+  
+  /* clip ribbon end shape */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25% 50%);
+
+  /* draw and position the folded ribbon bit */
+  background-image: linear-gradient(45deg, transparent 50%, #22231294 50%);
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+.horizontal-line {
+  margin: 0 auto;
+  display: block;
+  width:25%;
+  height: 2px;
+  background-color: black; /* You can adjust the color as needed */
+}
+.ribbon::before {
+  left: -60px;
+}
+
+.ribbon::after {
+  right: -60px;
+  transform: scaleX(-1); /* flip horizontally */
+}
+
+/* everything below is for demo appearances and not important to the concept */
+
+.ribbon {
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
+  width: 180px;
+  color: white;
+   font-size: 18px;
+}
+
+@media (max-width: 400px) {
+  h1 { font-size: 1.5rem; }
+}
 .eYellow {
   background-color: #ffc700 !important;
 }
