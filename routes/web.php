@@ -146,6 +146,7 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     //Separation
     Route::get('separation', [SeparationController::class, 'index'])->name('separation');
     Route::post('separation/store', [SeparationController::class, 'store'])->name('separation.store');
+    Route::get('separation/revoke/{id?}', [SeparationController::class, 'revoke'])->name('separation.revoke');
     Route::get('separation/view/{id?}', [SeparationController::class, 'view'])->name('separation.view');
     Route::post('separation/manager_approvals}', [SeparationController::class, 'manager_approvals'])->name('separation.manager_approvals');
     Route::post('separation/it_manager_approvals}', [SeparationController::class, 'it_manager_approvals'])->name('separation.it_manager_approvals');
