@@ -18,6 +18,7 @@
     </div>
 
     <div class="row">
+        @if(auth()->user()->email != 'it@zettamine.com' && auth()->user()->email != 'accounts@zettamine.com')
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
@@ -101,7 +102,9 @@
                 </div>
             </div>
         </div>
+        @endif
 
+        @if(auth()->user()->email != 'it@zettamine.com')
         <div class="col-md-12">
             <div class="eSection-wrap table-responsive mt-4">
 				<p class="column-title mb-2">
@@ -158,5 +161,46 @@
 				</table>
             </div>
         </div>
+        @endif
+
+        @if(auth()->user()->email == 'it@zettamine.com')
+        <div class="col-md-12">
+            <div class="eSection-wrap table-responsive mt-4">
+                <p class="column-title mb-2">
+                    {{ get_phrase('Inventory items') }}
+                </p>
+                <table class="table eTable">
+                    <thead>
+                        <tr>
+                            <th class="">#</th>
+                            <th class="">{{get_phrase('Type')}}</th>
+                            <th class="">{{get_phrase('Quantity')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (App\Models\Inventory::get() as $key => $inventory)
+                            <tr>
+                                <td>
+                                    {{ ++$key }}
+                                </td>
+                                <td>
+                                    {{ $inventory->title }}
+                                </td>
+                                <td>
+                                    {{ App\Models\Inventory_item::orderBy('title')->where('type_id', $inventory->id)->count() }} {{ $inventory->title }}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{{ route('manager.inventory.item', ['item_type' => $inventory->id]) }}" class="btn btn p-0 px-1" title="{{ get_phrase('Item list') }}"
+                                        data-bs-toggle="tooltip">
+                                        <i class="fi-rr-clipboard-list"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
     </div>
 @endsection

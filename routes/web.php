@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController, InventoryController, PayrollConfigurationController};
 
 /*
 |--------------------------------------------------------------------------
@@ -158,7 +158,24 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::post('feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 
     //Inventory
+    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
+    Route::post('inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::post('inventory/update/{id}', [InventoryController::class, 'update'])->name('inventory.update');
+    Route::get('inventory/delete/{id}', [InventoryController::class, 'delete'])->name('inventory.delete');
+
+    //Inventory
     Route::get('inventory/item', [InventoryItemController::class, 'index'])->name('inventory.item');
+    Route::post('inventory/item/store', [InventoryItemController::class, 'store'])->name('inventory.item.store');
+    Route::post('inventory/item/update/{id}', [InventoryItemController::class, 'update'])->name('inventory.item.update');
+    Route::get('inventory/item/delete/{id}', [InventoryItemController::class, 'delete'])->name('inventory.item.delete');
+
+    //Payroll Configuration
+    Route::get('payrollconfiguration', [PayrollConfigurationController::class, 'index'])->name('payrollconfiguration');
+    Route::post('payrollconfiguration/store', [PayrollConfigurationController::class, 'store'])->name('payrollconfiguration.store');
+    Route::post('payrollconfiguration/generate', [PayrollConfigurationController::class, 'generate'])->name('payrollconfiguration.generate');
+    Route::post('payrollconfiguration/configure_extra_modules', [PayrollConfigurationController::class, 'configure_extra_modules'])->name('payrollconfiguration.configure_extra_modules');
+
+    
 });
 
 

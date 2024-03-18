@@ -11,7 +11,7 @@
             <div class="d-flex flex-column">
                 <h4>{{ get_phrase('Payroll Configuration') }}</h4>
                 <ul class="d-flex align-items-center eBreadcrumb-2">
-                    <li><a href="{{ route('admin.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
+                    <li><a href="{{ route('manager.dashboard') }}">{{ get_phrase('Dashboard') }}</a></li>
                     <li><a href="#">{{ get_phrase('Payroll Configuration') }}</a></li>
                 </ul>
             </div>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-md-12">
-        <form action="{{ route('admin.payrollconfiguration.generate') }}" method="post" id="filterForm">
+        <form action="{{ route('manager.payrollconfiguration.generate') }}" method="post" id="filterForm">
         @csrf
             <div class="row mb-4">
                 <div class="col-md-3">
@@ -56,7 +56,7 @@
     <div class="row">
         <div class="col-md-12 pb-3">
             <div class="eSection-wrap">
-                <form action="{{ route('admin.payrollconfiguration.configure_extra_modules') }}" method="post" id="filterForm">
+                <form action="{{ route('manager.payrollconfiguration.configure_extra_modules') }}" method="post" id="filterForm">
                 @csrf
                     
                 </form>
