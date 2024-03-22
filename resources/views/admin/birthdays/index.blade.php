@@ -41,7 +41,7 @@
                                 <th class="">{{ get_phrase('Date') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="table-body">
                             @foreach (App\Models\User::orderBy('birthday')->get() as $key => $birthdays)
                                 <tr>
                                     <td>
@@ -96,7 +96,10 @@
                     const year = dateObject.getFullYear();
 
                     // Create the formatted date string in "M-D-Y" format
-                    formattedDate = `${day}-${month}-${year}`;
+                    //formattedDate = `${day}-${month}-${year}`;
+                    
+                    const options = { day: 'numeric', month: 'short' };
+                    formattedDate = dateObject.toLocaleDateString('en-US', options);
                 }else{
                     formattedDate = null;
                 }

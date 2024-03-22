@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController, InventoryController, PayrollConfigurationController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController, InventoryController, PayrollConfigurationController, AnnouncementsController};
 
 /*
 |--------------------------------------------------------------------------
@@ -175,7 +175,8 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::post('payrollconfiguration/generate', [PayrollConfigurationController::class, 'generate'])->name('payrollconfiguration.generate');
     Route::post('payrollconfiguration/configure_extra_modules', [PayrollConfigurationController::class, 'configure_extra_modules'])->name('payrollconfiguration.configure_extra_modules');
 
-    
+    //Announcements
+    Route::get('announcements', [AnnouncementsController::class, 'index'])->name('announcements');
 });
 
 

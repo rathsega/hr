@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -152,4 +152,10 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     //Feedback
     Route::get('feedback', [FeedbackController::class, 'index'])->name('feedback');
     Route::post('feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+
+    //Announcements
+    Route::get('announcements', [AnnouncementsController::class, 'index'])->name('announcements');
+    Route::post('announcements/store', [AnnouncementsController::class, 'store'])->name('announcements.store');
+    Route::post('announcements/update/{user_id}', [AnnouncementsController::class, 'update'])->name('announcements.update');
+    Route::get('announcements/delete/{user_id}', [AnnouncementsController::class, 'delete'])->name('announcements.delete');
 });

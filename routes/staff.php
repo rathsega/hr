@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController};
+use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, AnnouncementsController};
 
 //Staff's routes
 Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified'])->group(function () {
@@ -78,4 +78,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
     //Feedback
     Route::get('feedback', [FeedbackController::class, 'index'])->name('feedback');
     Route::post('feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+
+    //Announcements
+    Route::get('announcements', [AnnouncementsController::class, 'index'])->name('announcements');
 });

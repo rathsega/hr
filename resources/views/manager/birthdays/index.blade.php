@@ -41,7 +41,7 @@
                                 <th class="">{{ get_phrase('Date') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="table-body">
                             @foreach (App\Models\User::orderBy('birthday')->get() as $key => $birthdays)
                                 <tr>
                                     <td>
