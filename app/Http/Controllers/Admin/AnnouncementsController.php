@@ -54,15 +54,15 @@ class AnnouncementsController extends Controller
             }
 
             foreach ($users as $to) {
-                if ($to->email == 'manikandan.m@zettamine.com' || $to->email == 'sekhar.r@zettamine.com') {
+                if ($to->email/* == 'manikandan.m@zettamine.com' || $to->email == 'sekhar.r@zettamine.com'*/) {
                     $message = $request->message;
                     $subject = $request->subject;
                     $message = str_replace('{name}', $to->name, $message);
-                    if (str_contains($subject, '{password}')) {
+                    if (str_contains($message, '{password}')) {
                         $password = $this->randomPassword();
                         $message = str_replace('{password}', $password, $message);
                         $data = [];
-                        $data['password'] = Hash::make($request->password);
+                        $data['password'] = Hash::make($password);
                         $response = User::where('id', $to->id)->update($data);
                     }
                     try {
