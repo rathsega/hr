@@ -66,7 +66,7 @@ class AnnouncementsController extends Controller
                         $response = User::where('id', $to->id)->update($data);
                     }
                     try {
-                        Mail::raw($message, function ($message) use ($subject, $to) {
+                        \Mail::raw($message, function ($message) use ($subject, $to) {
                             $message->from(get_settings('system_email'), get_settings('website_title'))
                                 ->to($to->email, $to->name)
                                 ->subject($subject);
