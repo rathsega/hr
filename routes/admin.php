@@ -166,9 +166,9 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('eotm/delete/{eotm_id}', [EmployeeOfTheMonthController::class, 'delete'])->name('eotm.delete');
 
     //Employers Quote
-    Route::get('employersquote', [EmployersQuote::class, 'index'])->name('employersquote');
-    Route::post('employersquote/store', [EmployersQuote::class, 'store'])->name('employersquote.store');
-    Route::post('employersquote/update/{employersquote_id}', [EmployersQuote::class, 'update'])->name('employersquote.update');
-    Route::get('employersquote/delete/{employersquote_id}', [EmployersQuote::class, 'delete'])->name('employersquote.delete');
+    Route::get('quotes', [EmployersQuote::class, 'index'])->name('quotes');
+    Route::post('quotes/store', [EmployersQuote::class, 'store'])->name('quotes.store');
+    Route::post('quotes/update/{quote_id}', [EmployersQuote::class, 'update'])->name('quotes.update');
+    Route::get('quotes/delete/{quote_id}', [EmployersQuote::class, 'delete'])->name('quotes.delete');
 
 });
