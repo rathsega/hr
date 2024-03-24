@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -158,4 +158,17 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('announcements/store', [AnnouncementsController::class, 'store'])->name('announcements.store');
     Route::post('announcements/update/{user_id}', [AnnouncementsController::class, 'update'])->name('announcements.update');
     Route::get('announcements/delete/{user_id}', [AnnouncementsController::class, 'delete'])->name('announcements.delete');
+
+    //Employee Of The Month
+    Route::get('eotm', [EmployeeOfTheMonthController::class, 'index'])->name('eotm');
+    Route::post('eotm/store', [EmployeeOfTheMonthController::class, 'store'])->name('eotm.store');
+    Route::post('eotm/update/{eotm_id}', [EmployeeOfTheMonthController::class, 'update'])->name('eotm.update');
+    Route::get('eotm/delete/{eotm_id}', [EmployeeOfTheMonthController::class, 'delete'])->name('eotm.delete');
+
+    //Employers Quote
+    Route::get('employersquote', [EmployersQuote::class, 'index'])->name('employersquote');
+    Route::post('employersquote/store', [EmployersQuote::class, 'store'])->name('employersquote.store');
+    Route::post('employersquote/update/{employersquote_id}', [EmployersQuote::class, 'update'])->name('employersquote.update');
+    Route::get('employersquote/delete/{employersquote_id}', [EmployersQuote::class, 'delete'])->name('employersquote.delete');
+
 });
