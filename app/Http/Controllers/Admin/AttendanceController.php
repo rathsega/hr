@@ -36,7 +36,7 @@ class AttendanceController extends Controller
             $data['note'] = $request->note;
         }
 
-
+        $data['status'] = "pending";
         if($request->check_in_out == 'checkin'){
             if(auth()->user()->role == 'admin'){
                 $query = Attendance::where('user_id', $request->user_id);
@@ -172,6 +172,33 @@ class AttendanceController extends Controller
         }
         
         return redirect()->back()->with('success_message', get_phrase('Attendance deleted successfully'));
+    }
+
+    
+    function change_status($id, Request $request){
+
+        $attendance_report = Attendance::where('id', $id)->first();
+        $to = User::where('id', $attendance_report->user_id)->first();
+
+        if($request->status == 'hr_approved'){
+            $data['status'] = 'hr_approved';
+        }elseif($request->status == 'manager_approved'){
+            $data['status'] = 'manager_approved';
+        }elseif($request->status == 'manager_rejected'){
+            $data['status'] = 'manager_rejected';
+        }elseif($request->status == 'hr_rejected'){
+            $data['status'] = 'hr_rejected';
+        }elseif($request->status == 'pending'){
+            $data['status'] = 'pending';
+        }
+
+        if($request->message){
+            $data['message'] = $request->message;
+        }
+
+        Attendance::where('id', $id)->update($data);
+        
+        return redirect()->back()->with('success_message', get_phrase('Status has been updated'));
     }
     
 }

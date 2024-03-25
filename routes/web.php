@@ -73,6 +73,7 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::post('attendance/update/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
     Route::get('attendance/delete/{id}', [AttendanceController::class, 'delete'])->name('attendance.delete');
+    Route::post('attendance/status/{id}', [AttendanceController::class, 'change_status'])->name('attendance.report.status');
 
     //Leave application
     Route::get('leave-report', [LeaveApplicationController::class, 'index'])->name('leave.report');

@@ -31,6 +31,7 @@ class AttendanceController extends Controller
             $data['note'] = $request->note;
         }
 
+        $data['status'] = "pending";
 
         if($request->check_in_out == 'checkin'){
             $query = Attendance::where('user_id', auth()->user()->id);
