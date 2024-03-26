@@ -43,6 +43,12 @@
                         </div>
 
                         <div class="fpb-7">
+                            <label for="website_tag_line" class="eForm-label">{{ get_phrase('Website Tag Line') }}</label>
+                            <input value="{{ get_settings('website_tag_line') }}" name="website_tag_line" type="text" class="form-control eForm-control" id="website_tag_line"
+                                placeholder="{{ get_phrase('Enter your website title') }}" aria-label="{{ get_phrase('Enter your website tag line') }}">
+                        </div>
+
+                        <div class="fpb-7">
                             <label for="website_description" class="eForm-label">{{ get_phrase('Website Description') }}</label>
                             <textarea name="website_description" class="form-control eForm-control" id="website_description" rows="4">{{ get_settings('website_description') }}</textarea>
                         </div>

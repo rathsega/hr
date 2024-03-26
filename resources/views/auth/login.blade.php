@@ -171,7 +171,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="subtitle">
-                                        <p>{{get_phrase('Welcome to our Human Resource Management System  portal!')}}</p>
+                                        <p>{{get_settings('website_tag_line')}}</p>
                                     </div>
                                 </div>
                                 <div class="col-12">
