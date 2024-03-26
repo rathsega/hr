@@ -44,7 +44,7 @@ class TimesheetController extends Controller
         }
         $data['device'] = $device;
 
-
+        $data['status'] = "pending";
 
 
         $data['user_id'] = $request->user_id;
@@ -103,6 +103,32 @@ class TimesheetController extends Controller
         }
         
         return redirect()->back()->with('success_message', get_phrase('Timesheet deleted successfully'));
+    }
+
+    function change_status($id, Request $request){
+
+        $timesheet_report = Timesheet::where('id', $id)->first();
+        $to = User::where('id', $timesheet_report->user_id)->first();
+
+        if($request->status == 'hr_approved'){
+            $data['status'] = 'hr_approved';
+        }elseif($request->status == 'manager_approved'){
+            $data['status'] = 'manager_approved';
+        }elseif($request->status == 'manager_rejected'){
+            $data['status'] = 'manager_rejected';
+        }elseif($request->status == 'hr_rejected'){
+            $data['status'] = 'hr_rejected';
+        }elseif($request->status == 'pending'){
+            $data['status'] = 'pending';
+        }
+
+        if($request->message){
+            $data['message'] = $request->message;
+        }
+
+        Timesheet::where('id', $id)->update($data);
+        
+        return redirect()->back()->with('success_message', get_phrase('Status has been updated'));
     }
     
 }

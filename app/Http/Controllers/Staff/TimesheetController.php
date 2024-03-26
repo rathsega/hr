@@ -42,7 +42,7 @@ class TimesheetController extends Controller
         }
         $data['device'] = $device;
 
-
+        $data['status'] = "pending";
 
 
         $data['user_id'] = auth()->user()->id;

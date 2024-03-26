@@ -84,6 +84,14 @@
 
                         <div class="table-responsive">
                             <table class="table eTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Employee</th>
+                                        <th class="text-center">{{get_phrase('Date')}}</th>
+                                        <th>{{get_phrase('Description')}}</th>
+                                        <th class="text-center">{{get_phrase('Status')}}</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @php
                                         $timesheets = DB::table('timesheets')
@@ -192,8 +200,25 @@
                                             <td class="ps-3 align-baseline p-0">
                                                 {!! script_checker($timesheet->description) !!}
                                             </td>
+                                            <td>
+                                                @if ($timesheet->status == 'pending')
+                                                    <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
+                                                @elseif($timesheet->status == 'manager_rejected')
+                                                    <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
+                                                @elseif($timesheet->status == 'hr_rejected')
+                                                    <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
+                                                @elseif($timesheet->status == 'manager_approved')
+                                                    <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
+                                                @elseif($timesheet->status == 'hr_approved')
+                                                    <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
+                                                @else
+                                                    <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
+                                                @endif
+                                            </td>
                                             <td class="p-0 ">
                                                 <div class="invisible-layout">
+                                                    @if($timesheet->status == 'pending' || $timesheet->status == 'manager_rejected' || $timesheet->status == 'hr_rejected
+                                                    ')
                                                     <a href="{{ route('staff.timesheet', ['id' => $timesheet->id]) }}" class="btn btn p-1" title="{{ get_phrase('Edit') }}"
                                                         data-bs-toggle="tooltip" data-bs-placement="top">
                                                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -220,6 +245,7 @@
                                                             <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                         </svg>
                                                     </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

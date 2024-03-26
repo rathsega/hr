@@ -13,6 +13,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('timesheet/store', [TimesheetController::class, 'store'])->name('timesheet.store');
     Route::post('timesheet/update/{id}', [TimesheetController::class, 'update'])->name('timesheet.update');
     Route::get('timesheet/delete/{id}', [TimesheetController::class, 'delete'])->name('timesheet.delete');
+    Route::post('timesheet/status/{id}', [TimesheetController::class, 'change_status'])->name('timesheet.report.status');
 
     //Task manager
     Route::get('tasks/{tasks_type}',[TasksController::class, 'index'])->name('tasks');

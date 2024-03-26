@@ -120,6 +120,14 @@
                                         <div class="accordion-body px-0">
                                             <div class="table-responsive">
                                                 <table class="table eTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Employee</th>
+                                                            <th class="text-center">{{get_phrase('Date')}}</th>
+                                                            <th>{{get_phrase('Description')}}</th>
+                                                            <th class="text-center">{{get_phrase('Status')}}</th>
+                                                        </tr>
+                                                    </thead> 
                                                     <tbody>
                                                         @foreach ($timesheet_staffs->get() as $timesheet_staff)
                                                             @php
@@ -218,6 +226,21 @@
                                                                     <td class="ps-3 align-baseline p-0">
                                                                         {!! script_checker($timesheet->description) !!}
                                                                     </td>
+                                                                    <td>
+                                                                        @if ($timesheet->status == 'pending')
+                                                                            <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
+                                                                        @elseif($timesheet->status == 'manager_rejected')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Manager Rejected')}}</span>
+                                                                        @elseif($timesheet->status == 'hr_rejected')
+                                                                            <span class="badge bg-secondary">{{get_phrase('HR Rejected')}}</span>
+                                                                        @elseif($timesheet->status == 'manager_approved')
+                                                                            <span class="badge bg-secondary">{{get_phrase('Manager Approved')}}</span>
+                                                                        @elseif($timesheet->status == 'hr_approved')
+                                                                            <span class="badge bg-success">{{get_phrase('HR Approved')}}</span>
+                                                                        @else
+                                                                            <span class="badge bg-danger">{{get_phrase('Pending')}}</span>
+                                                                        @endif
+                                                                    </td>
                                                                     <td class="p-0 ">
                                                                         <div class="invisible-layout">
                                                                         @if($timesheet->user_id  == auth()->user()->id)
@@ -249,7 +272,38 @@
                                                                                     <path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z"></path>
                                                                                 </svg>
                                                                             </a>
-                                                                            @endif;
+                                                                            @endif
+                                                                            @if (($timesheet->status == 'pending' || $timesheet->status == 'manager_rejected') && ($timesheet->user_id != auth()->user()->id))
+                                                                                <a href="#"
+                                                                                    onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.timesheet.timesheet_accept_form', 'id' => $timesheet->id]) }}', '{{ get_phrase('Send message') }}')"
+                                                                                    class="btn btn p-0" title="{{ get_phrase('Approve') }}" data-bs-placement="right"
+                                                                                    data-bs-toggle="tooltip">
+                                                                                    <svg height="15" viewBox="0 0 520 520" width="15" xmlns="http://www.w3.org/2000/svg"
+                                                                                        id="fi_5291043">
+                                                                                        <g id="_7-Check" data-name="7-Check">
+                                                                                            <path
+                                                                                                d="m79.423 240.755a47.529 47.529 0 0 0 -36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515l250.787-403.892c.041-.067.084-.134.128-.2 2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0 -19.362 1.343q-.135.166-.278.327l-252.922 285.764a10.961 10.961 0 0 1 -15.585.843l-83.94-76.386a47.319 47.319 0 0 0 -31.939-12.438z">
+                                                                                            </path>
+                                                                                        </g>
+                                                                                    </svg>
+                                                                                </a>
+                                                                            @endif
+
+                                                                            @if (($timesheet->status == 'pending' || $timesheet->status == 'manager_approved') && ($timesheet->user_id != auth()->user()->id))
+                                                                                <a href="#"
+                                                                                    onclick="showRightModal('{{ route('right_modal', ['view_path' => 'manager.timesheet.timesheet_rejection_form', 'id' => $timesheet->id]) }}', '{{ get_phrase('Send a reason for this rejection') }}')"
+                                                                                    class="btn btn p-1" title="{{ get_phrase('Reject') }}" data-bs-placement="right"
+                                                                                    data-bs-toggle="tooltip">
+                                                                                    <svg id="fi_8867452" enable-background="new 0 0 512 512" height="15" viewBox="0 0 512 512"
+                                                                                        width="15" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <g>
+                                                                                            <path
+                                                                                                d="m256 0c-141.163 0-256 114.837-256 256s114.837 256 256 256 256-114.837 256-256-114.837-256-256-256zm111.963 331.762c10 10 10 26.212 0 36.212-5 4.988-11.55 7.487-18.1 7.487s-13.1-2.5-18.1-7.487l-75.763-75.774-75.762 75.775c-5 4.988-11.55 7.487-18.1 7.487s-13.1-2.5-18.1-7.487c-10-10-10-26.212 0-36.212l75.762-75.763-75.762-75.762c-10-10-10-26.213 0-36.213 10-9.988 26.2-9.988 36.2 0l75.762 75.775 75.762-75.775c10-9.988 26.2-9.988 36.2 0 10 10 10 26.213 0 36.213l-75.762 75.762z">
+                                                                                            </path>
+                                                                                        </g>
+                                                                                    </svg>
+                                                                                </a>
+                                                                            @endif
                                                                         </div>
                                                                     </td>
                                                                 </tr>
