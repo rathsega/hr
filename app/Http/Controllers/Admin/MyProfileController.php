@@ -41,6 +41,7 @@ class MyProfileController extends Controller
         $data['blood_group'] = $request->blood_group;
         $data['gender'] = $request->gender;
         $data['birthday'] = date('Y-m-d H:i:s', strtotime($request->birthday));
+        $data['actual_birthday'] = date('Y-m-d H:i:s', strtotime($request->actual_birthday));
         $data['present_address'] = $request->present_address;
         $data['permanent_address'] = $request->permanent_address;
         $data['bio'] = $request->bio;

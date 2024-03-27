@@ -50,8 +50,16 @@
         </div>
         <div class="col-md-6">
             <div class="fpb-7">
-                <label for="eBrithDay" class="eForm-label">{{ get_phrase('Birthday') }}</label>
+                <label for="eBrithDay" class="eForm-label">{{ get_phrase('Certificate Birthday') }}</label>
                 <input type="text" class="form-control eForm-control date-range-picket" id="eInputDate" name="birthday" value="{{ date('m/d/Y', strtotime($user->birthday)) }}" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="fpb-7">
+                <label for="actual_birthday" class="eForm-label">{{ get_phrase('Actual Birthday') }}</label>
+                <input type="text" class="form-control eForm-control date-range-picket" id="eInputDate" name="actual_birthday" value="{{ date('m/d/Y', strtotime($user->actual_birthday)) }}" />
             </div>
         </div>
     </div>
