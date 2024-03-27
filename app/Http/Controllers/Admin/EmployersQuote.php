@@ -15,7 +15,7 @@ class EmployersQuote extends Controller
     function index()
     {
         $page_data = [];
-        $page_data['quotes'] = DB::select("SELECT * from quotes");
+        $page_data['quotes'] = DB::select("SELECT q.*, u.id as user_id, u.name from quotes as q inner join users as u on u.id = q.user_id");
         return view(auth()->user()->role . '.quotes.index', $page_data);
     }
 
@@ -25,11 +25,15 @@ class EmployersQuote extends Controller
     {
         $this->validate($request, [
             'quote' => 'required',
-            'date' => 'required'
+            'from_date' => 'required',
+            'to_date' => 'required',
+            'user_id' => 'required',
         ]);
 
         $data['quote'] = $request->quote;
-        $data['date'] = $request->date;
+        $data['from_date'] = $request->from_date;
+        $data['to_date'] = $request->to_date;
+        $data['user_id'] = $request->user_id;
 
         $id = Quotes::insert($data);
 
@@ -40,12 +44,16 @@ class EmployersQuote extends Controller
     {
 
         $this->validate($request, [
-            'date' => 'required',
-            'quote' => 'required'
+            'quote' => 'required',
+            'from_date' => 'required',
+            'to_date' => 'required',
+            'user_id' => 'required',
         ]);
 
         $data['quote'] = $request->quote;
-        $data['date'] = $request->date;
+        $data['from_date'] = $request->from_date;
+        $data['to_date'] = $request->to_date;
+        $data['user_id'] = $request->user_id;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
 

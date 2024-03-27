@@ -35,9 +35,10 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
+                            <th class="">{{ get_phrase('Quote') }}</th>
+                            <th class="">{{ get_phrase('Quote By') }}</th>
                             <th class="">{{ get_phrase('From date') }}</th>
                             <th class="">{{ get_phrase('To date') }}</th>
-                            <th class="">{{ get_phrase('Quote') }}</th>
                             <th class="">{{ get_phrase('Actions') }}</th>
                         </tr>
                     </thead>
@@ -47,14 +48,18 @@
                             <td>
                                 {{ ++$key }}
                             </td>
+                           
+                            <td>
+                                {{ $quote->quote }}
+                            </td>
+                            <td>
+                                {{ $quote->name }}
+                            </td>
                             <td>
                                 {{ date("d-m-Y", strtotime($quote->from_date)) }}
                             </td>
                             <td>
                                 {{ date("d-m-Y", strtotime($quote->to_date)) }}
-                            </td>
-                            <td>
-                                {{ $quote->quote }}
                             </td>
                             <td>
                                 <a href="#" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.quotes.edit', 'quote_id' => $quote->id]) }}', '{{ __('Edit quote') }}')" class="btn btn p-0 px-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip">

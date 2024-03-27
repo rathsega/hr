@@ -1,9 +1,28 @@
 <h4 class="column-title">{{ get_phrase('Edit Quote') }}</h4>
 <form action="{{ route('admin.quotes.update', $quote_id) }}" method="post" class="current-location-form">
-    @php $quote_details = DB::table('quotes')->find($quote_id); @endphp
+    @php $quote_details = DB::table('quotes')->find($quote_id);
+	$users = DB::table('users')->where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort', 'asc')->get();
+    @endphp
     @Csrf
     <div class="row">
 
+        <div class="col-md-12">
+            @if (auth()->user()->role != 'admin')
+                <input type="hidden" value="{{ auth()->user()->id }}" name="user_id">
+            @else
+                <div class="fpb-7">
+                    <label class="eForm-label">{{get_phrase('Selected Quote By')}}</label>
+                    <select name="user_id" class="form-select eForm-select select2" required>
+                        <option value="">{{ get_phrase('Select a user') }}</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" @if ($user->id == $quote_details->user_id) selected @endif>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+        </div>
 
         <div class="col-md-12">
             <div class="fpb-7">
