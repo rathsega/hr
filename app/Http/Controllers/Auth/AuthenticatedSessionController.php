@@ -23,6 +23,7 @@ class AuthenticatedSessionController extends Controller
         $today_quote = DB::select("SELECT q.*, u.id as user_id, u.name, u.designation, u.photo from quotes as q inner join users as u on u.id = q.user_id WHERE DATE(q.from_date) <= CURDATE() and DATE(q.to_date) >= CURDATE()");
         $employee_of_the_month = DB::select("select e.*, e.id as id, u.id as user_id, u.name, u.photo, u.designation, u.emp_id, u.email from employee_of_the_month as e inner join users as u on u.id = e.user_id WHERE e.month = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)
         AND e.year = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");
+        $announcements = DB::select("SELECT a.id, a.subject, a.message FROM announcements AS a where a.notification=0 and  DATE(a.from_date) <= CURDATE() and DATE(a.to_date) >= CURDATE()");
 
         $data = [];
 
@@ -54,6 +55,15 @@ class AuthenticatedSessionController extends Controller
                 $slider['name'] = $employee->name;
                 $slider['photo'] = $employee->photo;
                 $slider['designation'] = $employee->designation;
+                $data[] = $slider;
+            }
+        }
+        if($announcements){
+            foreach($announcements as $key => $announcement){
+                $slider = [];
+                $slider['type'] = "announcement";
+                $slider['subject'] = $announcement->subject;
+                $slider['message'] = $announcement->message;
                 $data[] = $slider;
             }
         }

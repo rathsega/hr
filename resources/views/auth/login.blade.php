@@ -101,6 +101,16 @@
                                             </p>
                                         </div>
                                     </div>
+                                @elseif($slide['type'] == 'announcement')
+                                <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                                    <div class="text-center w-inherit h-100 position-fixed">
+                                    <img class="mt-2 mb-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                        <div class="envelope-image-bg">
+                                            <h6 class="announcement-heading">{{$slide['subject']}}</h6>
+                                            <p class="announcement-para">{{$slide['message']}}</p>   
+                                        </div>
+                                    </div>
+                                </div>
                                 @endif
                             </div>
                     @endforeach
