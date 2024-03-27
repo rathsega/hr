@@ -35,7 +35,8 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
-                            <th class="">{{ get_phrase('date') }}</th>
+                            <th class="">{{ get_phrase('From date') }}</th>
+                            <th class="">{{ get_phrase('To date') }}</th>
                             <th class="">{{ get_phrase('Quote') }}</th>
                             <th class="">{{ get_phrase('Actions') }}</th>
                         </tr>
@@ -47,7 +48,10 @@
                                 {{ ++$key }}
                             </td>
                             <td>
-                                {{ date("d-m-Y", strtotime($quote->date)) }}
+                                {{ date("d-m-Y", strtotime($quote->from_date)) }}
+                            </td>
+                            <td>
+                                {{ date("d-m-Y", strtotime($quote->to_date)) }}
                             </td>
                             <td>
                                 {{ $quote->quote }}

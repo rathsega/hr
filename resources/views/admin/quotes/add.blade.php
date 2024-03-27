@@ -6,8 +6,14 @@
 
         <div class="col-md-12">
             <div class="fpb-7">
-                <label for="date" class="eForm-label">{{get_phrase('Date')}}</label>
-                <input type="date" value="{{ date('Y-m-d') }}"  min="<?php echo date('Y-m-d'); ?>" name="date" class="form-control eForm-control" id="date" />
+                <label for="date" class="eForm-label">{{get_phrase('From Date')}}</label>
+                <input type="date" value="{{ date('Y-m-d') }}"  min="<?php echo date('Y-m-d'); ?>" name="from_date" class="form-control eForm-control" id="from_date" />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="fpb-7">
+                <label for="date" class="eForm-label">{{get_phrase('To Date')}}</label>
+                <input type="date" value="{{ date('Y-m-d') }}"  min="<?php echo date('Y-m-d'); ?>" name="to_date" class="form-control eForm-control" id="to_date" />
             </div>
         </div>
         <div class="col-md-12">

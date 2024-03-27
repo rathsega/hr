@@ -1,16 +1,20 @@
-
-
-    <h4 class="column-title">{{ get_phrase('Edit Quote') }}</h4>
+<h4 class="column-title">{{ get_phrase('Edit Quote') }}</h4>
 <form action="{{ route('admin.quotes.update', $quote_id) }}" method="post" class="current-location-form">
-@php $quote_details = DB::table('quotes')->find($quote_id); @endphp
+    @php $quote_details = DB::table('quotes')->find($quote_id); @endphp
     @Csrf
     <div class="row">
 
 
         <div class="col-md-12">
-        <div class="fpb-7">
-                <label for="date" class="eForm-label">{{get_phrase('Date')}}</label>
-                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->date)) }}"  min="<?php echo date('Y-m-d'); ?>" name="date" class="form-control eForm-control" id="date" />
+            <div class="fpb-7">
+                <label for="date" class="eForm-label">{{get_phrase('From Date')}}</label>
+                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->from_date)) }}" min="<?php echo date('Y-m-d'); ?>" name="from_date" class="form-control eForm-control" id="from_date" />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="fpb-7">
+                <label for="date" class="eForm-label">{{get_phrase('To Date')}}</label>
+                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->to_date)) }}" min="<?php echo date('Y-m-d'); ?>" name="to_date" class="form-control eForm-control" id="to_date" />
             </div>
         </div>
         <div class="col-md-12">

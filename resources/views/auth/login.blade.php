@@ -29,7 +29,7 @@
     @php
     $current_date = date('Y-m-d');
     $birthday_users = DB::select("SELECT * FROM users WHERE DATE_FORMAT(birthday, '%m-%d') = DATE_FORMAT('$current_date', '%m-%d') and status='active'");
-    $today_quote = DB::select("SELECT * FROM quotes WHERE DATE(date) = CURDATE()");
+    $today_quote = DB::select("SELECT * FROM quotes WHERE DATE(from_date) <= CURDATE() and DATE(to_date) >= CURDATE()");
     $employee_of_the_month = DB::select("select e.*, e.id as id, u.id as user_id, u.name, u.emp_id, u.email from employee_of_the_month as e inner join users as u on u.id = e.user_id WHERE e.month = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)
     AND e.year = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");
 
