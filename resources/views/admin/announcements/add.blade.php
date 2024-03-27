@@ -23,9 +23,22 @@
 		</select>
 	</div>
 
+	<div class="col-md-12">
+		<div class="fpb-7">
+			<label for="date" class="eForm-label">{{get_phrase('From Date')}}</label>
+			<input type="date" value="{{ date('Y-m-d') }}"  min="<?php echo date('Y-m-d'); ?>" name="from_date" class="form-control eForm-control" id="from_date" />
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="fpb-7">
+			<label for="date" class="eForm-label">{{get_phrase('To Date')}}</label>
+			<input type="date" value="{{ date('Y-m-d') }}"  min="<?php echo date('Y-m-d'); ?>" name="to_date" class="form-control eForm-control" id="to_date" />
+		</div>
+	</div>
+
 	<div class="fpb-7">
             &nbsp;&nbsp;&nbsp;<input type="checkbox" data-bs-toggle="tooltip" name="notification" class="task-checkbox" />
-            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Notification  ')}}</label>
+            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Send Email')}}</label>
 
 	</div>
 

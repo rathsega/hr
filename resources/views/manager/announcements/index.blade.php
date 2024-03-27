@@ -28,10 +28,11 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
-                            <th class="">{{ get_phrase('subject') }}</th>
-                            <th class="">{{ get_phrase('message') }}</th>
-                            <th class="">{{ get_phrase('department') }}</th>
-                            <th class="">{{ get_phrase('date') }}</th>
+                            <<th class="">{{ get_phrase('Subject') }}</th>
+                            <th class="">{{ get_phrase('Message') }}</th>
+                            <th class="">{{ get_phrase('Department') }}</th>
+                            <th class="">{{ get_phrase('From Date') }}</th>
+                            <th class="">{{ get_phrase('To Date') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,7 +51,10 @@
                                 {{ $announcement->title }}
                             </td>
                             <td>
-                                {{ $announcement->updated_at ? date('jS M, Y', strtotime($announcement->updated_at)) : '' }}
+                                {{ $announcement->from_date ? date('jS M, Y', strtotime($announcement->from_date)) : '' }}
+                            </td>
+                            <td>
+                                {{ $announcement->to_date ? date('jS M, Y', strtotime($announcement->to_date)) : '' }}
                             </td>
                         </tr>
                         @endforeach

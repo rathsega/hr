@@ -38,7 +38,8 @@
                             <th class="">{{ get_phrase('Subject') }}</th>
                             <th class="">{{ get_phrase('Message') }}</th>
                             <th class="">{{ get_phrase('Department') }}</th>
-                            <th class="">{{ get_phrase('Date') }}</th>
+                            <th class="">{{ get_phrase('From Date') }}</th>
+                            <th class="">{{ get_phrase('To Date') }}</th>
                             <th class="">{{ get_phrase('Actions') }}</th>
                         </tr>
                     </thead>
@@ -58,7 +59,10 @@
                                 {{ $announcement->title }}
                             </td>
                             <td>
-                                {{ $announcement->updated_at ? date('jS M, Y', strtotime($announcement->updated_at)) : '' }}
+                                {{ $announcement->from_date ? date('jS M, Y', strtotime($announcement->from_date)) : '' }}
+                            </td>
+                            <td>
+                                {{ $announcement->to_date ? date('jS M, Y', strtotime($announcement->to_date)) : '' }}
                             </td>
                             <td>
                                 <a href="#" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.announcements.edit', 'announcement_id' => $announcement->id]) }}', '{{ __('Edit Announcement') }}')" class="btn btn p-0 px-1" title="{{ get_phrase('Edit') }}" data-bs-toggle="tooltip">

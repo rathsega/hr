@@ -15,7 +15,7 @@ class AnnouncementsController extends Controller
     function index()
     {
         $page_data = [];
-        $page_data['announcements'] = DB::select("SELECT a.id, a.subject, a.message, d.title, a.updated_at, a.status, a.notification AS department_name FROM announcements AS a LEFT JOIN departments AS d ON a.department = d.id;");
+        $page_data['announcements'] = DB::select("SELECT a.id, a.subject, a.message, d.title,  a.from_date, a.to_date, a.updated_at, a.status, a.notification AS department_name FROM announcements AS a LEFT JOIN departments AS d ON a.department = d.id;");
         return view(auth()->user()->role . '.announcements.index', $page_data);
     }
 
@@ -35,12 +35,16 @@ class AnnouncementsController extends Controller
     {
         $this->validate($request, [
             'subject' => 'required',
-            'message' => 'required'
+            'message' => 'required',
+            'from_date' => 'required',
+            'to_date' => 'required',
         ]);
 
         $data['subject'] = $request->subject;
         $data['message'] = $request->message;
         $data['department'] = $request->department;
+        $data['from_date'] = $request->from_date;
+        $data['to_date'] = $request->to_date;
         $data['notification'] = $request->notification == 'on' ? 1 : 0;
 
         $id = Announcements::insert($data);
@@ -86,12 +90,16 @@ class AnnouncementsController extends Controller
 
         $this->validate($request, [
             'subject' => 'required',
-            'message' => 'required'
+            'message' => 'required',
+            'from_date' => 'required',
+            'to_date' => 'required',
         ]);
 
         $data['subject'] = $request->subject;
         $data['message'] = $request->message;
         $data['department'] = $request->department;
+        $data['from_date'] = $request->from_date;
+        $data['to_date'] = $request->to_date;
         $data['notification'] = $request->notification == 'on' ? 1 : 0;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
