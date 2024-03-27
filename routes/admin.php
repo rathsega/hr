@@ -142,7 +142,15 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('payrollconfiguration/store', [PayrollConfigurationController::class, 'store'])->name('payrollconfiguration.store');
     Route::post('payrollconfiguration/generate', [PayrollConfigurationController::class, 'generate'])->name('payrollconfiguration.generate');
     Route::post('payrollconfiguration/configure_extra_modules', [PayrollConfigurationController::class, 'configure_extra_modules'])->name('payrollconfiguration.configure_extra_modules');
-
+    Route::get('payrollconfiguration/allowances', [PayrollConfigurationController::class, 'allowances'])->name('payrollconfiguration.allowances');
+    Route::post('payrollconfiguration/add_allowances', [PayrollConfigurationController::class, 'add_allowances'])->name('payrollconfiguration.add_allowances');
+    Route::post('payrollconfiguration/update_allowances/{allowance_id}', [PayrollConfigurationController::class, 'update_allowances'])->name('payrollconfiguration.update_allowances');
+    Route::get('payrollconfiguration/delete_allowance/{allowance_id}', [PayrollConfigurationController::class, 'delete_allowance'])->name('payrollconfiguration.delete_allowance');
+    Route::get('payrollconfiguration/advances', [PayrollConfigurationController::class, 'advances'])->name('payrollconfiguration.advances');
+    Route::post('payrollconfiguration/add_advances', [PayrollConfigurationController::class, 'add_advances'])->name('payrollconfiguration.add_advances');
+    Route::post('payrollconfiguration/update_advances/{advance_id}', [PayrollConfigurationController::class, 'update_advances'])->name('payrollconfiguration.update_advances');
+    Route::get('payrollconfiguration/delete_advance/{advance_id}', [PayrollConfigurationController::class, 'delete_advance'])->name('payrollconfiguration.delete_advance');
+    Route::post('payrollconfiguration/download_report', [PayrollConfigurationController::class, 'download_report'])->name('payrollconfiguration.download_report');
     //Separation
     Route::get('separation', [SeparationController::class, 'index'])->name('separation');
     Route::get('separation/view/{id?}', [SeparationController::class, 'view'])->name('separation.view');

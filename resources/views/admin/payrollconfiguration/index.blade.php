@@ -53,6 +53,41 @@
         </form>
     </div>
 
+    <div class="col-md-12">
+        <form action="{{ route('admin.payrollconfiguration.download_report') }}" method="post" id="filterForm">
+        @csrf
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label class="eForm-label">{{get_phrase('Selected Year')}}</label>
+                    <select name="year" class="form-select eForm-select select2">
+                        @for ($year = date('Y'); $year >= 2022; $year--)
+                            <option value="{{ $year }}">
+                                {{ $year }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="eForm-label">{{get_phrase('Selected Month')}}</label>
+                    <select name="month" class="form-select eForm-select select2">
+                        @for ($month = 1; $month <= 12; $month++)
+                            <option value="{{ $month }}">
+                                {{ date('F', strtotime($year . '-' . $month . '-20')) }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="fpb-7">
+                        <button class="btn-form mt-4">{{ get_phrase('Download Report') }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div class="row">
         <div class="col-md-12 pb-3">
             <div class="eSection-wrap">

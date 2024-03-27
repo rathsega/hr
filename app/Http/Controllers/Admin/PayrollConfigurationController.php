@@ -5,7 +5,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
-use App\Models\{User, Payslip, Holidays, Leaves_count, Leave_application, Attendance};
+use App\Models\{User, Payslip, Holidays, Allowances, Advances, Leave_application, Attendance};
+
+use App\Exports\PayslipsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PayrollConfigurationController extends Controller
 {
@@ -588,6 +591,116 @@ class PayrollConfigurationController extends Controller
     }
 
     public function configure_extra_modules(){
+
+    }
+
+    public function advances(Request $request){
+        $page_data['title'] = "Advances";
+        $page_data['advances'] = DB::select("SELECT a.*, u.id as user_id, u.name from advances as a left join users as u on u.id = a.user_id");
+        return view(auth()->user()->role.'.payrollconfiguration.advances', $page_data);
+    }
+
+    public function allowances(Request $request){
+        $page_data['title'] = "Allowances";
+        $page_data['allowances'] = DB::select("SELECT a.*, u.id as user_id, u.name from allowances as a left join users as u on u.id = a.user_id");
+        return view(auth()->user()->role.'.payrollconfiguration.allowances', $page_data);
+    }
+
+    public function add_allowances(Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'allowance_type' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['allowance_type'] = $request->allowance_type;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+
+        $id = Allowances::insert($data);
+        return redirect()->back()->with('success_message', __('Allowance added successfully'));
+    }
+
+    public function update_allowances($allowance_id="", Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'allowance_type' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['allowance_type'] = $request->allowance_type;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+
+        $id = Allowances::where('id', $allowance_id)->update($data);
+        return redirect()->back()->with('success_message', __('Allowance added successfully'));
+    }
+
+    function delete_allowance($allowance_id = "")
+    {
+        Allowances::where('id', $allowance_id)->delete();
+        return redirect()->back()->with('success_message', __('Allowance deleted successfully'));
+    }
+
+    function add_advances(Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'installments_count' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['installments_count'] = $request->installments_count;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+        $data['status'] = 'pending';
+
+        $id = Advances::insert($data);
+        return redirect()->back()->with('success_message', __('Advance added successfully'));
+    }
+
+    function delete_advance($advance_id = "")
+    {
+        Advances::where('id', $advance_id)->delete();
+        return redirect()->back()->with('success_message', __('Advance deleted successfully'));
+    }
+
+    function update_advances($advance_id="", Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'installments_count' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['installments_count'] = $request->installments_count;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+        $data['status'] = 'pending';
+
+        $id = Advances::where('id', $advance_id)->update($data);
+        return redirect()->back()->with('success_message', __('Advance updated successfully'));
+    }
+
+    function download_report(Request $request){
+        $selected_year = $request->year;
+        $selected_month = $request->month;
+
+        return Excel::download(new PayslipsExport($selected_month, $selected_year), 'payslips.xlsx');
 
     }
     
