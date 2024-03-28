@@ -34,8 +34,8 @@ class AnnouncementsController extends Controller
     function store(Request $request)
     {
         $this->validate($request, [
-            'subject' => 'required',
-            'message' => 'required',
+            'subject' => 'required|max:50',
+            'message' => 'required|max:150',
             'from_date' => 'required',
             'to_date' => 'required',
         ]);
@@ -89,8 +89,8 @@ class AnnouncementsController extends Controller
     {
 
         $this->validate($request, [
-            'subject' => 'required',
-            'message' => 'required',
+            'subject' => 'required|max:50',
+            'message' => 'required|max:150',
             'from_date' => 'required',
             'to_date' => 'required',
         ]);

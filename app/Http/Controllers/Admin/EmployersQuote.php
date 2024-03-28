@@ -24,7 +24,7 @@ class EmployersQuote extends Controller
     function store(Request $request)
     {
         $this->validate($request, [
-            'quote' => 'required',
+            'quote' => 'required|max:150',
             'from_date' => 'required',
             'to_date' => 'required',
             'user_id' => 'required',
@@ -44,7 +44,7 @@ class EmployersQuote extends Controller
     {
 
         $this->validate($request, [
-            'quote' => 'required',
+            'quote' => 'required|max:150',
             'from_date' => 'required',
             'to_date' => 'required',
             'user_id' => 'required',
