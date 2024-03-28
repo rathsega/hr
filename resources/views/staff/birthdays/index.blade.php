@@ -66,7 +66,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Sample data
-        const data = <?php echo App\Models\User::orderBy('birthday')->get(); ?>;
+        const data = <?php echo App\Models\User::orderBy('actual_birthday')->get(); ?>;
         const tableBody = document.getElementById('table-body');
         const searchInput = document.getElementById('search');
 
@@ -88,8 +88,8 @@
 
             data = data.filter(row =>{
                 let formattedDate;
-                if(row.birthday){
-                    const dateObject = new Date(row.birthday);
+                if(row.actual_birthday){
+                    const dateObject = new Date(row.actual_birthday);
 
                     // Extract individual date components
                     const month = dateObject.getMonth() + 1; // Adding 1 because months are zero-based
@@ -97,7 +97,10 @@
                     const year = dateObject.getFullYear();
 
                     // Create the formatted date string in "M-D-Y" format
-                    formattedDate = `${day}-${month}-${year}`;
+                    //formattedDate = `${day}-${month}-${year}`;
+                    
+                    const options = { day: 'numeric', month: 'short' };
+                    formattedDate = dateObject.toLocaleDateString('en-US', options);
                 }else{
                     formattedDate = null;
                 }
@@ -114,7 +117,7 @@
 
             data.forEach((row, key) => {
                 const tr = document.createElement('tr');
-                const date = new Date(row.birthday);
+                const date = new Date(row.actual_birthday);
                 const options = { day: 'numeric', month: 'short' };
                 const formattedDate = date.toLocaleDateString('en-US', options);
                 tr.innerHTML = `
