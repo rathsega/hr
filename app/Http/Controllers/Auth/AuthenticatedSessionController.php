@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
     public function create()
     {
         $current_date = date('Y-m-d');
-        $birthday_users = DB::select("SELECT name, photo FROM users WHERE DATE_FORMAT(birthday, '%m-%d') = DATE_FORMAT('$current_date', '%m-%d') and status='active'");
+        $birthday_users = DB::select("SELECT name, photo FROM users WHERE DATE_FORMAT(actual_birthday, '%m-%d') = DATE_FORMAT('$current_date', '%m-%d') and status='active'");
         $today_quote = DB::select("SELECT q.*, u.id as user_id, u.name, u.designation, u.photo from quotes as q inner join users as u on u.id = q.user_id WHERE DATE(q.from_date) <= CURDATE() and DATE(q.to_date) >= CURDATE()");
         $employee_of_the_month = DB::select("select e.*, e.id as id, u.id as user_id, u.name, u.photo, u.designation, u.emp_id, u.email from employee_of_the_month as e inner join users as u on u.id = e.user_id WHERE e.month = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)
         AND e.year = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");

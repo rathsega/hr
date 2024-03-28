@@ -42,7 +42,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                            @foreach (App\Models\User::orderBy('birthday')->get() as $key => $birthdays)
+                            @foreach (App\Models\User::orderBy('actual_birthday')->get() as $key => $birthdays)
                                 <tr>
                                     <td>
                                         {{ ++$key }}
@@ -51,7 +51,7 @@
                                         {{ $birthdays->name }}
                                     </td>
                                     <td>
-                                        {{ $birthdays->birthday ? date('jS M', strtotime($birthdays->birthday)) : '' }}
+                                        {{ $birthdays->actual_birthday ? date('jS M', strtotime($birthdays->actual_birthday)) : '' }}
                                     </td>
                                 </tr>
                             @endforeach
