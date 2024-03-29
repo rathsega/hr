@@ -51,7 +51,15 @@
             <div class="col-md-12 mt-3">
                 <div class="fpb-7">
                     <label class="eForm-label">{{get_phrase('Allowance Type')}}</label>
-                    <input type="text" name="allowance_type" class="form-control eForm-control" value="{{$allowance_details->allowance_type}}" required>
+                    <select name="allowance_type" id="allowance_type" class="form-select eForm-select select2" required>
+                        <option value="">{{ get_phrase('Select allowance type') }}</option>
+                        <option value="Hostel Allowance" @if ("Hostel Allowance" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Hostel Allowance') }}</option>
+                        <option value="Meal Allowances" @if ("Meal Allowances" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Meal Allowances') }}</option>
+                        <option value="Motor Vehicle Perq" @if ("Motor Vehicle Perq" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Motor Vehicle Perq') }}</option>
+                        <option value="Motor Vehicle All" @if ("Motor Vehicle All" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Motor Vehicle All') }}</option>
+                        
+                        
+                    </select>
                 </div>
             </div>
             <div class="col-md-12 mt-3">

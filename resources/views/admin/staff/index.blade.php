@@ -15,6 +15,9 @@
                     <li><a href="#">{{ get_phrase('Employee') }}</a></li>
                 </ul>
             </div>
+            <div class="col-lg-3 col-md-3 justify-content-end">
+                    <input type="text" id="search" class="rounded" placeholder="Search...">
+                    </div>
             <div class="export-btn-area d-flex ">
                 <a href="#" class="export_btn" onclick="showRightModal('{{ route('right_modal', ['view_path' => 'admin.staff.add']) }}', '{{ __('Add new employee') }}')">
                     <i class="bi bi-plus me-2"></i>
@@ -58,12 +61,12 @@
                                 <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="table-body">
                             @foreach ($active_staffs as $active_staff)
                                 @php
                                     $department = \App\Models\Department::where('id', $active_staff->department);
                                 @endphp
-                                <tr>
+                                <tr  id="{{ $active_staff->id }}">
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img class="rounded-circle" src="{{ get_image('uploads/user-image/' . $active_staff->photo) }}" width="40px">
@@ -150,15 +153,12 @@
                             <tr>
                                 <th>{{get_phrase('Name')}}</th>
                                 <th>{{get_phrase('Role')}}</th>
-                                <th>{{get_phrase('Department')}}</th>
                                 <th class="text-center">{{get_phrase('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($inactive_staffs as $inactive_staff)
-                                @php
-                                    $department = \App\Models\Department::where('id', $inactive_staff->department);
-                                @endphp
+                            
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -171,9 +171,6 @@
                                     </td>
                                     <td>
                                         <span class="badge ebg-soft-dark text-capitalize">{{ $inactive_staff->role }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge ebg-soft-dark text-capitalize">{{ $department->value('role') }}</span>
                                     </td>
                                     <td class="text-center">
 
@@ -243,3 +240,42 @@
         </div>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sample data
+        const data = <?php echo App\Models\User::where('status', 'active')->whereIn('role', array('staff', 'manager'))->orderBy('sort')->get(); ?>;
+        console.log(data);
+        const searchInput = document.getElementById('search');
+
+        // Initial data rendering
+        //renderData(data);
+
+        // Event listener for search input
+        searchInput.addEventListener('input', function () {
+            const query = this.value.trim().toLowerCase();
+            filterData(data, query)
+            //const filteredData = filterData(data, query);
+            //renderData(filteredData);
+        });
+
+        // Function to filter data based on the search query
+        function filterData(data, query) {
+            if (!query) {
+                return data;
+            }
+
+            data.forEach(row =>{
+                console.log(row);
+            if ((row.name ? row.name.toLowerCase().includes(query) : row.name) ||
+                (row.email ? row.email.toLowerCase().includes(query) : row.email)){
+                    document.getElementById(row.id).hasAttribute("style") ? document.getElementById(row.id).removeAttribute("style") : "";
+                }else{
+                    document.getElementById(row.id).style.display = "none";
+                }
+            });
+        }
+
+       
+    });
+</script>

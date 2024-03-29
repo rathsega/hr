@@ -53,7 +53,7 @@ class LeaveApplicationController extends Controller
         }
 
         Leave_application::insert($data);
-        $leave_types = array("casual_leave"=>"Casual Leave", "sick_leave" => "Sick Leave" , "meternity_leave"=>"Meternity Leave", "paternity_leave"=>"Peternity Leave", "loss_of_pay"=>"Loss Of Pay");
+        $leave_types = array("casual_leave"=>"Casual Leave", "sick_leave" => "Sick Leave" , "meternity_leave"=>"Maternity Leave", "paternity_leave"=>"Paternity Leave", "loss_of_pay"=>"Loss Of Pay");
         $to_users = User::where('id', auth()->user()->manager)->orWhere('email','hr@zettamine.com')->get();
         $leave_details = "Leave Type : " . $leave_types[$request->leave_type] ."\r\n From date : " . date("d-m-Y", strtotime($start_timestamp)) . "\r\nTo date : " . date("d-m-Y", strtotime($end_timestamp)) ."\r\nReason : " . $request->reason;
         foreach($to_users as $key => $to){

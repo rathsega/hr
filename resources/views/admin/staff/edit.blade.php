@@ -15,6 +15,7 @@
 		<label for="role" class="eForm-label">{{get_phrase('User role')}}</label>
 		<select name="role" class="form-select eForm-select" required>
 			<option value="staff" @if($user_details->role == 'staff') selected @endif>{{get_phrase('Staff')}}</option>
+			<option value="manager" @if($user_details->role == 'manager') selected @endif>{{get_phrase('Manager')}}</option>
 		</select>
 	</div>
 
@@ -59,7 +60,7 @@
 
 	<div class="col-md-12 mt-3">
         <label for="eBrithDay" class="eForm-label">{{ get_phrase('Birthday') }}</label>
-        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="birthday" value="{{ date('m/d/Y', strtotime($user_details->birthday)) }}" />
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="birthday" required value="{{ date('m/d/Y', strtotime($user_details->birthday)) }}" />
     </div>
 
 	<div class="fpb-7">

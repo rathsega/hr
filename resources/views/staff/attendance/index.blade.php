@@ -258,8 +258,10 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
+                                                    @if($att_report->checkout)
                                                     @php $minutes = floor((($att_report->checkout - $att_report->checkin)%3600)/60) >= 10 ? floor((($att_report->checkout - $att_report->checkin)%3600)/60) : "0".floor((($att_report->checkout - $att_report->checkin)%3600)/60); @endphp
                                                     {{floor(($att_report->checkout - $att_report->checkin)/3600)}} : {{floor((($att_report->checkout - $att_report->checkin)%3600)/60) == 0 ? "00" :  $minutes}}
+                                                    @endif
                                                 </td>
                                                 <td class="position-relative">
                                                     @if ($att_report->note)

@@ -39,7 +39,8 @@
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="quote" class="eForm-label">{{get_phrase('Quote')}}</label>
-                <textarea type="quote" name="quote" class="form-control eForm-control" id="quote" required rows="6">{{$quote_details->quote}}</textarea>
+                <textarea type="quote" name="quote" class="form-control eForm-control" id="edit_quote" required rows="6"  maxlength="150">{{$quote_details->quote}}</textarea>
+                <div id="charCount"></div>
             </div>
         </div>
         <div class="col-md-12">
@@ -49,3 +50,23 @@
         </div>
     </div>
 </form>
+
+<script>
+    // Get the textarea element
+    var textarea = document.getElementById("edit_quote");
+    
+    // Get the element where character count will be displayed
+    var charCount = document.getElementById("charCount");
+    
+    // Add event listener for input on the textarea
+    textarea.addEventListener("input", function() {
+        // Get the current character count
+        var count = textarea.value.length;
+        
+        // Calculate remaining characters
+        var remaining = 150 - count;
+        
+        // Display the count
+        charCount.textContent = count + " characters entered, " + remaining + " remaining.";
+    });
+</script>

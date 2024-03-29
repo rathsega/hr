@@ -19,12 +19,15 @@
   font-weight:500;
 }
 .quote-image-bg {
-  width: 404px;
-  background-image: url(../images/quote_employee.png);
+  width:240px;
+  background-image: url(../images/quote_employe.png);
   height:250px;
   background-size: cover;
   position: absolute;
   margin-left: 3%;
+}
+.quote-employe-pic{
+  height: 250px;
 }
 .quote-para{
   color: white;
@@ -37,10 +40,11 @@
 }
 .quote-name{
   color: #ffffff;
-  font-size:15px;
+  font-size:13px;
 }
-.details-sec{
-  margin-left: -80px;
+.details-sec {
+  margin-left: auto;
+  margin-top: 10px !important;
 }
 .quote-role{
   color: #ffffff;
@@ -48,13 +52,16 @@
 }
 
 .envelope-image-bg {
-  width: 580px;
-  background-image: url(../images/envelope.png) !important;
+  width:590px;
+  background-image: url(../images/envelopess.png) !important;
   height: 399px;
-  background-size: cover;
+  background-size: contain;
   /* position: absolute; */
-  margin-left: 3%;
+  margin: 0 auto; /* This will center the image horizontally */
 
+}
+.annount-crad{
+  margin-right: 20px;
 }
 .carousel-control-next-icon {
   background-image: url(../images/rightslide.png) !important;
@@ -76,7 +83,7 @@
   color: black;
   margin-top: 8px;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 16px;
 
 }
 
@@ -166,7 +173,7 @@
 .bday_box{
   height:90px;
   position: absolute;
-  margin-left: 68% !important;
+  margin-left:44% !important;
   margin-top: -90px !important;
 }
 .ribbon {
@@ -177,10 +184,10 @@
   background-image: linear-gradient(to right, #CF0F41, #640c23fc);
   margin-top: -3px !important;
 }
-/* .carousel-indicators {
+.carousel-indicators {
   margin-bottom: -2rem;
 }
-.carousel-control-prev-icon {
+/* .carousel-control-prev-icon {
   display: none !important;
 }
 .carousel-control-next-icon {
@@ -239,9 +246,13 @@
   box-sizing: border-box;
   display: grid;
   align-items: center;
-  width: 180px;
+  width: 231px;
   color: white;
-   font-size: 18px;
+   font-size: 13px;
+   line-height: 20px;
+   font-weight: 500;
+   height: 60px;
+
 }
 
 @media (max-width: 400px) {
@@ -5458,6 +5469,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   color: #181c32;
   padding-bottom: 5px;
   line-height: 27px;
+  padding-top: 30px;
 }
 .user-info-basic .userContent .info {
   font-size: 13px;

@@ -41,7 +41,7 @@ class StaffController extends Controller
         $data['employmenttype'] = $request->employmenttype;
         $data['manager'] = $request->manager;
         $data['department'] = $request->department;
-        $data['birthday'] = $request->birthday;
+        $data['birthday'] =  date('Y-m-d H:i:s', strtotime($request->birthday));
         $data['aadhar_number'] = $request->aadhar_number;
         $data['pan_number'] = $request->pan_number;
         $data['uan_number'] = $request->uan_number;
@@ -96,7 +96,7 @@ class StaffController extends Controller
         $data['billingtype'] = $request->billingtype;
         $data['employmenttype'] = $request->employmenttype;
         $data['designation'] = $request->designation;
-        $data['birthday'] = $request->birthday;
+        $data['birthday'] =  date('Y-m-d H:i:s', strtotime($request->birthday));
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         if($request->photo){

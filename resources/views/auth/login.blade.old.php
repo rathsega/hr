@@ -41,31 +41,18 @@
                                                     <h5 class="quotes-heading text-center pt-5">Quotation of the day </h5>
                                                     <img class="" width="260px" src="{{ asset('assets/images/under_line.png') }}" alt="">
                                                 </div>
-                                                <div class="d-flex flex-row justify-content-center mt-5">
-                                                    <div class="col-md-8">
-                                                        
-                                                        <div class="row ">
-                                                            <!-- Quote Image Section -->
-                                                            <div class="col-md-6">
-                                                                <div class="quote-image-bg">
-                                                                    <p class="pt-5 quote-para">{{$slide['quote']}}</p>
-                                                                    <div class="mt-3 details-sec">
-                                                                        <h6 class="quote-name"> - {{$slide['name']}}</h6>
-                                                                        <p class="quote-role">{{$slide['designation']}}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Emblem Image Section -->
-                                                            <div class="col-md-6">
-                                                                <div class="text-center">
-                                                                    <img class="quote-employe-pic " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/employe-quote.png') }}" alt="">
-                                                                </div>
+                                                <div>
+                                                    <div class="col-md-8 container">
+                                                        <div class="quote-image-bg mt-5">
+                                                            <p class="pt-5 quote-para">{{$slide['quote']}} </p>
+                                                            <div class="mt-3 details-sec">
+                                                                <h6 class="quote-name"> - {{$slide['name']}}</h6>
+                                                                <p class="quote-role">{{$slide['designation']}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -85,7 +72,7 @@
                                                                 <img class="embelem mx-auto d-block my-auto mt-4" src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="...">
                                                                 <img class="bday_box mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/bday_box.png') }}" alt="...">
                                                                 <div class="ribbon mt-4">{{$slide['name']}}</div>
-                                                                <p class="text-center text-dark pt-3 bday-para">“The whole team wishes you a happy birthday! May your day be filled with joy and laughter."</p>
+                                                                <p class="text-center text-dark pt-3 bday-para">“May you have all the joy your heart <br> can hold. Wishing you the happiest <br> and brightest day ever”</p>
                                                             </div>
                                                         </div>
                                                 </div>
@@ -119,10 +106,8 @@
                                     <div class="text-center w-inherit h-100 position-fixed">
                                     <img class="mt-2 mb-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
                                         <div class="envelope-image-bg">
-                                            <div class="annount-crad">
                                             <h6 class="announcement-heading">{{$slide['subject']}}</h6>
-                                            <p class="announcement-para">{{$slide['message']}}</p>  
-                                            </div> 
+                                            <p class="announcement-para">{{$slide['message']}}</p>   
                                         </div>
                                     </div>
                                 </div>

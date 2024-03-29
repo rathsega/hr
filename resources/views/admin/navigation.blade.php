@@ -389,7 +389,7 @@
             <ul class="sub-menu">
                 <li><a class="link_name" href="{{ route('admin.system.settings') }}">{{ get_phrase('System Settings') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.system.settings') active @endif" href="{{ route('admin.system.settings') }}">{{ get_phrase('System Settings') }}</a></li>
-                <li><a class="@if ($current_route == 'admin.performance.criteria') active @endif" href="{{ route('admin.performance.criteria') }}">{{ get_phrase('Performance criteria') }}</a>
+                <li><a class="@if ($current_route == 'admin.performance.criteria') active @endif" href="{{ route('admin.performance.criteria') }}">{{ get_phrase('Performance Criteria') }}</a>
                 </li>
                 <li><a class="@if ($current_route == 'admin.smtp.settings') active @endif" href="{{ route('admin.smtp.settings') }}">{{ get_phrase('SMTP Settings') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.system.about') active @endif" href="{{ route('admin.system.about') }}">{{ get_phrase('About') }}</a></li>

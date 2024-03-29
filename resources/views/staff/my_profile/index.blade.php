@@ -27,13 +27,10 @@
                 <div class="user-info d-flex flex-column mw-unset">
                     <div class="user-info-basic d-flex flex-column justify-content-center">
                         <div class="user-graphic-element-1">
-                            <img src="{{ get_image('assets/images/sprial_1.png') }}" alt="" />
                         </div>
                         <div class="user-graphic-element-2">
-                            <img src="{{ get_image('assets/images/polygon_1.png') }}" alt="" />
                         </div>
                         <div class="user-graphic-element-3">
-                            <img src="{{ get_image('assets/images/circle_1.png') }}" alt="" />
                         </div>
                         <div class="userImg">
                             <img width="100%" src="{{ get_image('uploads/user-image/' . $user->photo) }}" alt="" />

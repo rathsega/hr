@@ -409,6 +409,52 @@ class PayrollConfigurationController extends Controller
                 //if payslip is empty then generate payslip
                 $salary_package = $active_user->salary_package;
                 if($salary_package != null && $salary_package != 0){
+
+                    //Fetch Allowances
+                    $all_allowances = Allowances::where('user_id', $active_user->id)->where('year', $selected_year)->where('month', $selected_month)->where('user_id', $active_user->id)->get();
+                    $hostel_allowance = 0;
+                    $meal_allowance = 0;
+                    $motor_vehicle_allowance = 0;
+                    $motor_vehicle_all_allowance = 0;
+                    if($all_allowances){
+                        foreach($all_allowances as $key=>$allowance){
+                            if($allowance->type == 'Hostel Allowance'){
+                                $hostel_allowance = $allowance->amount;
+                            } else if($allowance->type == 'Meal Allowance'){
+                                $meal_allowance = $allowance->amount;
+                            } else if($allowance->type == 'Motor Vehicle Perq'){
+                                $motor_vehicle_allowance = $allowance->amount;
+                            } else if($allowance->type == 'Motor Vehicle All'){
+                                $motor_vehicle_all_allowance = $allowance->amount;
+                            }
+                        }
+                    }
+                    
+
+                    //Fetch Advances
+
+                    //Credit
+                    $all_advances = Advances::where('user_id', $active_user->id)->where('year', $selected_year)->where('month', $selected_month)->where('user_id', $active_user->id)->whereIn('status', array('pending', 'inprogress'))->get();
+                    $advances_credit_amount = 0;
+                    if($all_advances){
+                        foreach($all_advances as $advance){
+                            $advances_credit_amount += $advance->amount;
+                        }
+                    }
+
+                    //Deduction
+                    $all_advances = Advances::where('user_id', $active_user->id)->where('user_id', $active_user->id)->whereIn('status', array('pending', 'inprogress'))->get();
+                    $advance_deduction_amount = 0;
+                    if($all_advances){
+                        foreach($all_advances as $key => $advance){
+                            if($advance->installments_count < $advance->installments){
+                                $advance_deduction_amount += $advance->amount/$advance->installments_count;
+                                $installments = $advance->installments + 1;
+                                Advances::where('id', $advance->id)->update($installments);
+                            }
+                        }
+                    }
+
                     if($active_user->employmenttype == 'full time'){
                         //calculate number of worked days
                         $actual_working_days = $number_of_attendancedays + $no_of_holidays + $no_of_saturday_sunday['sundays'] + $no_of_saturday_sunday['saturdays'] + $sick_leave_days + $casual_leave_days;
@@ -541,6 +587,10 @@ class PayrollConfigurationController extends Controller
                         $data['net_salary'] = $net_salary;
                         $data['gross_salary'] = floor($gross_salary);
                         $data['tds'] = 0;
+                        $data['hostel_allowance'] = $hostel_allowance;
+                        $data['meal_allowance'] = $meal_allowance;
+                        $data['motor_vehicle_perq'] = $motor_vehicle_allowance;
+                        $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
 
                     }else if($active_user->employmenttype == 'contract'){
                         //calculate payable amount                    
@@ -575,6 +625,10 @@ class PayrollConfigurationController extends Controller
                         $data['total_earnings'] = $data['gross_salary'] = floor($earned_salary);
                         $data['tds'] = $data['deductions']  = floor(($earned_salary/100)*10);
                         $data['net_salary'] = floor($earned_salary) - floor(($earned_salary/100)*10);
+                        $data['hostel_allowance'] = $hostel_allowance;
+                        $data['meal_allowance'] = $meal_allowance;
+                        $data['motor_vehicle_perq'] = $motor_vehicle_allowance;
+                        $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
                     }
                     if($number_of_working_days > $loss_of_pay_days){
                         if(empty($payslip) ){

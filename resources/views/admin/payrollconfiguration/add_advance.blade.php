@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-12 mt-3">
                 <div class="fpb-7">
-                    <label class="eForm-label">{{get_phrase('Installements Amount')}}</label>
+                    <label class="eForm-label">{{get_phrase('Installements Count')}}</label>
                     <input type="text" name="installments_count" class="form-control eForm-control" required>
                 </div>
             </div>

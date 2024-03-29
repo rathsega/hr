@@ -279,9 +279,9 @@
                                             @elseif($leave_report->leave_type == 'casual_leave')
                                             <span class="badge bg-secondary">{{get_phrase('Casual Leave')}}</span>
                                             @elseif($leave_report->leave_type == 'meternity_leave')
-                                            <span class="badge bg-secondary">{{get_phrase('Meternity Leave')}}</span>
+                                            <span class="badge bg-secondary">{{get_phrase('Maternity Leave')}}</span>
                                             @elseif($leave_report->leave_type == 'paternity_leave')
-                                            <span class="badge bg-secondary">{{get_phrase('Peternity Leave')}}</span>
+                                            <span class="badge bg-secondary">{{get_phrase('Paternity Leave')}}</span>
                                             @elseif($leave_report->leave_type == 'loss_of_pay')
                                             <span class="badge bg-success">{{get_phrase('Loss Of Pay')}}</span>
                                             @endif
@@ -387,8 +387,8 @@
                                         <option value="">{{ get_phrase('Select a type') }}</option>
                                         <option value="casual_leave" {{$available_casual_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Casual Leave') }}</option>
                                         <option value="sick_leave" {{$available_sick_leave_count <= 0 ? 'disabled' : ''}}>{{ get_phrase('Sick Leave') }}</option>
-                                        <option value="meternity_leave">{{ get_phrase('Meternity Leave') }}</option>
-                                        <option value="paternity_leave">{{ get_phrase('Peternity Leave') }}</option>
+                                        <option value="meternity_leave">{{ get_phrase('Maternity Leave') }}</option>
+                                        <option value="paternity_leave">{{ get_phrase('Paternity Leave') }}</option>
                                         <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
 
                                     </select>
