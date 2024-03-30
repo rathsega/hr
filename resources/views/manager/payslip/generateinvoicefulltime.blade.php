@@ -114,7 +114,7 @@
                                 <th scope="row">LTA</th>
                                 <td>{{$payslip[0]->lta}} </td>
                                 <td><b>Salary advance</b></td>
-                                <td></td>
+                                <td>{{$payslip[0]->salary_advance}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Educational Allowances </th>

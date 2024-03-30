@@ -444,14 +444,30 @@ class PayrollConfigurationController extends Controller
 
                     //Deduction
                     $all_advances = Advances::where('user_id', $active_user->id)->where('user_id', $active_user->id)->whereIn('status', array('pending', 'inprogress'))->get();
-                    $advance_deduction_amount = 0;
+                    $total_advance_deduction_amount = 0;
                     if($all_advances){
                         foreach($all_advances as $key => $advance){
-                            if($advance->installments_count < $advance->installments){
-                                $advance_deduction_amount += $advance->amount/$advance->installments_count;
-                                $installments = $advance->installments + 1;
-                                Advances::where('id', $advance->id)->update($installments);
+                            $advance_deduction_amount = 0;
+                            if($advance->installments){
+                                $existed_installments = json_decode($advance->installments);
+                            }else{
+                                $existed_installments = [];
                             }
+
+                            if(count($existed_installments) < $advance->installments_count){
+                                $advance_deduction_amount = $advance->amount/$advance->installments_count;
+                                $total_advance_deduction_amount += $advance_deduction_amount;
+                                if($advance->recent_deducted_month != $selected_month){
+                                    array_push($existed_installments, array($selected_month=>$advance_deduction_amount));
+                                }
+                            }
+                            $advances_status = "/";
+                            if(count($existed_installments) < $advance->installments_count){
+                                $advances_status = "inprogress";
+                            }elseif(count($existed_installments) == $advance->installments_count){
+                                $advances_status = "completed";
+                            }
+                            Advances::where('id', $advance->id)->update(array("installments"=>json_encode($existed_installments),"recent_deducted_month"=>$selected_month, "status"=>$advances_status));
                         }
                     }
 
@@ -557,7 +573,7 @@ class PayrollConfigurationController extends Controller
                             $pt = 0;
                         }
 
-                        $total_deduction = floor($pf + $pt + $employee_esi);
+                        $total_deduction = floor($pf + $pt + $employee_esi + $total_advance_deduction_amount);
                         $net_salary = floor($total_earnings - $total_deduction);
                         
 
@@ -588,9 +604,10 @@ class PayrollConfigurationController extends Controller
                         $data['gross_salary'] = floor($gross_salary);
                         $data['tds'] = 0;
                         $data['hostel_allowance'] = $hostel_allowance;
-                        $data['meal_allowance'] = $meal_allowance;
+                        $data['meal_allowances'] = $meal_allowance;
                         $data['motor_vehicle_perq'] = $motor_vehicle_allowance;
                         $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
+                        $data['salary_advance'] = $total_advance_deduction_amount;
 
                     }else if($active_user->employmenttype == 'contract'){
                         //calculate payable amount                    
@@ -626,9 +643,11 @@ class PayrollConfigurationController extends Controller
                         $data['tds'] = $data['deductions']  = floor(($earned_salary/100)*10);
                         $data['net_salary'] = floor($earned_salary) - floor(($earned_salary/100)*10);
                         $data['hostel_allowance'] = $hostel_allowance;
-                        $data['meal_allowance'] = $meal_allowance;
+                        $data['meal_allowances'] = $meal_allowance;
                         $data['motor_vehicle_perq'] = $motor_vehicle_allowance;
                         $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
+                        $data['salary_advance'] = $total_advance_deduction_amount;
+                        $data['deductions'] = $total_advance_deduction_amount;
                     }
                     if($number_of_working_days > $loss_of_pay_days){
                         if(empty($payslip) ){
