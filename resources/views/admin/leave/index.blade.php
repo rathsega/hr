@@ -325,8 +325,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center">Employee</th>
-                                                            <th class="text-center">Type</th>
-                                                            <th class="text-center">{{get_phrase('Date')}}</th>
+                                                            <th class="text-center">{{get_phrase('Type / Date')}}</th>
                                                             <th>{{get_phrase('Reason')}}</th>
                                                             <th class="text-center">{{get_phrase('Status')}}</th>
                                                         </tr>
@@ -369,9 +368,10 @@
                                                                             <span class="badge bg-secondary">{{get_phrase('Paternity Leave')}}</span>
                                                                         @elseif($leave_report->leave_type == 'loss_of_pay')
                                                                             <span class="badge bg-success">{{get_phrase('Loss Of Pay')}}</span>
+                                                                        @elseif($leave_report->leave_type == 'work_from_home')
+                                                                            <span class="badge bg-success">{{get_phrase('Work From Home')}}</span>
                                                                         @endif
-                                                                    </td>
-                                                                    <td class="text-center w-255px">
+                                                                        <br>
                                                                         @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
                                                                             {{ date('d M Y', $leave_report->from_date) }}
                                                                             <hr class="my-0">
@@ -505,6 +505,7 @@
                                                 <option value="meternity_leave">{{ get_phrase('Maternity Leave') }}</option>
                                                 <option value="paternity_leave">{{ get_phrase('Paternity Leave') }}</option>
                                                 <option value="loss_of_pay">{{ get_phrase('Loss Of Pay') }}</option>
+                                                <option value="work_from_home">{{ get_phrase('Work From Home') }}</option>
                                                 
                                             </select>
                                         </div>

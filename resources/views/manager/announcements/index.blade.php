@@ -28,7 +28,7 @@
                     <thead>
                         <tr>
                             <th class="">#</th>
-                            <<th class="">{{ get_phrase('Subject') }}</th>
+                            <th class="">{{ get_phrase('Subject') }}</th>
                             <th class="">{{ get_phrase('Message') }}</th>
                             <th class="">{{ get_phrase('Department') }}</th>
                             <th class="">{{ get_phrase('From Date') }}</th>
