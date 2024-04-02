@@ -29,6 +29,61 @@
     </style>
 </head>
 <body style="border:2px solid rgb(7, 7, 7);">
+@php
+    function moneyFormatIndia($num) {
+        $explrestunits = "" ;
+        if(strlen($num)>3) {
+            $lastthree = substr($num, strlen($num)-3, strlen($num));
+            $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
+            $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
+            $expunit = str_split($restunits, 2);
+            for($i=0; $i < sizeof($expunit); $i++) {
+                // creates each of the 2's group and adds a comma to the end
+                if($i==0) {
+                    $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
+                } else {
+                    $explrestunits .= $expunit[$i].",";
+                }
+            }
+            $thecash = $explrestunits.$lastthree;
+        } else {
+            $thecash = $num;
+        }
+        return  $thecash ? $thecash .".00" : $thecash; // writes the final format where $currency is the currency symbol.
+    }
+
+    function numberToIndianWords($number) {
+        $decimal = round($number - ($no = floor($number)), 2) * 100;
+        $hundred = null;
+        $digits_length = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array(0 => '', 1 => 'one', 2 => 'two',
+            3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six',
+            7 => 'seven', 8 => 'eight', 9 => 'nine',
+            10 => 'ten', 11 => 'eleven', 12 => 'twelve',
+            13 => 'thirteen', 14 => 'fourteen', 15 => 'fifteen',
+            16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen',
+            19 => 'nineteen', 20 => 'twenty', 30 => 'thirty',
+            40 => 'forty', 50 => 'fifty', 60 => 'sixty',
+            70 => 'seventy', 80 => 'eighty', 90 => 'ninety');
+        $digits = array('', 'hundred','thousand','lakh', 'crore');
+        while( $i < $digits_length ) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += $divider == 10 ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
+            } else $str[] = null;
+        }
+        $Rupees = implode('', array_reverse($str));
+        $paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+        return ($Rupees ? $Rupees . 'Rupees ' : '') . $paise;
+    }
+    @endphp
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -88,81 +143,81 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Basic</th>
-                                <td>{{$payslip[0]->basic}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->basic)}}</td>
                                 <td><b>Provident Fund</b></td>
-                                <td>{{$payslip[0]->pf}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->pf)}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">HRA</th>
-                                <td>{{$payslip[0]->hra}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->hra)}}</td>
                                 <td><b>ESI</b></td>
-                                <td>{{$payslip[0]->employee_esi + $payslip[0]->employer_esi}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->employee_esi + $payslip[0]->employer_esi)}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Conveyance</th>
-                                <td>{{$payslip[0]->conveyance}} </td>
+                                <td>{{moneyFormatIndia($payslip[0]->conveyance)}} </td>
                                 <td><b> Professional Tax </b></td>
-                                <td>{{$payslip[0]->pt}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->pt)}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Medical </th>
-                                <td>{{$payslip[0]->medical}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->medical)}}</td>
                                 <td><b>Income Tax</b></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">LTA</th>
-                                <td>{{$payslip[0]->lta}} </td>
+                                <td>{{moneyFormatIndia($payslip[0]->lta)}} </td>
                                 <td><b>Salary advance</b></td>
-                                <td>{{$payslip[0]->salary_advance}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->salary_advance)}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Educational Allowances </th>
-                                <td>{{$payslip[0]->education_allowance}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->education_allowance)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Meals Allowances </th>
-                                <td>{{$payslip[0]->meal_allowances}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->meal_allowances)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Hostel Allowances </th>
-                                <td>{{$payslip[0]->hostel_allowance}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->hostel_allowance)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Motor Vehicle Allowances </th>
-                                <td>{{$payslip[0]->motor_vehicle_perq}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->motor_vehicle_perq)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Motor Vehicle All Allowances </th>
-                                <td>{{$payslip[0]->motor_vehicle_all}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->motor_vehicle_all)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Deputation  Allowances </th>
-                                <td>{{$payslip[0]->deputation_allowance}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->deputation_allowance)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Special Allowances</th>
-                                <td>{{$payslip[0]->special_allowance}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->special_allowance)}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <th scope="row">Total </th>
-                                <td>{{$payslip[0]->total_earnings}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->total_earnings)}}</td>
                                 <td><b>Total</b></td>
-                                <td>{{$payslip[0]->deductions}}</td>
+                                <td>{{moneyFormatIndia($payslip[0]->deductions)}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -173,11 +228,12 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Total </th>
-                                <td><b>{{$payslip[0]->total_earnings - $payslip[0]->deductions}} </b></td>
+                                <td><b>{{moneyFormatIndia($payslip[0]->total_earnings - $payslip[0]->deductions)}} </b></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <h6 class="fw-bold text-center">{{ucwords(numberToIndianWords($payslip[0]->total_earnings - $payslip[0]->deductions))}}</h6> 
                 <h6 class="fw-bold text-center">This is computer generated Payslip signature not required.</h6> </span>
             </div>
         </div>

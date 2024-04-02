@@ -87,6 +87,62 @@
 
     @endphp
 
+    @php
+    function moneyFormatIndia($num) {
+        $explrestunits = "" ;
+        if(strlen($num)>3) {
+            $lastthree = substr($num, strlen($num)-3, strlen($num));
+            $restunits = substr($num, 0, strlen($num)-3); // extracts the last three digits
+            $restunits = (strlen($restunits)%2 == 1)?"0".$restunits:$restunits; // explodes the remaining digits in 2's formats, adds a zero in the beginning to maintain the 2's grouping.
+            $expunit = str_split($restunits, 2);
+            for($i=0; $i < sizeof($expunit); $i++) {
+                // creates each of the 2's group and adds a comma to the end
+                if($i==0) {
+                    $explrestunits .= (int)$expunit[$i].","; // if is first value , convert into integer
+                } else {
+                    $explrestunits .= $expunit[$i].",";
+                }
+            }
+            $thecash = $explrestunits.$lastthree;
+        } else {
+            $thecash = $num;
+        }
+        return  $thecash ? $thecash .".00" : $thecash; // writes the final format where $currency is the currency symbol.
+    }
+
+    function numberToIndianWords($number) {
+        $decimal = round($number - ($no = floor($number)), 2) * 100;
+        $hundred = null;
+        $digits_length = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array(0 => '', 1 => 'one', 2 => 'two',
+            3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six',
+            7 => 'seven', 8 => 'eight', 9 => 'nine',
+            10 => 'ten', 11 => 'eleven', 12 => 'twelve',
+            13 => 'thirteen', 14 => 'fourteen', 15 => 'fifteen',
+            16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen',
+            19 => 'nineteen', 20 => 'twenty', 30 => 'thirty',
+            40 => 'forty', 50 => 'fifty', 60 => 'sixty',
+            70 => 'seventy', 80 => 'eighty', 90 => 'ninety');
+        $digits = array('', 'hundred','thousand','lakh', 'crore');
+        while( $i < $digits_length ) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += $divider == 10 ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
+            } else $str[] = null;
+        }
+        $Rupees = implode('', array_reverse($str));
+        $paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+        return ($Rupees ? $Rupees . 'Rupees ' : '') . $paise;
+    }
+    @endphp
+
     <table border="1">
         <tr height="100px" style="color:#363636;text-align:center;font-size:24px; font-weight:600;">
             <td colspan='6'> <img src="{{'data:image/png;base64,'.base64_encode(file_get_contents(public_path('assets/images/zettamine-logo.png')))}}" alt="" style=" height:50px;display:flex;float: left;margin-top: -11px;">
@@ -153,10 +209,10 @@
         <!------5 row---->
         <tr style="text-align: center;">
             <td><b>Total Gross Earnings</b></td>
-            <td><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->payable_amount}}</b></td>
+            <td><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->payable_amount)}}</b></td>
             <td></td>
             <td><b>Total Deductions</b> </td>
-            <td><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->tds}}</b></td>
+            <td><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->tds)}}</b></td>
             <td></td>
         </tr>
         <!------6 row---->
@@ -189,19 +245,19 @@
     <table border="1">
         <tr>
             <td style="text-align: left;"><b>NETPAY</b></td>
-            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->net_salary}}</td>
+            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->net_salary)}}</td>
         </tr>
         <tr>
             <td style="text-align: left;">Gross Earnings</td>
-            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->payable_amount}}</td>
+            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->payable_amount)}}</td>
         </tr>
         <tr>
             <td style="text-align: left;">Total Deductions</td>
-            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->tds}}</td>
+            <td style="text-align: right;"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->tds)}}</td>
         </tr>
         <tr>
             <td style="text-align:right;">Total Net Payable </td>
-            <td style="text-align: right;"><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{$payslip[0]->net_salary}}</b> </td>
+            <td style="text-align: right;"><b><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span>{{moneyFormatIndia($payslip[0]->net_salary)}}</b> </td>
         </tr>
         <tr>
             <table>
@@ -209,6 +265,8 @@
             </table>
         </tr>
     </table>
+    <h6 class="fw-bold text-center">{{ucwords(numberToIndianWords($payslip[0]->net_salary))}}</h6> 
+    <h6 class="fw-bold text-center">This is computer generated Payslip signature not required.</h6>
 </body>
 
 </html>
