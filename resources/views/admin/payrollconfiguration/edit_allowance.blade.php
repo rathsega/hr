@@ -57,8 +57,7 @@
                         <option value="Meal Allowances" @if ("Meal Allowances" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Meal Allowances') }}</option>
                         <option value="Motor Vehicle Perq" @if ("Motor Vehicle Perq" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Motor Vehicle Perq') }}</option>
                         <option value="Motor Vehicle All" @if ("Motor Vehicle All" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Motor Vehicle All') }}</option>
-                        
-                        
+                        <option value="Deputation Allowance" @if ("Deputation Allowance" == $allowance_details->allowance_type) selected @endif>{{ get_phrase('Deputation Allowance') }}</option>
                     </select>
                 </div>
             </div>

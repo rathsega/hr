@@ -123,6 +123,36 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <th scope="row">Meals Allowances </th>
+                                <td>{{$payslip[0]->meal_allowances}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Hostel Allowances </th>
+                                <td>{{$payslip[0]->hostel_allowance}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Motor Vehicle Allowances </th>
+                                <td>{{$payslip[0]->motor_vehicle_perq}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Motor Vehicle All Allowances </th>
+                                <td>{{$payslip[0]->motor_vehicle_all}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Deputation  Allowances </th>
+                                <td>{{$payslip[0]->deputation_allowance}}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
                                 <th scope="row">Special Allowances</th>
                                 <td>{{$payslip[0]->special_allowance}}</td>
                                 <td></td>

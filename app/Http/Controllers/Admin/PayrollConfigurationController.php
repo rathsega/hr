@@ -412,24 +412,31 @@ class PayrollConfigurationController extends Controller
 
                     //Fetch Allowances
                     $all_allowances = Allowances::where('user_id', $active_user->id)->where('year', $selected_year)->where('month', $selected_month)->where('user_id', $active_user->id)->get();
+                    /*if($active_user->id == 1076){
+                        var_dump($all_allowances);exit;
+                    }*/
                     $hostel_allowance = 0;
                     $meal_allowance = 0;
                     $motor_vehicle_allowance = 0;
                     $motor_vehicle_all_allowance = 0;
+                    $deputation_allowance = 0;
                     if($all_allowances){
                         foreach($all_allowances as $key=>$allowance){
-                            if($allowance->type == 'Hostel Allowance'){
+                            if($allowance->allowance_type == 'Hostel Allowance'){
                                 $hostel_allowance = $allowance->amount;
-                            } else if($allowance->type == 'Meal Allowance'){
+                            } else if($allowance->allowance_type == 'Meal Allowances'){
                                 $meal_allowance = $allowance->amount;
-                            } else if($allowance->type == 'Motor Vehicle Perq'){
+                            } else if($allowance->allowance_type == 'Motor Vehicle Perq'){
                                 $motor_vehicle_allowance = $allowance->amount;
-                            } else if($allowance->type == 'Motor Vehicle All'){
+                            } else if($allowance->allowance_type == 'Motor Vehicle All'){
                                 $motor_vehicle_all_allowance = $allowance->amount;
+                            } else if($allowance->allowance_type == 'Deputation Allowance'){
+                                $deputation_allowance = $allowance->amount;
                             }
                         }
                     }
-                    
+                    $all_allowances_amount = 0;
+                    $all_allowances_amount = $hostel_allowance + $meal_allowance + $motor_vehicle_allowance + $motor_vehicle_all_allowance + $deputation_allowance;
 
                     //Fetch Advances
 
@@ -539,7 +546,7 @@ class PayrollConfigurationController extends Controller
 
                         //Special Allowances : Balance amount adjusted.
                         //$except_basic_and_hra = $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf + $employee_esi  + $pt + $gratuity;
-                        $total_earnings_except_esi = $basic + $hra + $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf  + $gratuity;
+                        $total_earnings_except_esi = $basic + $hra + $conveyance + $medical + $lta + $education_allowance + $statutory_bonus + $pf  + $gratuity + $meal_allowance + $hostel_allowance + $motor_vehicle_allowance + $motor_vehicle_all_allowance;
                         $special_allowance = $earned_salary - $total_earnings_except_esi;
                         $special_allowance = ceil($special_allowance);
                         if($special_allowance < 0){
@@ -547,7 +554,7 @@ class PayrollConfigurationController extends Controller
                             $earned_salary += abs($special_allowance);
                         }
 
-                        $gross_salary = floor($basic + $hra + $conveyance + $medical + $lta + $education_allowance + $special_allowance);
+                        $gross_salary = floor($basic + $hra + $conveyance + $medical + $lta + $education_allowance + $special_allowance + $meal_allowance + $hostel_allowance + $motor_vehicle_allowance + $motor_vehicle_all_allowance);
 
                         // ESI : IF(Total Earnings<=21000,(gross*0.75%),0)
                         $total_earnings = floor($gross_salary + $statutory_bonus);
@@ -607,6 +614,7 @@ class PayrollConfigurationController extends Controller
                         $data['meal_allowances'] = $meal_allowance;
                         $data['motor_vehicle_perq'] = $motor_vehicle_allowance;
                         $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
+                        $data['deputation_allowance'] = $deputation_allowance;
                         $data['salary_advance'] = $total_advance_deduction_amount;
 
                     }else if($active_user->employmenttype == 'contract'){

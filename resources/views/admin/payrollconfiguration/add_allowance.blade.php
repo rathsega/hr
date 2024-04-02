@@ -60,6 +60,7 @@
                         <option value="Meal Allowances">{{ get_phrase('Meal Allowances') }}</option>
                         <option value="Motor Vehicle Perq">{{ get_phrase('Motor Vehicle Perq') }}</option>
                         <option value="Motor Vehicle All">{{ get_phrase('Motor Vehicle All') }}</option>
+                        <option value="Deputation Allowance">{{ get_phrase('Deputation Allowance') }}</option>
                         
                     </select>
                 </div>
