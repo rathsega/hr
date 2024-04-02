@@ -45,6 +45,11 @@
                         </thead>
                         <tbody>
                             @foreach ($advances as $key => $advance)
+                                @php
+                                    $installments = $advance->installments ? json_decode($advance->installments) : [];
+                                    $paid_installments_count = count($installments);
+                                    
+                                @endphp
                                 <tr>
                                     <td>
                                         {{ ++$key }}
@@ -56,10 +61,10 @@
                                         {{ $advance->amount }}
                                     </td>
                                     <td>
-                                        {{ $advance->installments_count }}
+                                        {{$paid_installments_count}}/{{ $advance->installments_count }}
                                     </td>
                                     <td>
-                                        {{ $advance->amount }}
+                                        {{ $advance->amount - (($advance->amount/$advance->installments_count)*$paid_installments_count) }}
                                     </td>
                                     <td>
                                     {{ date("F", mktime(0, 0, 0, $advance->month, 10)); }}, {{ $advance->year }}
