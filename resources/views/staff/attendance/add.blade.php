@@ -24,7 +24,7 @@
             @endif
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="fpb-7">
                 <label for="eInputTextarea" class="eForm-label">{{ get_phrase('Type') }}</label>
                 <select class="form-select eForm-select select2" name="check_in_out">
@@ -33,12 +33,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="fpb-7">
-                <label for="eInputTextarea" class="eForm-label">{{get_phrase('Date & time')}}</label>
-                <input type="datetime-local" name="time" value="{{ date('Y-m-d H:i') }}" max="<?php echo date('Y-m-d\TH:i:s'); ?>" class="form-control eForm-control date-time-picker" id="eInputDateTime" />
-            </div>
-        </div>
+        
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="eInputTextarea" class="eForm-label">{{get_phrase('Note')}} <small class="text-muted">({{get_phrase('Optional')}})</small></label>

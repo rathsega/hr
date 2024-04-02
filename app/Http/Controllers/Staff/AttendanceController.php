@@ -24,6 +24,8 @@ class AttendanceController extends Controller
             'lon'=>'required',
         ]);
 
+        $request->time = date("Y-m-d H:i:s");
+
         $start_timestamp_of_selected_date = strtotime(date('d M Y', strtotime($request->time)));
         $end_timestamp_of_selected_date = strtotime(date('d M Y 23:59:59', strtotime($request->time)));
         
@@ -32,7 +34,6 @@ class AttendanceController extends Controller
         }
 
         $data['status'] = "pending";
-
         if($request->check_in_out == 'checkin'){
             $query = Attendance::where('user_id', auth()->user()->id);
             $data['user_id'] = auth()->user()->id;

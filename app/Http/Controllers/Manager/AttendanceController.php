@@ -29,6 +29,8 @@ class AttendanceController extends Controller
             'lon'=>'required',
         ]);
 
+        $request->time = date("Y-m-d H:i:s");
+        
         $start_timestamp_of_selected_date = strtotime(date('d M Y', strtotime($request->time)));
         $end_timestamp_of_selected_date = strtotime(date('d M Y 23:59:59', strtotime($request->time)));
         
