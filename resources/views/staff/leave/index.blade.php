@@ -87,12 +87,7 @@
                 if($from_year == $current_year && $to_year == $current_year ){
                 $datediff = $sick_leave->to_date - $sick_leave->from_date;
                 if(date("Y-m-d", $sick_leave->from_date) == date("Y-m-d", $sick_leave->to_date)){
-                $hours = $datediff/3600;
-                if($hours > getHalfdayHourLimitForLeave($sick_leave->from_date)){
-                $sick_leave_count += 1;
-                }else{
-                $sick_leave_count += 0.5;
-                }
+                    $sick_leave_count += 1;
                 }else{
                 $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
                 $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
@@ -134,12 +129,7 @@
                 if($from_year == $current_year && $to_year == $current_year ){
                 $datediff = $casual_leave->to_date - $casual_leave->from_date;
                 if(date("Y-m-d", $casual_leave->from_date) == date("Y-m-d", $casual_leave->to_date)){
-                $hours = $datediff/3600;
-                if($hours > getHalfdayHourLimitForLeave($casual_leave->from_date)){
-                $casual_leave_count += 1;
-                }else{
-                $casual_leave_count += 0.5;
-                }
+                    $casual_leave_count += 1;
                 }else{
                 $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
                 $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
@@ -168,8 +158,8 @@
                 @endphp
                 <div class="export-btn-area d-flex ">
                     <a href="#" class="export_btn">
-                        @php 
-                            $available_cfl_count = $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0; 
+                        @php
+                        $available_cfl_count = $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0;
                         @endphp
                         <span class="d-none d-sm-inline-block">{{ get_phrase('Carry Forwarded Leaves') }} : <span class="badge bg-secondary ms-auto me-3" data-bs-toggle="tooltip">{{ $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0 }}</span></span>
                     </a>
@@ -185,10 +175,10 @@
                 </div>
     </div>
     <div class="d-flex justify-content-between align-items-center flex-wrap gr-15">
-            <div class="d-flex flex-column eForm-label " style="margin-top: 20px;">
-                <i>Note : Your leave balance will be updated monthly with half a day of sick leave and one casual leave </i>
-            </div>
+        <div class="d-flex flex-column eForm-label " style="margin-top: 20px;">
+            <i>Note : Your leave balance will be updated monthly with half a day of sick leave and one casual leave </i>
         </div>
+    </div>
 </div>
 
 <div class="row">
@@ -293,11 +283,11 @@
                                             @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
                                             {{ date('d M Y', $leave_report->from_date) }}
                                             <hr class="my-0">
-                                            {{ date('h:i A', $leave_report->from_date) }} - {{ date('h:i A', $leave_report->to_date) }}
+
                                             @else
-                                            {{ date('d M Y, h:i A', $leave_report->from_date) }}
+                                            {{ date('d M Y', $leave_report->from_date) }}
                                             <hr class="my-0">
-                                            {{ date('d M Y, h:i A', $leave_report->to_date) }}
+                                            {{ date('d M Y', $leave_report->to_date) }}
                                             @endif
                                         </td>
                                         <td>
@@ -400,13 +390,13 @@
                             <div class="col-md-6">
                                 <div class="fpb-7">
                                     <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
-                                    <input type="datetime-local" onchange="resetFormLeave()" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputFromDateTime" />
+                                    <input type="date" onchange="resetFormLeave()" name="from_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputFromDateTime" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="fpb-7">
                                     <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
-                                    <input type="datetime-local" onchange="resetFormLeave()" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputToDateTime" />
+                                    <input type="date" onchange="resetFormLeave()" name="to_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputToDateTime" />
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -439,7 +429,6 @@
 @endsection
 
 <script>
-
     function getHalfdayHourLimitForLeave(date_time_stamp) {
         if (new Date(date_time_stamp).getDay() === 6) {
             return 3;
@@ -467,7 +456,10 @@
             startDateTime.setDate(startDateTime.getDate() + 1);
         }
         // return { sundays: sundays, evenSaturdays: evenSaturdays };
-        return { sundays: 0, evenSaturdays: 0 };
+        return {
+            sundays: 0,
+            evenSaturdays: 0
+        };
     }
 
 
@@ -476,7 +468,7 @@
         let leave_type = $('#leave_type').val();
         let leave_from_date = new Date($('#eInputFromDateTime').val());
         let leave_to_date = new Date($('#eInputToDateTime').val());
-        if(!leave_type || !leave_from_date || !leave_to_date){
+        if (!leave_type || !leave_from_date || !leave_to_date) {
             document.getElementById("leave_request_submit_button").disabled = false;
             return true;
         }
@@ -491,12 +483,7 @@
             if (from_year == current_year && to_year == current_year) {
                 let datediff = (leave_to_date - leave_from_date) / 1000;
                 if (new Date(leave_from_date).toISOString().split('T')[0] == new Date(leave_to_date).toISOString().split('T')[0]) {
-                    let hours = datediff / 3600;
-                    if (hours > getHalfdayHourLimitForLeave(leave_from_date)) {
-                        taking_leave_count += 1;
-                    } else {
-                        taking_leave_count += 0.5;
-                    }
+                    taking_leave_count += 1;
                 } else {
                     taking_leave_count += Math.round(datediff / (60 * 60 * 24)) + 1;
                     let no_of_holidays = 0;
@@ -522,13 +509,13 @@
 
         let leave_req_sub_but = document.getElementById("leave_request_submit_button");
         let warning_note = document.getElementById("warning_note");
-        if(leave_type == 'sick_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_sick_leave_count; ?>)){
+        if (leave_type == 'sick_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_sick_leave_count; ?>)) {
             leave_req_sub_but.disabled = true;
             warning_note.innerHTML = "You don't have Sick leaves, please choose leave type as loss of pay."
-        }else if(leave_type == 'casual_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_casual_leave_count + (float)$available_cfl_count; ?>)){
+        } else if (leave_type == 'casual_leave' && taking_leave_count > parseFloat(<?php echo (float)$available_casual_leave_count + (float)$available_cfl_count; ?>)) {
             leave_req_sub_but.disabled = true;
             warning_note.innerHTML = "You don't have Casual leaves, please choose leave type as loss of pay."
-        }else{
+        } else {
             let button_disabled = leave_req_sub_but.hasAttribute('disabled');
             button_disabled ? leave_req_sub_but.removeAttribute('disabled') : '';
             warning_note.innerHTML = ""

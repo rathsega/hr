@@ -97,12 +97,7 @@
                             if($from_year == $current_year && $to_year == $current_year ){
                                 $datediff = strtotime($to_date) - strtotime($from_date);
                                 if(date("Y-m-d", $sick_leave->from_date) == date("Y-m-d", $sick_leave->to_date)){
-                                    $hours = $datediff/3600;
-                                    if($hours > getHalfdayHourLimitForLeave($sick_leave->from_date)){
-                                        $sick_leave_count += 1;
-                                    }else{
-                                        $sick_leave_count += 0.5;
-                                    }
+                                    $sick_leave_count += 1;
                                 }else{
                                     $sick_leave_count += (round($datediff / (60 * 60 * 24)))+1;
                                     $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
@@ -143,12 +138,7 @@
                             if($from_year == $current_year && $to_year == $current_year ){
                                 $datediff = strtotime($to_date) - strtotime($from_date);
                                 if(date("Y-m-d", $casual_leave->from_date) == date("Y-m-d", $casual_leave->to_date)){
-                                    $hours = $datediff/3600;
-                                    if($hours > getHalfdayHourLimitForLeave($casual_leave->from_date)){
-                                        $casual_leave_count += 1;
-                                    }else{
-                                        $casual_leave_count += 0.5;
-                                    }
+                                    $casual_leave_count += 1;
                                 }else{
                                     $casual_leave_count += (round($datediff / (60 * 60 * 24)))+1;
                                     $no_of_holidays = numberOfHolidayExisted($holidays_list, $from_date, $to_date);
@@ -373,14 +363,14 @@
                                                                         @endif
                                                                         <br>
                                                                         @if (date('d M Y', $leave_report->from_date) == date('d M Y', $leave_report->to_date))
-                                                                            {{ date('d M Y', $leave_report->from_date) }}
-                                                                            <hr class="my-0">
-                                                                            {{ date('h:i A', $leave_report->from_date) }} - {{ date('h:i A', $leave_report->to_date) }}
+                                                                        {{ date('d M Y', $leave_report->from_date) }}
+                                                                        <hr class="my-0">
+                                                                        
                                                                         @else
-                                                                            {{ date('d M Y, h:i A', $leave_report->from_date) }}
-                                                                            <hr class="my-0">
-                                                                            {{ date('d M Y, h:i A', $leave_report->to_date) }}
-                                                                        @endif
+                                                                        {{ date('d M Y', $leave_report->from_date) }}
+                                                                        <hr class="my-0">
+                                                                        {{ date('d M Y', $leave_report->to_date) }}
+                                                                        @endif 
                                                                     </td>
                                                                     <td>
                                                                         @php echo script_checker($leave_report->reason); @endphp
@@ -513,13 +503,13 @@
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('From')}}</label>
-                                        <input type="datetime-local" onchange="resetFormLeave()" name="from_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputFromDateTime" />
+                                        <input type="date" onchange="resetFormLeave()" name="from_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputFromDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="fpb-7">
                                         <label for="eInputTextarea" class="eForm-label">{{get_phrase('To')}}</label>
-                                        <input type="datetime-local" onchange="resetFormLeave()" name="to_date" value="{{ date('Y-m-d H:i') }}" class="form-control eForm-control" id="eInputToDateTime" />
+                                        <input type="date" onchange="resetFormLeave()" name="to_date" value="{{ date('Y-m-d') }}" class="form-control eForm-control" id="eInputToDateTime" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -604,12 +594,7 @@
             if (from_year == current_year && to_year == current_year) {
                 let datediff = (leave_to_date - leave_from_date) / 1000;
                 if (new Date(leave_from_date).toISOString().split('T')[0] == new Date(leave_to_date).toISOString().split('T')[0]) {
-                    let hours = datediff / 3600;
-                    if (hours > getHalfdayHourLimitForLeave(leave_from_date)) {
-                        taking_leave_count += 1;
-                    } else {
-                        taking_leave_count += 0.5;
-                    }
+                    taking_leave_count += 1;
                 } else {
                     taking_leave_count += Math.round(datediff / (60 * 60 * 24)) + 1;
                     let no_of_holidays = 0;
