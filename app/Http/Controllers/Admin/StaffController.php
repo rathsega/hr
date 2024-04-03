@@ -95,8 +95,9 @@ class StaffController extends Controller
         $data['email'] = $request->email;
         $data['billingtype'] = $request->billingtype;
         $data['employmenttype'] = $request->employmenttype;
+        $data['role'] = $request->role;
         $data['designation'] = $request->designation;
-        $data['birthday'] =  date('Y-m-d H:i:s', strtotime($request->birthday));
+        $data['birthday'] =  date('Y-m-d', strtotime($request->birthday));
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         if($request->photo){
