@@ -5457,11 +5457,11 @@ input[type=time]::-webkit-calendar-picker-indicator {
   position: relative;
 }
 .user-info-basic .userImg {
-  width: 150px;
-  height: 150px;
-  border-radius: 5px;
-  background-color: #797c8b;
-  margin: 0 auto;
+  width: 65%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #797c8b;
+    margin: 0 auto;
 }
 .user-info-basic .userContent .title {
   font-size: 18px;
