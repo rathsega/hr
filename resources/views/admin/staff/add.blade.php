@@ -1,3 +1,10 @@
+<style>
+	.eForm-label {
+    float: none !important;
+	padding-right: 22px;
+
+}
+</style>
 <form action="{{route('admin.staff.store')}}" method="post" enctype="multipart/form-data">
 @Csrf
 	<div class="fpb-7">
