@@ -69,7 +69,7 @@
                 <label for="eGenderList" class="eForm-label">{{ get_phrase('Gender') }}</label>
                 <select name="gender" class="form-select eForm-select select2" required>
                     <option value="male" @if ($user->gender == 'Male') selected @endif>{{ get_phrase('Male') }}</option>
-                    <option value="female" @if ($user->gender == 'Female') selected @endif>{{ get_phrase('Female') }}</option>
+                    <option value="female" @if ($user->gender == 'female') selected @endif>{{ get_phrase('Female') }}</option>
                 </select>
             </div>
         </div>

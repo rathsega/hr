@@ -44,11 +44,17 @@
         <label for="eBrithDay" class="eForm-label">{{ get_phrase('Birthday') }}</label>
         <input type="text" class="form-control eForm-control date-range-picket" id="eInputDate" name="birthday" value="{{ date('m/d/Y', strtotime($user->birthday)) }}" />
     </div>
+        <div class="col-md-6">
+            <div class="fpb-7">
+                <label for="actual_birthday" class="eForm-label">{{ get_phrase('Actual Birthday') }}</label>
+                <input type="text" class="form-control eForm-control date-range-picket" id="eInputDate" name="actual_birthday" value="{{ date('m/d/Y', strtotime($user->actual_birthday)) }}" />
+            </div>
+        </div>
     <div class="fpb-7">
         <label for="eGenderList" class="eForm-label">{{ get_phrase('Gender') }}</label>
         <select name="gender" class="form-select eForm-select select2" required>
-            <option value="male" @if ($user->gender == 'Male') selected @endif>{{ get_phrase('Male') }}</option>
-            <option value="female" @if ($user->gender == 'Female') selected @endif>{{ get_phrase('Female') }}</option>
+            <option value="male" @if ($user->gender == 'male') selected @endif>{{ get_phrase('Male') }}</option>
+            <option value="female" @if ($user->gender == 'female') selected @endif>{{ get_phrase('Female') }}</option>
         </select>
     </div>
 
