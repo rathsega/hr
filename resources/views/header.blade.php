@@ -14,8 +14,23 @@
                 {{get_settings('website_title')}}
             </div>
         </div>
+        <div class="col-auto d-xl-block d-none ms-auto">
+            <div class="header_notification d-flex align-items-center text-dark fw-600">
+            <div>
+            <span class="badge-2 text-dark px-2">upcoming Holiday</span>
+            <span class="btn-holiday">
+            @php 
+                $holiday_str = ""; 
+                $holiday_one = App\Models\Holidays::whereDate('date', '>', now())->orderBy('date')->first();
+                $holiday_two = App\Models\Holidays::whereDate('date', '>', now())->orderBy('date')->skip(1)->first();
+            @endphp
+                <marquee direction="right">  <span class="badge text-dark" style="font-weight:500;"> {{date("d, F, Y", strtotime($holiday_two->date))}} ({{$holiday_two->name}}) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{date("d, F, Y", strtotime($holiday_one->date))}} ({{$holiday_one->name}})</span></marquee>
+            </span>
+           </div>
+            </div>
+        </div>
         @if(auth()->user()->role != 'admin')
-        <div class="col-auto d-xl-block d-none me-auto">
+        <div class="col-auto d-xl-block d-none ms-auto">
             <div class="header_notification d-flex align-items-center text-dark fw-600">
                 <button id="feedbackButton1"  onclick="location.pathname='/hr/{{auth()->user()->role}}/feedback'" class="btn-form mt-2 mb-3 blink2">{{get_phrase('Report an issue')}}</button>
             </div>
