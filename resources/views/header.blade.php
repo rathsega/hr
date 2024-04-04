@@ -17,7 +17,7 @@
         <div class="col-auto d-xl-block d-none ms-auto">
             <div class="header_notification d-flex align-items-center text-dark fw-600">
             <div>
-            <span class="badge-2 text-dark px-2">upcoming Holiday</span>
+            <span class="badge-2 text-dark px-2">upcoming Holidays</span>
             <span class="btn-holiday">
             @php 
                 $holiday_str = ""; 
