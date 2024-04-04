@@ -81,6 +81,7 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
     Route::post('leave-report/store', [LeaveApplicationController::class, 'store'])->name('leave.report.store');
     Route::post('leave-report/status/{id}', [LeaveApplicationController::class, 'change_status'])->name('leave.report.status');
     Route::get('leave-report/delete/{id}', [LeaveApplicationController::class, 'delete'])->name('leave.report.delete');
+    Route::get('leave-report/cancel/{id?}/{leave_type?}/{from_date}/{to_date}', [LeaveApplicationController::class, 'cancel'])->name('leave.report.cancel');
 
 
     //Staffs

@@ -33,6 +33,7 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
     Route::get('leave-report', [LeaveApplicationController::class, 'index'])->name('leave.report');
     Route::post('leave-report/store', [LeaveApplicationController::class, 'store'])->name('leave.report.store');
     Route::get('leave-report/delete/{id}', [LeaveApplicationController::class, 'delete'])->name('leave.report.delete');
+    Route::get('leave-report/cancel/{id?}/{leave_type?}/{from_date}/{to_date}', [LeaveApplicationController::class, 'cancel'])->name('leave.report.cancel');
 
     //Performances
     Route::get('performance', [PerformanceController::class, 'index'])->name('performance');
