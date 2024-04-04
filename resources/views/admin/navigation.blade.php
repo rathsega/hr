@@ -540,6 +540,33 @@
             </ul>
         </li>
 
+        <li class="nav-links-li dropdownToggle @if (
+            $current_route == 'admin.reports.attendance') active showMenu @endif">
+            <div class="iocn-link">
+                <a href="#">
+                    <div class="sidebar_icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                        <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                        <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                        <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
+                    </svg>
+                    </div>
+                    <span class="link_name">{{ get_phrase('Reports') }}</span>
+                </a>
+                <span class="arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="4.743" height="7.773" viewBox="0 0 4.743 7.773">
+                        <path id="navigate_before_FILL0_wght600_GRAD0_opsz24"
+                            d="M1.466.247,4.5,3.277a.793.793,0,0,1,.189.288.92.92,0,0,1,0,.643A.793.793,0,0,1,4.5,4.5l-3.03,3.03a.828.828,0,0,1-.609.247.828.828,0,0,1-.609-.247.875.875,0,0,1,0-1.219L2.668,3.886.247,1.466A.828.828,0,0,1,0,.856.828.828,0,0,1,.247.247.828.828,0,0,1,.856,0,.828.828,0,0,1,1.466.247Z"
+                            fill="#fff" opacity="1" />
+                    </svg>
+                </span>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="@if ($current_route == 'admin.reports.attendance') active @endif" href="{{ route('admin.reports.attendance') }}">{{ get_phrase('Attendance') }}</a></li>
+            </ul>
+        </li>
+
         <li class="nav-links-li @if ($current_route == 'admin.separation') showMenu @endif">
             <div class="iocn-link">
                 <a class="w-100" href="{{ route('admin.separation') }}">

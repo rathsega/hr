@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -30,6 +30,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('attendance/update/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
     Route::get('attendance/delete/{id}', [AttendanceController::class, 'delete'])->name('attendance.delete');
     Route::post('attendance/status/{id}', [AttendanceController::class, 'change_status'])->name('attendance.report.status');
+    Route::post('attendance/reports', [AttendanceController::class, 'reports'])->name('attendance.reports');
 
     //Leave application
     Route::get('leave-report', [LeaveApplicationController::class, 'index'])->name('leave.report');
@@ -180,5 +181,8 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('quotes/store', [EmployersQuote::class, 'store'])->name('quotes.store');
     Route::post('quotes/update/{quote_id}', [EmployersQuote::class, 'update'])->name('quotes.update');
     Route::get('quotes/delete/{quote_id}', [EmployersQuote::class, 'delete'])->name('quotes.delete');
+
+    //Reports
+    Route::get('reports/attendance', [ReportsController::class, 'attendance'])->name('reports.attendance');
 
 });
