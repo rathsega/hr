@@ -72,7 +72,7 @@
                                                 {{ date('1 M Y', strtotime($payslip->month_of_salary)) }} - {{ date('t M Y', strtotime($payslip->month_of_salary)) }}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ route('manager.payslip.download_new_payslip', ['invoice_id' => $payslip->id]) }}" class="btn btn p-0 px-1"
+                                                <a href="{{ route('manager.payslip.download_new_payslip', ['id' => $payslip->id]) }}" class="btn btn p-0 px-1"
                                                     title="{{ get_phrase('Download Payslip') }}" data-bs-toggle="tooltip">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="18" version="1.1" viewBox="-53 1 511 511.99906" width="18" id="fi_1092004">
                                                         <g id="surface1">
