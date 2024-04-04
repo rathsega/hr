@@ -170,12 +170,7 @@ class PayrollConfigurationController extends Controller
                 $from_date = date('Y-m-d', $loss_of_pay->from_date);
                 $to_date = date('Y-m-d', $loss_of_pay->to_date);
                 if($from_date == $to_date){
-                    $half_day_hours = $this->getHalfdayHourLimitForLeave($loss_of_pay->from_date);
-                    if(($loss_of_pay->to_date - $loss_of_pay->from_date/3600) <= $half_day_hours){
-                        $loss_of_pay_count += 0.5;
-                    }else{
-                        $loss_of_pay_count += 1;
-                    }
+                    $loss_of_pay_count += 1;
                 }else{
                     $loss_of_pay_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
                 }
@@ -196,12 +191,7 @@ class PayrollConfigurationController extends Controller
                 $from_date = date('Y-m-d', $sick_leave->from_date);
                 $to_date = date('Y-m-d', $sick_leave->to_date);
                 if($from_date == $to_date){
-                    $half_day_hours = $this->getHalfdayHourLimitForLeave($sick_leave->from_date);
-                    if(($sick_leave->to_date - $sick_leave->from_date)/3600 <= $half_day_hours){
-                        $sick_leave_count += 0.5;
-                    }else{
-                        $sick_leave_count += 1;
-                    }
+                    $sick_leave_count += 1;
                 }else{
                     $sick_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
                 }
@@ -221,12 +211,7 @@ class PayrollConfigurationController extends Controller
                 $from_date = date('Y-m-d', $casual_leave->from_date);
                 $to_date = date('Y-m-d', $casual_leave->to_date);
                 if($from_date == $to_date){
-                    $half_day_hours = $this->getHalfdayHourLimitForLeave($casual_leave->from_date);
-                    if(($casual_leave->to_date - $casual_leave->from_date)/3600 <= $half_day_hours){
-                        $casual_leave_count += 0.5;
-                    }else{
-                        $casual_leave_count += 1;
-                    }
+                    $casual_leave_count += 1;
                 }else{
                     $casual_leave_count += $this->getDaysInMonthForPeriod($from_date, $to_date, $selected_year, $selected_month);
                 }
