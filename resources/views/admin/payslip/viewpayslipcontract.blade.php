@@ -145,7 +145,7 @@
         <!-----2 row--->
         <tr style="text-align: center;">
             <td>Gross Earnings</td>
-            <td>&#8377;{{$payslip[0]->payable_amount}}</td>
+            <td>&#8377;{{$payslip[0]->gross_salary}}</td>
             <td></td>
             <td>TDS</td>
             <td>&#8377;{{$payslip[0]->tds}}</td>
@@ -172,7 +172,7 @@
         <!------5 row---->
         <tr style="text-align: center;">
             <td><b>Total Gross Earnings</b></td>
-            <td><b>&#8377;{{$payslip[0]->payable_amount}}</b></td>
+            <td><b>&#8377;{{$payslip[0]->gross_salary}}</b></td>
             <td></td>
             <td><b>Total Deductions</b> </td>
             <td><b>&#8377;{{$payslip[0]->tds}}</b></td>
@@ -212,7 +212,7 @@
         </tr>
         <tr>
             <td style="text-align: left;">Gross Earnings</td>
-            <td style="text-align: right;">&#8377;{{$payslip[0]->payable_amount}}</td>
+            <td style="text-align: right;">&#8377;{{$payslip[0]->gross_salary}}</td>
         </tr>
         <tr>
             <td style="text-align: left;">Total Deductions</td>

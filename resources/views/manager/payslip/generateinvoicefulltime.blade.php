@@ -87,10 +87,12 @@
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-9">
-                <div class="text-center lh-1 mb-2">
-                    
-                    <img src="{{'data:image/png;base64,'.base64_encode(file_get_contents(public_path('assets/images/zettamine-logo.png')))}}" alt="" class="z-img">
-                    <h6 class="fw-bold">Payslip</h6> 
+                <div class="row">
+                    <div class="col text-center lh-1 mb-2">
+                        <img src="{{'data:image/png;base64,'.base64_encode(file_get_contents(public_path('assets/images/zettamine-logo.png')))}}" alt="" class="z-img">
+                    <h6 class="float-end fw-bold pt-4"><span style="font-size: 18px;">Address:</span> <br>
+                            Plot 85, Kundanbagh Colony,<br>Begumpet, Hyderabad, Telangana 500016</h6>
+                    </div>
                 </div>
        
                 <div class="row">
