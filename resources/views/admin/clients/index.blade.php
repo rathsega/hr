@@ -40,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (App\Models\Clients::orderBy('name')->get() as $key => $client)
+                            @foreach (App\Models\Clients::where('status','active')->orderBy('name')->get() as $key => $client)
                                 <tr>
                                     <td>
                                         {{ ++$key }}

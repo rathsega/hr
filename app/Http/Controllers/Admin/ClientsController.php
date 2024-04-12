@@ -46,7 +46,10 @@ class ClientsController extends Controller
     }
 
     function delete($id = ""){
-        Clients::where('id', $id)->delete();
-        return redirect(route('admin.clients'))->with('success_message', get_phrase('Client has been updated'));
+        $data['updated_at'] = date('Y-m-d');
+        $data['status'] = 'deleted';
+
+        Clients::where('id', $id)->update($data);
+        return redirect(route('admin.clients'))->with('success_message', get_phrase('Client has been deleted'));
     }
 }
