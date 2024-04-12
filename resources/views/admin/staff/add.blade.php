@@ -73,6 +73,11 @@
         <input type="date" class="form-control eForm-control date-picker" id="eInputDate" name="birthday" value="{{ date('m/d/Y') }}" />
     </div>
 
+	<div class="col-md-12 mt-3">
+        <label for="eBrithDay" class="eForm-label">{{ get_phrase('Joining Date') }}</label>
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="joining_date" required />
+    </div>
+
 	<div class="fpb-7">
 		<label for="designation" class="eForm-label">{{get_phrase('Designation')}}</label>
 		<input type="text" name="designation" class="form-control eForm-control" id="designation">

@@ -8,6 +8,8 @@ use App\Models\{User, Task, Timesheet, Attendance, Leave_application};
 use Session;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use App\Exports\{JoiningsExport, ExitExport};
+use Maatwebsite\Excel\Facades\Excel;
 
 class StaffController extends Controller
 {
@@ -86,8 +88,10 @@ class StaffController extends Controller
             'employmenttype' => 'required',
             'manager' => 'required',
             'department' => 'required',
-            'birthday' => 'required'
+            'birthday' => 'required',
+            'joining_date' => 'required'
         ]);
+
 
         $data['name'] = $request->name;
         $data['manager'] = $request->manager;
@@ -98,6 +102,7 @@ class StaffController extends Controller
         $data['role'] = $request->role;
         $data['designation'] = $request->designation;
         $data['birthday'] =  date('Y-m-d', strtotime($request->birthday));
+        $data['joining_date'] =  date('Y-m-d', strtotime($request->joining_date));
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         if($request->photo){
@@ -202,6 +207,34 @@ class StaffController extends Controller
         }else{
             return redirect()->back()->withInput()->with('error_message', __('Something is wrong!'));
         }
+    }
+    
+    public function joiningreports(Request $request){
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $start_timestamp = strtotime($request->from_date);
+        $end_timestamp = strtotime($request->to_date);
+
+        if($start_timestamp > $end_timestamp){
+            return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
+        }
+
+        return Excel::download(new JoiningsExport($from_date, $to_date), 'JoiningsReport.xlsx');
+    }
+    
+    public function exitreports(Request $request){
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $start_timestamp = strtotime($request->from_date);
+        $end_timestamp = strtotime($request->to_date);
+
+        if($start_timestamp > $end_timestamp){
+            return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
+        }
+
+        return Excel::download(new ExitExport($from_date, $to_date), 'ExitReport.xlsx');
     }
 
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\{User, Leave_application, FileUploader, Leaves_count};
 use Mail;
+use App\Exports\{LeaveBalanceExport};
+use Maatwebsite\Excel\Facades\Excel;
 
 class LeaveApplicationController extends Controller
 {
@@ -167,6 +169,20 @@ class LeaveApplicationController extends Controller
         }
 
         return redirect()->back()->with('success_message', get_phrase('Leave request cancelled successfully'));
+    }
+
+    public function leavebalance(Request $request){
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $start_timestamp = strtotime($request->from_date);
+        $end_timestamp = strtotime($request->to_date);
+
+        if($start_timestamp > $end_timestamp){
+            return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
+        }
+
+        return Excel::download(new LeaveBalanceExport($from_date, $to_date), 'LeaveBalanceReport.xlsx');
     }
 
 }

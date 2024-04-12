@@ -31,6 +31,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('attendance/delete/{id}', [AttendanceController::class, 'delete'])->name('attendance.delete');
     Route::post('attendance/status/{id}', [AttendanceController::class, 'change_status'])->name('attendance.report.status');
     Route::post('attendance/reports', [AttendanceController::class, 'reports'])->name('attendance.reports');
+    Route::post('attendance/lateloginreports', [AttendanceController::class, 'lateloginreports'])->name('attendance.lateloginreports');
 
     //Leave application
     Route::get('leave-report', [LeaveApplicationController::class, 'index'])->name('leave.report');
@@ -39,6 +40,7 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('leave-report/delete/{id}', [LeaveApplicationController::class, 'delete'])->name('leave.report.delete');
     Route::post('leave-report/update_leave_count', [LeaveApplicationController::class, 'update_leave_count'])->name('leave.report.update_leaves_count');
     Route::get('leave-report/cancel/{id?}/{leave_type?}/{from_date}/{to_date}', [LeaveApplicationController::class, 'cancel'])->name('leave.report.cancel');
+    Route::post('leave-report/leavebalance', [LeaveApplicationController::class, 'leavebalance'])->name('leave.report.leavebalance');
 
     //Staffs
     Route::get('staffs', [StaffController::class, 'index'])->name('staffs');
@@ -50,6 +52,9 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
 
     Route::get('staff/profile/{tab?}/{user_id?}', [StaffController::class, 'profile'])->name('staff.profile');
     Route::post('staff/profile-update/{user_id?}', [StaffController::class, 'profile_update'])->name('staff.profile.update');
+
+    Route::post('staff/joiningreports', [StaffController::class, 'joiningreports'])->name('staff.joiningreports');
+    Route::post('staff/exitreports', [StaffController::class, 'exitreports'])->name('staff.exitreports');
 
     //Performances
     Route::get('performance', [PerformanceController::class, 'index'])->name('performance');
@@ -184,5 +189,9 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
 
     //Reports
     Route::get('reports/attendance', [ReportsController::class, 'attendance'])->name('reports.attendance');
+    Route::get('reports/latelogin', [ReportsController::class, 'latelogin'])->name('reports.latelogin');
+    Route::get('reports/joining', [ReportsController::class, 'joining'])->name('reports.joining');
+    Route::get('reports/exit', [ReportsController::class, 'exit'])->name('reports.exit');
+    Route::get('reports/leavebalance', [ReportsController::class, 'leavebalance'])->name('reports.leavebalance');
 
 });

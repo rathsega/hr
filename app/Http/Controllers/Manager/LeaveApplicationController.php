@@ -33,7 +33,7 @@ class LeaveApplicationController extends Controller
         $start_timestamp = strtotime($request->from_date);
         $end_timestamp = strtotime($request->to_date);
 
-        if($start_timestamp > $end_timestamp || $start_timestamp == $end_timestamp){
+        if($start_timestamp > $end_timestamp){
             return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
         }
 

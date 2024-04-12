@@ -60,7 +60,12 @@
 
 	<div class="col-md-12 mt-3">
         <label for="eBrithDay" class="eForm-label">{{ get_phrase('Birthday') }}</label>
-        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="birthday" required value="{{ date('m/d/Y', strtotime($user_details->birthday)) }}" />
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="birthday" required value="{{ date('Y-m-d', strtotime($user_details->birthday)) }}" />
+    </div>
+
+	<div class="col-md-12 mt-3">
+        <label for="eBrithDay" class="eForm-label">{{ get_phrase('Joining Date') }}</label>
+        <input type="date" class="form-control eForm-control date-range-picker" id="eInputDate" name="joining_date" required value="{{ date('Y-m-d', strtotime($user_details->joining_date)) }}" />
     </div>
 
 	<div class="fpb-7">

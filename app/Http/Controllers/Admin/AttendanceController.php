@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\{User, Task, Timesheet, Attendance, Leave_application, Assessment, Staff_performance};
 use Illuminate\Support\Facades\DB;
 
-use App\Exports\AttendanceExport;
+use App\Exports\{AttendanceExport, LateLoginExport};
 use Maatwebsite\Excel\Facades\Excel;
 
 use Jenssegers\Agent\Agent;
@@ -216,7 +216,21 @@ class AttendanceController extends Controller
             return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
         }
 
-        return Excel::download(new AttendanceExport($from_date, $to_date), 'attendanceReport.xlsx');
+        return Excel::download(new AttendanceExport($from_date, $to_date), 'AttendanceReport.xlsx');
+    }
+
+    public function lateloginreports(Request $request){
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $start_timestamp = strtotime($request->from_date);
+        $end_timestamp = strtotime($request->to_date);
+
+        if($start_timestamp > $end_timestamp){
+            return redirect()->back()->withInput()->with('error_message', get_phrase('Please select correct date range'));
+        }
+
+        return Excel::download(new LateLoginExport($from_date, $to_date), 'LateLoginsReport.xlsx');
     }
     
 }
