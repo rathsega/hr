@@ -55,6 +55,7 @@ class StaffController extends Controller
         $data['ifsc_code'] = $request->ifsc_code;
         $data['status'] = 'active';
         $data['designation'] = $request->designation;
+        $data['client'] = $request->client;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
@@ -101,6 +102,7 @@ class StaffController extends Controller
         $data['employmenttype'] = $request->employmenttype;
         $data['role'] = $request->role;
         $data['designation'] = $request->designation;
+        $data['client'] = $request->client;
         $data['birthday'] =  date('Y-m-d', strtotime($request->birthday));
         $data['joining_date'] =  date('Y-m-d', strtotime($request->joining_date));
         $data['updated_at'] = date('Y-m-d H:i:s');

@@ -31,6 +31,16 @@
 	</div>
 
 	<div class="fpb-7">
+		<label for="client" class="eForm-label">{{get_phrase('Select Client')}}</label>
+		<select name="client" class="form-select eForm-select select2" id="client">
+			<option value="">{{ get_phrase('Select a client') }}</option>
+			@foreach (App\Models\Clients::where('status', 'active')->orderBy('name')->get() as $client)
+				<option value="{{ $client->id }}">{{ $client->name }}</option>
+			@endforeach
+		</select>
+	</div>
+
+	<div class="fpb-7">
 		<label for="manager" class="eForm-label">{{get_phrase('Select manager')}}</label>
 		<select name="manager" class="form-select eForm-select select2" id="manager">
 			<option value="">{{ get_phrase('Select a manager') }}</option>
