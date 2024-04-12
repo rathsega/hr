@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController, ClientsController};
 
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
@@ -194,4 +194,10 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('reports/exit', [ReportsController::class, 'exit'])->name('reports.exit');
     Route::get('reports/leavebalance', [ReportsController::class, 'leavebalance'])->name('reports.leavebalance');
 
+    //Clients
+    Route::get('clients', [ClientsController::class, 'index'])->name('clients');
+    Route::post('clients/store', [ClientsController::class, 'store'])->name('clients.store');
+    Route::post('clients/update/{id}', [ClientsController::class, 'update'])->name('clients.update');
+    Route::get('clients/delete/{id}', [ClientsController::class, 'delete'])->name('clients.delete');
+    
 });
