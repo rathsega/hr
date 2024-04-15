@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{InstallController, ModalController};
-use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController, InventoryController, PayrollConfigurationController, AnnouncementsController};
+use App\Http\Controllers\Manager\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, PerformanceCriteriaController, BranchController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, InventoryItemController, InventoryController, PayrollConfigurationController, AnnouncementsController, BillableTimesheetsController};
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +180,8 @@ Route::name('manager.')->prefix('manager')->middleware(['manager', 'auth', 'veri
 
     //Announcements
     Route::get('announcements', [AnnouncementsController::class, 'index'])->name('announcements');
+    //Billable Timesheets
+    Route::get('billabletimesheet',[BillableTimesheetsController::class, 'index'])->name('billabletimesheet');
 });
 
 

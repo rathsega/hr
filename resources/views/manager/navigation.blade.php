@@ -377,6 +377,28 @@
                 </a>
             </div>
         </li>
+        <li class="nav-links-li @if ($current_route == 'manager.billabletimesheet') showMenu @endif">
+            <div class="iocn-link">
+                <a class="w-100" href="{{ route('manager.billabletimesheet') }}">
+                    <div class="sidebar_icon">
+                        <svg id="fi_7691413" height="48" viewBox="0 0 32 32" width="48" xmlns="http://www.w3.org/2000/svg">
+                            <g id="calendar">
+                                <path d="m30 6.93v4.07h-28v-4.07a2.9688 2.9688 0 0 1 3-2.93h2v2a3 3 0 0 0 6 0v-2h6v2a3 3 0 0 0 6 0v-2h2a2.9688 2.9688 0 0 1 3 2.93z">
+                                </path>
+                                <path
+                                    d="m2 13v16.07a2.9688 2.9688 0 0 0 3 2.93h22a2.9688 2.9688 0 0 0 3-2.93v-16.07zm9 14a1.0029 1.0029 0 0 1 -1 1h-2a1.0029 1.0029 0 0 1 -1-1v-2a1.0029 1.0029 0 0 1 1-1h2a1.0029 1.0029 0 0 1 1 1zm0-7a1.0029 1.0029 0 0 1 -1 1h-2a1.0029 1.0029 0 0 1 -1-1v-2a1.0029 1.0029 0 0 1 1-1h2a1.0029 1.0029 0 0 1 1 1zm7 7a1.0029 1.0029 0 0 1 -1 1h-2a1.0029 1.0029 0 0 1 -1-1v-2a1.0029 1.0029 0 0 1 1-1h2a1.0029 1.0029 0 0 1 1 1zm0-7a1.0029 1.0029 0 0 1 -1 1h-2a1.0029 1.0029 0 0 1 -1-1v-2a1.0029 1.0029 0 0 1 1-1h2a1.0029 1.0029 0 0 1 1 1zm7 0a1.0029 1.0029 0 0 1 -1 1h-2a1.0029 1.0029 0 0 1 -1-1v-2a1.0029 1.0029 0 0 1 1-1h2a1.0029 1.0029 0 0 1 1 1z">
+                                </path>
+                                <path d="m11 4v2a1 1 0 0 1 -2 0v-2a1 1 0 0 1 2 0z"></path>
+                                <path d="m23 4v2a1 1 0 0 1 -2 0v-2a1 1 0 0 1 2 0z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="link_name">
+                        {{get_phrase('Billable Timesheets')}}
+                    </span>
+                </a>
+            </div>
+        </li>
         @endif
 
         <li class="nav-links-li @if ($current_route == 'manager.announcements') showMenu @endif">

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, AnnouncementsController};
+use App\Http\Controllers\Staff\{LeaveApplicationController, TimesheetController, AssessmentController, AttendanceController, TasksController, PayslipController, PerformanceController, InventoryItemController, MyProfileController, HolidaysController, BirthdaysController, OrganisationController, SeparationController, FeedbackController, AnnouncementsController, BillableTimesheetsController};
 
 //Staff's routes
 Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified'])->group(function () {
@@ -13,6 +13,14 @@ Route::name('staff.')->prefix('staff')->middleware(['staff', 'auth', 'verified']
     Route::post('timesheet/store', [TimesheetController::class, 'store'])->name('timesheet.store');
     Route::post('timesheet/update/{id}', [TimesheetController::class, 'update'])->name('timesheet.update');
     Route::get('timesheet/delete/{id}', [TimesheetController::class, 'delete'])->name('timesheet.delete');
+
+    //Billable Timesheets
+    Route::get('billabletimesheet',[BillableTimesheetsController::class, 'index'])->name('billabletimesheet');
+    Route::post('billabletimesheet/store', [BillableTimesheetsController::class, 'store'])->name('billabletimesheet.store');
+    Route::post('billabletimesheet/update/{id}/{timehseet}', [BillableTimesheetsController::class, 'update'])->name('billabletimesheet.update');
+    Route::get('billabletimesheet/delete/{id}', [BillableTimesheetsController::class, 'delete'])->name('billabletimesheet.delete');
+    Route::get('billabletimesheet/download/{id}', [BillableTimesheetsController::class, 'download'])->name('billabletimesheet.download');
+
 
     //Task manager
     Route::get('tasks/{tasks_type}',[TasksController::class, 'index'])->name('tasks');
