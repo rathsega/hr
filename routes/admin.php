@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController, ClientsController, BillableTimesheetsController, ReminderController};
 
+Route::name('admin.')->prefix('admin')->group(function () {
+    //Timesheet Remider
+    Route::get('timesheetreminder',[ReminderController::class, 'index'])->name('timesheetreminder');
+});
 //Admin's routes
 Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified'])->group(function () {
 
@@ -203,6 +207,5 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     //Billable Timesheets
     Route::get('billabletimesheet',[BillableTimesheetsController::class, 'index'])->name('billabletimesheet');
 
-    //Timesheet Remider
-    Route::get('timesheetreminder',[ReminderController::class, 'index'])->name('timesheetreminder');
+    
 });

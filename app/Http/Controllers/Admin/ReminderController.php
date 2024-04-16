@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\{Clients, Billable_timesheets, User, Reminder_logs};
@@ -12,7 +13,8 @@ use Illuminate\Http\Request;
 
 class ReminderController extends Controller
 {
-    function index(){
+    function index()
+    {
         $this->sendReminders();
         //fetch clients
         //$clients = $this->getAllActiveClients();
@@ -23,7 +25,8 @@ class ReminderController extends Controller
 
     }
 
-    public function getAllActiveClients(){
+    public function getAllActiveClients()
+    {
         return Clients::select("select * form clients where status='active'");
     }
 
@@ -34,10 +37,10 @@ class ReminderController extends Controller
 
         foreach ($clients as $client) {
             switch ($client->reminder_type) {
-                case 'Weekly':
+                case 'Weeklys':
                     $this->handleWeeklyReminder($client, $today);
                     break;
-                case 'Bi-Weekly':
+                case 'Bi-Weeklys':
                     $this->handleBiWeeklyReminder($client, $today);
                     break;
                 case 'Monthly':
@@ -69,25 +72,55 @@ class ReminderController extends Controller
 
     protected function handleMonthlyReminder($client, $today)
     {
+
+        // Get the last day of the current month
+        $lastDayOfMonth = Carbon::now()->endOfMonth();
+
+        // Get the second last day of the current month
+        $secondLastDayOfMonth = Carbon::now()->endOfMonth()->subDay(1);
+
+        // Get the third last day of the current month
+        $thirdLastDayOfMonth = Carbon::now()->endOfMonth()->subDay(2);
+
+        $now = Carbon::now();
+        $message = "";
+        // Checking if today is one of these days
+        if ($today->isSameDay($lastDayOfMonth)) {
+            $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." on priority. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+        }
+
+        if ($today->isSameDay($secondLastDayOfMonth)) {
+            $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y')." \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+        }
+
+        if ($today->isSameDay($thirdLastDayOfMonth)) {
+            $message =  "Dear Associate, \n \n This is a gentle reminder to share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." as early as you receive it. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+        }
+
         // Check if today is within the last three days of the month
         if ($today->day > $today->endOfMonth()->subDays(3)->day) {
-            $this->checkAndSendReminders($client, $today);
+            $this->checkAndSendReminders($client, $today, $message);
         }
     }
 
-    protected function checkAndSendReminders($client, $today)
+    protected function checkAndSendReminders($client, $today, $message = "")
     {
         $users = User::where('client', $client->id)->get();
+
+        $monthStart = Carbon::now()->startOfMonth()->toDateString();  // format: "YYYY-MM-DD"
+
+        // Current month end
+        $monthEnd = Carbon::now()->endOfMonth()->toDateString(); 
 
         foreach ($users as $user) {
             // Check if timesheet has been submitted
             $timesheetSubmitted = Billable_timesheets::where('user_id', $user->id)
-                ->whereBetween('from_date', [$today->startOfWeek(), $today->endOfWeek()])
+                ->whereBetween('from_date', [$monthStart, $monthEnd])
                 ->exists();
 
             if (!$timesheetSubmitted) {
                 // Send Reminder
-                Mail::to($user->email)->send(new ReminderEmail());
+                Mail::to($user->email)->send(new ReminderEmail($message));
 
                 // Log Reminder
                 Reminder_logs::create([
@@ -97,6 +130,4 @@ class ReminderController extends Controller
             }
         }
     }
-
-    
 }

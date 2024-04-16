@@ -10,9 +10,11 @@ use Illuminate\Queue\SerializesModels;
 class ReminderEmail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $message;
 
-    public function __construct()
+    public function __construct($message)
     {
+        $this->message = $message;
         // Pass any variables to the mailable here if needed
     }
 
@@ -20,6 +22,7 @@ class ReminderEmail extends Mailable
     {
         return $this->from(get_settings('system_email'), get_settings('website_title'))
                     ->subject('Reminder: Timesheet Submission Required')
-                    ->view('emails.reminder');  // Specify your email view here
+                    ->text('emails.simple', ['content' => $this->message]);
+                    //->view($this->message);  // Specify your email view here
     }
 }

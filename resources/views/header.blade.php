@@ -16,7 +16,7 @@
         </div>
         <div class="col-auto d-xl-block d-none ms-auto">
             <div class="header_notification d-flex align-items-center text-dark fw-600">
-            <div>
+            <div class="holiday-scroll">
             <span class="badge-2 text-dark px-2">Upcoming Holidays</span>
             <span class="btn-holiday">
             @php 

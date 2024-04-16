@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reminder_logs extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id'
+    ];
 }

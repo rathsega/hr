@@ -6204,3 +6204,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   font-weight:500;
   color:#000000 !important;
 }
+.holiday-scroll{
+  width:340px;
+}
