@@ -589,6 +589,7 @@
                 <li><a class="@if ($current_route == 'admin.reports.joining') active @endif" href="{{ route('admin.reports.joining') }}">{{ get_phrase('Joinings') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.reports.exit') active @endif" href="{{ route('admin.reports.exit') }}">{{ get_phrase('Exits') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.reports.leavebalance') active @endif" href="{{ route('admin.reports.leavebalance') }}">{{ get_phrase('Leave Balance') }}</a></li>
+                <li><a class="@if ($current_route == 'admin.reports.payroll') active @endif" href="{{ route('admin.reports.payroll') }}">{{ get_phrase('Payroll') }}</a></li>
             </ul>
         </li>
 

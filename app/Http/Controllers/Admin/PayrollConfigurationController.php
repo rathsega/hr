@@ -601,6 +601,8 @@ class PayrollConfigurationController extends Controller
                         $data['motor_vehicle_all'] = $motor_vehicle_all_allowance;
                         $data['deputation_allowance'] = $deputation_allowance;
                         $data['salary_advance'] = $total_advance_deduction_amount;
+                        $data['monthly_salary'] = $monthly_salary_amount;
+                        $data['total_working_days'] = $total_working_days;
 
                     }else if($active_user->employmenttype == 'contract'){
                         //calculate payable amount                    
@@ -766,7 +768,7 @@ class PayrollConfigurationController extends Controller
         $selected_year = $request->year;
         $selected_month = $request->month;
 
-        return Excel::download(new PayslipsExport($selected_month, $selected_year), 'payslips.xlsx');
+        return Excel::download(new PayslipsExport($selected_month, $selected_year), 'payroll.xlsx');
 
     }
     

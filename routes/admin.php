@@ -197,12 +197,14 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('reports/joining', [ReportsController::class, 'joining'])->name('reports.joining');
     Route::get('reports/exit', [ReportsController::class, 'exit'])->name('reports.exit');
     Route::get('reports/leavebalance', [ReportsController::class, 'leavebalance'])->name('reports.leavebalance');
+    Route::get('reports/payroll', [ReportsController::class, 'payroll'])->name('reports.payroll');
 
     //Clients
     Route::get('clients', [ClientsController::class, 'index'])->name('clients');
     Route::post('clients/store', [ClientsController::class, 'store'])->name('clients.store');
     Route::post('clients/update/{id}', [ClientsController::class, 'update'])->name('clients.update');
     Route::get('clients/delete/{id}', [ClientsController::class, 'delete'])->name('clients.delete');
+    Route::get('clients/log/{id?}', [ClientsController::class, 'log'])->name('clients.log');
     
     //Billable Timesheets
     Route::get('billabletimesheet',[BillableTimesheetsController::class, 'index'])->name('billabletimesheet');

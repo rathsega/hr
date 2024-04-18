@@ -37,6 +37,11 @@ class ReportsController extends Controller
         return view(auth()->user()->role . '.reports.leavebalance', $page_data);
     }
 
+    function payroll(){
+        $page_data['title'] = "Payroll Report";
+        return view(auth()->user()->role . '.reports.payroll', $page_data);
+    }
+
     
 
     

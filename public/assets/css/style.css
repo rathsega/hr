@@ -6199,6 +6199,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   padding: 5px;
   box-shadow: 12px 0 15px -4px rgb(31 73 125 / 0%), -12px 0 8px -4px rgb(32 73 130 / 14%);
 }
+
 .badge-2{
   font-size:14px;
   font-weight:500;
@@ -6206,4 +6207,16 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 .holiday-scroll{
   width:340px;
+}
+.remainders-link{
+  margin-left:auto;
+}
+
+.remainders-link .log{
+  text-decoration: underline;
+}
+
+.eform-d {
+  float: none !important;
+padding-right: 22px;
 }
