@@ -170,9 +170,9 @@ class LeaveBalanceExport implements FromCollection, WithHeadings
             $export_data[$key]["name"] = $user->name;
             $available_cfl_count = $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0;
             $export_data[$key]["carry_forward"] = $carry_forwarded_leave_count >= $casual_leave_count ? $carry_forwarded_leave_count - $casual_leave_count : 0;
-            $available_sick_leave_count = $leaves_count->sick = (($leaves_count->sick/12)*date("m"));
+            $available_sick_leave_count = $leaves_count->sick = (($leaves_count->sick/12)*date("m", strtotime($this->to_date)));
             $export_data[$key]["sick"] = $leaves_count->sick - $sick_leave_count;
-            $leaves_count->casual = (($leaves_count->casual/12)*date("m"));
+            $leaves_count->casual = (($leaves_count->casual/12)*date("m", strtotime($this->to_date)));
             $available_casual_leave_count = $carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual;
             $export_data[$key]["casual"] = $carry_forwarded_leave_count < $casual_leave_count ? $leaves_count->casual + $carry_forwarded_leave_count - $casual_leave_count : $leaves_count->casual;
         }
