@@ -9,12 +9,12 @@
         </div>
 
         <div class="col-md-12 mt-3">
-            <label for="reminder_type" class="eForm-label">{{get_phrase('Reminder Type')}}</label>
+            <label for="reminder_type" class="eForm-label">{{get_phrase('Reminder end day')}}</label>
             <select name="reminder_type" class="form-select eForm-select" required>
             <option value=""></option>
-			<option value="Weekly">{{get_phrase('Weekly')}}</option>
-			<option value="Bi-Weekly">{{get_phrase('Bi-Weekly')}}</option>
-			<option value="Monthly">{{get_phrase('Monthly')}}</option>
+            @for ($i=1; $i<=31; $i++)
+			    <option value="{{$i}}">{{$i}}</option>
+            @endfor
 		</select>
         </div>
 

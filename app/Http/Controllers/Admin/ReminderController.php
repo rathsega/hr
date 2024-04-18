@@ -36,16 +36,8 @@ class ReminderController extends Controller
         $clients = Clients::all();
 
         foreach ($clients as $client) {
-            switch ($client->reminder_type) {
-                case 'Weeklys':
-                    $this->handleWeeklyReminder($client, $today);
-                    break;
-                case 'Bi-Weeklys':
-                    $this->handleBiWeeklyReminder($client, $today);
-                    break;
-                case 'Monthly':
-                    $this->handleMonthlyReminder($client, $today);
-                    break;
+            if ($today->day >= ($client->reminder_type-2) && $today->day <= $client->reminder_type) {
+                $this->handleMonthlyReminder($client, $today);
             }
         }
     }
@@ -85,27 +77,27 @@ class ReminderController extends Controller
         $now = Carbon::now();
         $message = "";
         // Checking if today is one of these days
-        if ($today->isSameDay($lastDayOfMonth)) {
+        if ($today->day == $client->reminder_type - 2) {
             $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." on priority. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
-        if ($today->isSameDay($secondLastDayOfMonth)) {
+        if ($today->day == $client->reminder_type - 1) {
             $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y')." \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
-        if ($today->isSameDay($thirdLastDayOfMonth)) {
+        if ($today->day == $client->reminder_type) {
             $message =  "Dear Associate, \n \n This is a gentle reminder to share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." as early as you receive it. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
         // Check if today is within the last three days of the month
-        if ($today->day > $today->endOfMonth()->subDays(3)->day) {
+        //if ($today->day > $today->endOfMonth()->subDays(3)->day) {
             $this->checkAndSendReminders($client, $today, $message);
-        }
+        //}
     }
 
     protected function checkAndSendReminders($client, $today, $message = "")
     {
-        $users = User::where('client', $client->id)->get();
+        $users = User::where('client', $client->id)->where('billingtype', 'billable')->get();
 
         $monthStart = Carbon::now()->startOfMonth()->toDateString();  // format: "YYYY-MM-DD"
 

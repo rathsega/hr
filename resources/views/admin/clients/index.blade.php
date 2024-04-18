@@ -41,7 +41,7 @@
                         <tr>
                             <th class="">#</th>
                             <th class="">{{ get_phrase('Client name') }}</th>
-                            <th class="">{{ get_phrase('Reminder Type') }}</th>
+                            <th class="">{{ get_phrase('Reminder End Day') }}</th>
                             <th class="text-center">{{ get_phrase('Action') }}</th>
                         </tr>
                     </thead>
