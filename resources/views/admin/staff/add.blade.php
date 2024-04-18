@@ -1,10 +1,4 @@
-<style>
-	.eForm-label {
-    float: none !important;
-	padding-right: 22px;
 
-}
-</style>
 <form action="{{route('admin.staff.store')}}" method="post" enctype="multipart/form-data">
 @Csrf
 	<div class="fpb-7">
@@ -60,21 +54,21 @@
 		</select>
 	</div>
 	<div class="col-md-12 mt-3">
-			<label for="billingtype" class="eForm-label">{{get_phrase('Billing Type')}} : </label></br>
+			<label for="billingtype" class="eForm-label eform-d">{{get_phrase('Billing Type')}} : </label></br>
             <input type="radio" data-bs-toggle="tooltip" value="billable" name="billingtype" />
-            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Billable')}}</label>
+            <label for="eInputTextarea" class="eForm-label eform-d">{{get_phrase('Billable')}}</label>
             <input type="radio" data-bs-toggle="tooltip" value="non-billable" name="billingtype" />
-            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Non Billable')}}</label>
+            <label for="eInputTextarea" class="eForm-label eform-d">{{get_phrase('Non Billable')}}</label>
 
     </div>
 
 	<div class="col-md-12 mt-3">
-			<label for="employmenttype" class="eForm-label">{{get_phrase('Employment Type')}} : </label></br>
+			<label for="employmenttype" class="eForm-label eform-d">{{get_phrase('Employment Type')}} : </label></br>
 
             <input type="radio" data-bs-toggle="tooltip" value="contract" name="employmenttype" />
-            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Contact')}}</label>
+            <label for="eInputTextarea" class="eForm-label eform-d">{{get_phrase('Contract')}}</label>
             <input type="radio" data-bs-toggle="tooltip" value="full time" name="employmenttype" />
-            <label for="eInputTextarea" class="eForm-label">{{get_phrase('Full Time')}}</label>
+            <label for="eInputTextarea" class="eForm-label eform-d">{{get_phrase('Full Time')}}</label>
 
     </div>
 
