@@ -27,13 +27,13 @@
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="date" class="eForm-label">{{get_phrase('From Date')}}</label>
-                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->from_date)) }}" min="<?php echo date('Y-m-d'); ?>" name="from_date" class="form-control eForm-control" id="from_date" />
+                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->from_date)) }}"  name="from_date" class="form-control eForm-control" id="from_date" />
             </div>
         </div>
         <div class="col-md-12">
             <div class="fpb-7">
                 <label for="date" class="eForm-label">{{get_phrase('To Date')}}</label>
-                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->to_date)) }}" min="<?php echo date('Y-m-d'); ?>" name="to_date" class="form-control eForm-control" id="to_date" />
+                <input type="date" value="{{ date('Y-m-d', strtotime($quote_details->to_date)) }}"  name="to_date" class="form-control eForm-control" id="to_date" />
             </div>
         </div>
         <div class="col-md-12">

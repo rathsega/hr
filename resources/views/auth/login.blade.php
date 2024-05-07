@@ -24,114 +24,189 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Nanum+Gothic+Coding&family=Ojuju:wght@200..800&family=Satisfy&family=Teko:wght@300..700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container-fluid h-100">
         <div class="row h-100">
             <div id="carouselExampleAutoplaying" class="carousel slide col-lg-6" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                @if($slides)
+                    @if($slides)
                     @foreach($slides as $key => $slide)
                     <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                @if($slide['type'] == 'quote')
-                                    <div class="col-lg-6 d-none d-lg-block p-0 h-100">
-                                        <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/quote_bg.png') }}'); background-size: cover; background-position: center;">
-                                            <div class="text-center">
-                                                <img class="mb-2 mt-4" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                        @if($slide['type'] == 'quote')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/quote_bg.png') }}'); background-size: cover; background-position: center;">
+                                <div class="text-center">
+                                    <img class="mb-2 mt-4" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <h5 class="quotes-heading text-center pt-3">Quotation of the day </h5>
+                                        <img class="" width="260px" src="{{ asset('assets/images/under_line.png') }}" alt="">
+                                    </div>
+                                    <div class="container mt-4 quote-image-bg">
+                                        <div class="d-flex">
+                                            <!-- Quote Image Section -->
+                                            <div class="col-md-8">
                                                 <div>
-                                                    <h5 class="quotes-heading text-center pt-5">Quotation of the day </h5>
-                                                    <img class="" width="260px" src="{{ asset('assets/images/under_line.png') }}" alt="">
-                                                </div>
-                                                <div class="d-flex flex-row justify-content-center mt-5">
-                                                    <div class="col-md-8">
-                                                        
-                                                        <div class="row ">
-                                                            <!-- Quote Image Section -->
-                                                            <div class="col-md-6">
-                                                                <div class="quote-image-bg">
-                                                                    <p class="pt-5 quote-para">{{$slide['quote']}}</p>
-                                                                    <div class="mt-3 details-sec">
-                                                                        <h6 class="quote-name"> - {{$slide['name']}}</h6>
-                                                                        <p class="quote-role">{{$slide['designation']}}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Emblem Image Section -->
-                                                            <div class="col-md-6">
-                                                                <div class="text-center">
-                                                                    <img class="quote-employe-pic " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/employe-quote.png') }}" alt="">
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <p class="pt-5 quote-para">{{$slide['quote']}}</p>
+                                                    <div class="mt-3 details-sec">
+                                                        <h6 class="quote-name"> - {{$slide['name']}}</h6>
+                                                        <p class="quote-role">{{$slide['designation']}}</p>
                                                     </div>
                                                 </div>
-                                                </div>
-
-                                        </div>
-                                    </div>
-                                @elseif($slide['type'] == 'birthday')
-                                    <div class="col-lg-6 d-none d-lg-block p-0 h-100">
-                                        <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/birthday_bg.png') }}'); background-size: cover; background-position: center;">
-
-                                            <div class="text-center">
-                                                <img class="mb-2 mt-4" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
-                                                <div>
-                                                    <h5 class="b-day-text text-center fw-bold pt-1">HAPPY <br> BIRTHDAY </h5>
-                                                </div>
-                                                <div class="col-md-8 container">
-                                                        <div class="">
-                                                            <div class="">
-                                                                <img class="bday-ballone mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/bday_ballone.png') }}" alt="...">
-                                                                <img class="embelem mx-auto d-block my-auto mt-4" src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="...">
-                                                                <img class="bday_box mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/bday_box.png') }}" alt="...">
-                                                                <div class="ribbon mt-4">{{$slide['name']}}</div>
-                                                                <p class="text-center text-dark pt-3 bday-para">“The whole team wishes you a happy birthday! May your day be filled with joy and laughter."</p>
-                                                            </div>
-                                                        </div>
-                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                @elseif($slide['type'] == 'eotm')
-                                    <div class="col-lg-6 d-none d-lg-block p-0 h-100">
-                                        <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/golden_bg.png') }}'); background-size: cover; background-position: center;">
-                                            <div class="text-center">
-                                                <img class="mb-4 mt-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                            <!-- Emblem Image Section -->
+                                            <div class="col-md-4">
                                                 <div>
-                                                    <span class="horizontal-line"></span>
-                                                    <h5 class="text-center fw-bold pt-1" style="color:#A97F40;">EMPLOYEE OF THE <br>
-                                                        <span style="color:#441904bf;">MONTH</span>
-                                                    </h5>
-                                                    <span class="horizontal-line"></span>
+                                                    <img class="quote-employe-pic pt-2" src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/employe-quote.png') }}" alt="">
                                                 </div>
 
                                             </div>
-                                            <img class="embelem mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/embelem.png') }}" alt="">
-                                            <div class="ribbon mt-4">{{$slide['name']}}</div>
-                                            <p class="text-center text-dark">Thank you for your <br>
-                                                <span class="fw-bold"> Your outstanding service</span> <br>
-                                                Congratulations
-                                            </p>
-                                        </div>
-                                    </div>
-                                @elseif($slide['type'] == 'announcement')
-                                <div class="col-lg-6 d-none d-lg-block p-0 h-100">
-                                    <div class="text-center w-inherit h-100 position-fixed">
-                                    <img class="mt-2 mb-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
-                                        <div class="envelope-image-bg">
-                                            <div class="annount-crad">
-                                            <h6 class="announcement-heading">{{$slide['subject']}}</h6>
-                                            <p class="announcement-para">{{$slide['message']}}</p>  
-                                            </div> 
                                         </div>
                                     </div>
                                 </div>
-                                @endif
+
                             </div>
+                        </div>
+                        @elseif($slide['type'] == 'birthday')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/birthday_bg.png') }}'); background-size: cover; background-position: center;">
+
+                                <div class="text-center">
+                                    <img class="mb-2 mt-4" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <h5 class="b-day-text text-center fw-bold pt-1">HAPPY <br> BIRTHDAY </h5>
+                                    </div>
+                                    <div class="col-md-8 container">
+                                        <div class="">
+                                            <div class="">
+                                                <img class="bday-ballone mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/bday_ballone.png') }}" alt="...">
+                                                <img class="embelem mx-auto d-block my-auto mt-4" src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="...">
+                                                <img class="bday_box mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/bday_box.png') }}" alt="...">
+                                                <div class="ribbon mt-4">{{$slide['name']}}</div>
+                                                <p class="text-center text-dark pt-3 bday-para">“The whole team wishes you a happy birthday! May your day be filled with joy and laughter."</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @elseif($slide['type'] == 'eotm')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/golden_bg.png') }}'); background-size: cover; background-position: center;">
+                                <div class="text-center">
+                                    <img class="mb-4 mt-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <span class="horizontal-line"></span>
+                                        <h5 class="text-center fw-bold pt-1" style="color:#A97F40;">EMPLOYEE OF THE <br>
+                                            <span style="color:#441904bf;">MONTH</span>
+                                        </h5>
+                                        <span class="horizontal-line"></span>
+                                    </div>
+
+                                </div>
+                                <div class="embelem-rean mt-4" style="background-image: url('{{ asset('assets/images/quatar_emblem.png') }}')">
+                                    <img class="embelem-profile-pic mx-auto d-block my-auto " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="">
+                                </div>
+                                <div class="ribbon mt-4">{{$slide['name']}}</div>
+                                <p class="text-center text-dark">Thank you for your <br>
+                                    <span class="fw-bold"> Your outstanding service</span> <br>
+                                    Congratulations
+                                </p>
+                            </div>
+                        </div>
+                        @elseif($slide['type'] == 'eotq')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/golden_bg.png') }}'); background-size: cover; background-position: center;">
+                                <div class="text-center">
+                                    <img class="mb-4 mt-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <span class="horizontal-line"></span>
+                                        <h5 class="text-center fw-bold pt-1" style="color:#A97F40;">EMPLOYEE OF THE <br>
+                                            <span style="color:#441904bf;">QUARTER</span>
+                                        </h5>
+                                        <span class="horizontal-line"></span>
+                                    </div>
+
+                                </div>
+                                <div class="embelem-rean mt-4" style="background-image: url('{{ asset('assets/images/quatar_emblem.png') }}')">
+                                    <img class="embelem-profile-pic mx-auto d-block my-auto " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="">
+                                </div>
+                                <div class="ribbon mt-4">{{$slide['name']}}</div>
+                                <p class="text-center text-dark">Thank you for your <br>
+                                    <span class="fw-bold"> Your outstanding service</span> <br>
+                                    Congratulations
+                                </p>
+                            </div>
+                        </div>
+                        @elseif($slide['type'] == 'eoty')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/golden_bg.png') }}'); background-size: cover; background-position: center;">
+                                <div class="text-center">
+                                    <img class="mb-4 mt-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <span class="horizontal-line"></span>
+                                        <h5 class="text-center fw-bold pt-1" style="color:#A97F40;">EMPLOYEE OF THE <br>
+                                            <span style="color:#441904bf;">YEAR</span>
+                                        </h5>
+                                        <span class="horizontal-line"></span>
+                                    </div>
+
+                                </div>
+                                <div class="embelem-rean mt-4" style="background-image: url('{{ asset('assets/images/year_emblem.png') }}')">
+                                    <img class="embelem-profile-pic mx-auto d-block my-auto " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="">
+                                </div>
+                                <div class="ribbon mt-4">{{$slide['name']}}</div>
+                                <p class="text-center text-dark">Thank you for your <br>
+                                    <span class="fw-bold"> Your outstanding service</span> <br>
+                                    Congratulations
+                                </p>
+                            </div>
+                        </div>
+                        @elseif($slide['type'] == 'lse')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="bg-image w-inherit h-100 position-fixed" style="background-image: url('{{ asset('assets/images/long_service_employee.png') }}'); background-size: cover; background-position: center;">
+                                <div class="text-center">
+                                    <img class="mb-4 mt-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                    <div>
+                                        <span class="horizontal-line"></span>
+                                        <h5 class="text-center fw-bold pt-1" style="color:#930b0c;">EMPLOYEE OF THE <br>
+                                            <span style="color:#930b0c;">LONG SERVICE</span>
+                                        </h5>
+                                        <span class="horizontal-line"></span>
+                                    </div>
+
+                                </div>
+                                <div class="embelem-rean mt-4" style="background-image: url('{{ asset('assets/images/long_service_emblum.png') }}');">
+                                    <img class="embelem-profile-pic mx-auto d-block my-auto " src="{{ $slide['photo'] ? get_image('uploads/user-image/' . $slide['photo']) : asset('assets/images/bday_person.png') }}" alt="">
+                                </div>
+
+
+                                <!-- <img class="embelem mx-auto d-block my-auto mt-4" src="{{ asset('assets/images/long_emblem.png') }}" alt=""> -->
+                                <div class="ribbon mt-4 fw-bold text-white">{{$slide['name']}}</div>
+                                <p class="text-center" style="color: #1b0241;">Thank you for your <br>
+                                    <span class="fw-bold"> Your outstanding service</span> <br>
+                                    Congratulations
+                                </p>
+                            </div>
+                        </div>
+                        @elseif($slide['type'] == 'announcement')
+                        <div class="col-lg-6 d-none d-lg-block p-0 h-100">
+                            <div class="text-center w-inherit h-100 position-fixed">
+                                <img class="mt-2 mb-2" width="230px" src="{{ asset('assets/images/zettamine-transparent.png') }}" alt="">
+                                <div class="envelope-image-bg">
+                                    <div class="annount-crad">
+                                        <h6 class="announcement-heading">{{$slide['subject']}}</h6>
+                                        <p class="announcement-para">{{$slide['message']}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        @endif
+                    </div>
                     @endforeach
-                @endif
-                    
-                    
+                    @endif
+
+
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

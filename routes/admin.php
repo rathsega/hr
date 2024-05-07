@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController, ClientsController, BillableTimesheetsController, ReminderController};
+use App\Http\Controllers\Admin\{LeaveApplicationController, TimesheetController, StaffController, AssessmentController, AttendanceController, TasksController, PayslipController, SettingsController, PerformanceController, PerformanceCriteriaController, InventoryController, InventoryItemController, BranchController, MyProfileController, DepartmentController, HolidaysController, BirthdaysController, OrganisationController, UploadUsersController, PayrollConfigurationController, SeparationController, FeedbackController, AnnouncementsController, EmployeeOfTheMonthController, EmployersQuote, ReportsController, ClientsController, BillableTimesheetsController, ReminderController, AwardsController, EmployeeOfTheQuarterController, EmployeeOfTheYearController, LongServiceEmployeeController};
 
 Route::name('admin.')->prefix('admin')->group(function () {
     //Timesheet Remider
@@ -160,6 +160,10 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::post('payrollconfiguration/add_advances', [PayrollConfigurationController::class, 'add_advances'])->name('payrollconfiguration.add_advances');
     Route::post('payrollconfiguration/update_advances/{advance_id}', [PayrollConfigurationController::class, 'update_advances'])->name('payrollconfiguration.update_advances');
     Route::get('payrollconfiguration/delete_advance/{advance_id}', [PayrollConfigurationController::class, 'delete_advance'])->name('payrollconfiguration.delete_advance');
+    Route::get('payrollconfiguration/itdeductions', [PayrollConfigurationController::class, 'itdeductions'])->name('payrollconfiguration.itdeductions');
+    Route::post('payrollconfiguration/add_itdeduction', [PayrollConfigurationController::class, 'add_itdeduction'])->name('payrollconfiguration.add_itdeduction');
+    Route::post('payrollconfiguration/update_itdeduction/{itdeduction_id}', [PayrollConfigurationController::class, 'update_itdeduction'])->name('payrollconfiguration.update_itdeduction');
+    Route::get('payrollconfiguration/delete_itdeduction/{itdeduction_id}', [PayrollConfigurationController::class, 'delete_itdeduction'])->name('payrollconfiguration.delete_itdeduction');
     Route::post('payrollconfiguration/download_report', [PayrollConfigurationController::class, 'download_report'])->name('payrollconfiguration.download_report');
     //Separation
     Route::get('separation', [SeparationController::class, 'index'])->name('separation');
@@ -180,10 +184,10 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     Route::get('announcements/delete/{user_id}', [AnnouncementsController::class, 'delete'])->name('announcements.delete');
 
     //Employee Of The Month
-    Route::get('eotm', [EmployeeOfTheMonthController::class, 'index'])->name('eotm');
+    /*Route::get('eotm', [EmployeeOfTheMonthController::class, 'index'])->name('eotm');
     Route::post('eotm/store', [EmployeeOfTheMonthController::class, 'store'])->name('eotm.store');
     Route::post('eotm/update/{eotm_id}', [EmployeeOfTheMonthController::class, 'update'])->name('eotm.update');
-    Route::get('eotm/delete/{eotm_id}', [EmployeeOfTheMonthController::class, 'delete'])->name('eotm.delete');
+    Route::get('eotm/delete/{eotm_id}', [EmployeeOfTheMonthController::class, 'delete'])->name('eotm.delete');*/
 
     //Employers Quote
     Route::get('quotes', [EmployersQuote::class, 'index'])->name('quotes');
@@ -209,5 +213,25 @@ Route::name('admin.')->prefix('admin')->middleware(['admin', 'auth', 'verified']
     //Billable Timesheets
     Route::get('billabletimesheet',[BillableTimesheetsController::class, 'index'])->name('billabletimesheet');
 
-    
+    //Awards
+    Route::get('awards/eotm', [EmployeeOfTheMonthController::class, 'index'])->name('awards.eotm');
+    Route::get('awards/eotq', [EmployeeOfTheQuarterController::class, 'index'])->name('awards.eotq');
+    Route::get('awards/eoty', [EmployeeOfTheYearController::class, 'index'])->name('awards.eoty');
+    Route::get('awards/lse', [LongServiceEmployeeController::class, 'index'])->name('awards.lse');
+
+    Route::post('eotm/store', [EmployeeOfTheMonthController::class, 'store'])->name('eotm.store');
+    Route::post('eotm/update/{eotm_id}', [EmployeeOfTheMonthController::class, 'update'])->name('eotm.update');
+    Route::get('eotm/delete/{eotm_id}', [EmployeeOfTheMonthController::class, 'delete'])->name('eotm.delete');
+
+    Route::post('eotq/store', [EmployeeOfTheQuarterController::class, 'store'])->name('eotq.store');
+    Route::post('eotq/update/{eotq_id}', [EmployeeOfTheQuarterController::class, 'update'])->name('eotq.update');
+    Route::get('eotq/delete/{eotq_id}', [EmployeeOfTheQuarterController::class, 'delete'])->name('eotq.delete');
+
+    Route::post('eoty/store', [EmployeeOfTheYearController::class, 'store'])->name('eoty.store');
+    Route::post('eoty/update/{eoty_id}', [EmployeeOfTheYearController::class, 'update'])->name('eoty.update');
+    Route::get('eoty/delete/{eoty_id}', [EmployeeOfTheYearController::class, 'delete'])->name('eoty.delete');
+
+    Route::post('lse/store', [LongServiceEmployeeController::class, 'store'])->name('lse.store');
+    Route::post('lse/update/{lse_id}', [LongServiceEmployeeController::class, 'update'])->name('lse.update');
+    Route::get('lse/delete/{lse_id}', [LongServiceEmployeeController::class, 'delete'])->name('lse.delete');
 });

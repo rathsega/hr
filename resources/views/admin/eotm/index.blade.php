@@ -37,7 +37,7 @@
                             <th class="">#</th>
                             <th class="">{{ get_phrase('Name') }}</th>
                             <th class="">{{ get_phrase('Month') }}</th>
-                            <th class="">{{ get_phrase('Yeat') }}</th>
+                            <th class="">{{ get_phrase('Year') }}</th>
                             <th class="">{{ get_phrase('Actions') }}</th>
                         </tr>
                     </thead>

@@ -66,11 +66,11 @@
                                 <li>
                                     @php
                                     if (auth()->user()->role == 'admin') {
-                                    $my_profile = route('admin.my.profile');
-                                    } if (auth()->user()->role == 'manager') {
+                                        $my_profile = route('admin.my.profile');
+                                    } else if (auth()->user()->role == 'manager') {
                                         $my_profile = route('manager.my.profile');
                                     } else {
-                                    $my_profile = route('staff.my.profile');
+                                        $my_profile = route('staff.my.profile');
                                     }
                                     @endphp
                                     <a class="dropdown-item" href="{{ $my_profile }}">

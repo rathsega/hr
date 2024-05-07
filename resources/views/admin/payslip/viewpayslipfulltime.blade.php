@@ -124,7 +124,7 @@
                                 <th scope="row">Medical </th>
                                 <td>{{$payslip[0]->medical}}</td>
                                 <td><b>Income Tax</b></td>
-                                <td></td>
+                                <td>{{$payslip[0]->it_deduction}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">LTA</th>

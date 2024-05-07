@@ -85,18 +85,18 @@ class ReminderController extends Controller
         if($daysInMonth == 30 && $client->reminder_type == 31){
             $client->reminder_type = 30;
         }
-        
+
         // Checking if today is one of these days
         if ($today->day == $client->reminder_type - 2) {
-            $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." on priority. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+            $message =  "Dear Associate, \n\n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." on priority. \n\nRegards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
         if ($today->day == $client->reminder_type - 1) {
-            $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y')." \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+            $message =  "Dear Associate, \n\n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y')." \n\nRegards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
         if ($today->day == $client->reminder_type) {
-            $message =  "Dear Associate, \n \n This is a gentle reminder to share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." as early as you receive it. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
+            $message =  "Dear Associate, \n \n This is a gentle reminder to share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." as early as you receive it. \n\nRegards,\nHR,\nZettamine Labs Pvt. Ltd.";
         }
 
         // Check if today is within the last three days of the month
@@ -122,7 +122,11 @@ class ReminderController extends Controller
 
             if (!$timesheetSubmitted) {
                 // Send Reminder
-                Mail::to("sekhar.r@zettamine.com")->send(new ReminderEmail($message));
+                //Mail::to("sekhar.r@zettamine.com")->send(new ReminderEmail($message));
+
+                Mail::raw($message, function ($message) {
+                    $message->to('sekhar.r@zettamine.com')->subject('Reminder: Timesheet Submission Required');
+                });
 
                 // Log Reminder
                 Reminder_logs::create([

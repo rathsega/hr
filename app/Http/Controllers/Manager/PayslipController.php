@@ -172,7 +172,7 @@ class PayslipController extends Controller
     function download_new_payslip(Request $request)
     {
         $data = [];
-        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id inner join departments as d on d.id = u.department  where p.user_id = ".auth()->user()->id ." and  p.id=".$request->id);
+        $data['payslip'] = DB::select("select *, p.id as payslip_id from payslips as p INNER join users as u on u.id = p.user_id left join departments as d on d.id = u.department  where p.user_id = ".auth()->user()->id ." and  p.id=".$request->id);
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
         if($data['payslip'][0]->employmenttype == 'full time'){

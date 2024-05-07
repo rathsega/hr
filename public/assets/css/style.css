@@ -6220,3 +6220,88 @@ input[type=time]::-webkit-calendar-picker-indicator {
   float: none !important;
 padding-right: 22px;
 }
+
+.ribbon::before, .ribbon::after {
+  content: '';
+  width: 80px;
+  height: 100%;
+  background-color: #0d0c0cd3;
+
+}
+.ribbon {
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 10px 40px;
+  text-align: center;
+  background-image: linear-gradient(to right, #494949, #062527);
+  margin-top: -3px !important;
+}
+
+.embelem-profile-pic {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 105px;
+  border-radius: 80px;
+}
+.embelem-rean{
+  position: relative;
+  background-repeat: no-repeat;
+  height: 160px;
+  background-size: contain;
+  background-position: center;
+}
+.ribbon {
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 10px 40px;
+  text-align: center;
+  background-image: linear-gradient(to right, #ef79b5, #9b070c);
+  margin-top: -3px !important;
+}
+
+.ribbon::before, .ribbon::after {
+  content: '';
+  width: 80px;
+  height: 100%;
+  background-color: rgba(159, 13, 20, 0.893);
+}
+.quote-image-bg {
+  margin-right: 23%;
+  /* width:260px; */
+  width: 400px;
+  background-image: url(../images/quote_employe.png);
+  height:250px;
+   background-size: cover;
+  /* position: absolute; */
+  /* margin-left: 3%; */
+}
+.quote-employe-pic{
+  height: 250px;
+  border-radius: 0px 24px 0px 24px;
+
+}
+.quote-para{
+  color: white;
+  font-size: 11px;
+  line-height: 20px;
+  text-align-last: left;
+  width: 226px;
+    /* padding-left: 28px; */
+    padding-left: 32px;
+    margin-top: 28px;
+    padding-top: 50px !important;
+}
+.quote-name{
+  color: #ffffff;
+  font-size:13px;
+}
+.details-sec {
+  margin-left: auto;
+  margin-top: 10px !important;
+}
+.quote-role{
+  color: #ffffff;
+  font-size:11px;
+}

@@ -17,7 +17,7 @@ class EmployeeOfTheMonthController extends Controller
         $page_data = [];
         $page_data['users'] = User::where('role', '!=', 'admin')->where('status', 'active')->orderBy('sort')->get();
         $page_data['eotms'] = DB::select("SELECT e.*, u.id as user_id, u.name from employee_of_the_month as e left join users as u on u.id = e.user_id");
-        return view(auth()->user()->role . '.eotm.index', $page_data);
+        return view(auth()->user()->role . '.awards.eotm.index', $page_data);
     }
 
     
@@ -33,6 +33,7 @@ class EmployeeOfTheMonthController extends Controller
         $data['user_id'] = $request->user_id;
         $data['month'] = $request->month;
         $data['year'] = $request->year;
+        $data['visibility'] = $request->visibility == 'on' ? 1 : 0;
 
         EmployeeOfTheMonth::insert($data);
 
@@ -53,6 +54,7 @@ class EmployeeOfTheMonthController extends Controller
         $data['user_id'] = $request->user_id;
         $data['month'] = $request->month;
         $data['year'] = $request->year;
+        $data['visibility'] = $request->visibility == 'on' ? 1 : 0;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
 

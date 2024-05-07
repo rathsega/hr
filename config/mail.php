@@ -35,12 +35,12 @@ return [
 
     'mailers' => [
         'smtp' => [
-            'transport' => env('transport', 'smtp'),
-            'host' => env('host', 'smtp.gmail.com'),//'smtp.mailgun.org',
-            'port' => env('port', '587'),
-            'encryption' => env('security', 'tls'),
-            'username' => env('username', 'admin@example.com'),
-            'password' => env('password', ''),
+            'transport' => 'smtp',
+            'host' => 'smtp.rediffmailpro.com',//'smtp.mailgun.org',
+            'port' => '465',
+            'encryption' => 'tls',
+            'username' => 'no-reply@zettamine.com',
+            'password' => 'Zetta#123',
             'timeout' => null,
             'local_domain' => env('local_domain', 'example.com'),
         ],

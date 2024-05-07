@@ -559,11 +559,12 @@
                 <li><a class="@if ($current_route == 'admin.payrollconfiguration') active @endif" href="{{ route('admin.payrollconfiguration') }}">{{ get_phrase('Generate Payroll') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.payrollconfiguration.advances') active @endif" href="{{ route('admin.payrollconfiguration.advances') }}">{{ get_phrase('Advances') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.payrollconfiguration.allowances') active @endif" href="{{ route('admin.payrollconfiguration.allowances') }}">{{ get_phrase('Allowances') }}</a></li>
+                <li><a class="@if ($current_route == 'admin.payrollconfiguration.itdeductions') active @endif" href="{{ route('admin.payrollconfiguration.itdeductions') }}">{{ get_phrase('IT Deductions') }}</a></li>
             </ul>
         </li>
 
         <li class="nav-links-li dropdownToggle @if (
-            $current_route == 'admin.reports.attendance') active showMenu @endif">
+            in_array($current_route, array('attendance', 'latelogin', 'joining', 'exit', 'leavebalance', 'payroll'))) active showMenu @endif">
             <div class="iocn-link">
                 <a href="#">
                     <div class="sidebar_icon">
@@ -571,7 +572,6 @@
   <path d="M6 12v-2h3v2z"/>
   <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M3 9h10v1h-3v2h3v1h-3v2H9v-2H6v2H5v-2H3v-1h2v-2H3z"/>
 </svg>
-                    </svg>
                     </div>
                     <span class="link_name">{{ get_phrase('Reports') }}</span>
                 </a>
@@ -590,6 +590,31 @@
                 <li><a class="@if ($current_route == 'admin.reports.exit') active @endif" href="{{ route('admin.reports.exit') }}">{{ get_phrase('Exits') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.reports.leavebalance') active @endif" href="{{ route('admin.reports.leavebalance') }}">{{ get_phrase('Leave Balance') }}</a></li>
                 <li><a class="@if ($current_route == 'admin.reports.payroll') active @endif" href="{{ route('admin.reports.payroll') }}">{{ get_phrase('Payroll') }}</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-links-li dropdownToggle @if (
+            in_array($current_route, array('aotm', 'eotq', 'eoty', 'lse'))) active showMenu @endif">
+            <div class="iocn-link">
+                <a href="#">
+                    <div class="sidebar_icon">
+                    <svg xmlns="http://www.w3.org/2000/svg"  width="48" height="48" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M4.1 38.2C1.4 34.2 0 29.4 0 24.6C0 11 11 0 24.6 0H133.9c11.2 0 21.7 5.9 27.4 15.5l68.5 114.1c-48.2 6.1-91.3 28.6-123.4 61.9L4.1 38.2zm503.7 0L405.6 191.5c-32.1-33.3-75.2-55.8-123.4-61.9L350.7 15.5C356.5 5.9 366.9 0 378.1 0H487.4C501 0 512 11 512 24.6c0 4.8-1.4 9.6-4.1 13.6zM80 336a176 176 0 1 1 352 0A176 176 0 1 1 80 336zm184.4-94.9c-3.4-7-13.3-7-16.8 0l-22.4 45.4c-1.4 2.8-4 4.7-7 5.1L168 298.9c-7.7 1.1-10.7 10.5-5.2 16l36.3 35.4c2.2 2.2 3.2 5.2 2.7 8.3l-8.6 49.9c-1.3 7.6 6.7 13.5 13.6 9.9l44.8-23.6c2.7-1.4 6-1.4 8.7 0l44.8 23.6c6.9 3.6 14.9-2.2 13.6-9.9l-8.6-49.9c-.5-3 .5-6.1 2.7-8.3l36.3-35.4c5.6-5.4 2.5-14.8-5.2-16l-50.1-7.3c-3-.4-5.7-2.4-7-5.1l-22.4-45.4z"/></svg>
+                    </div>
+                    <span class="link_name">{{ get_phrase('Awards') }}</span>
+                </a>
+                <span class="arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="4.743" height="7.773" viewBox="0 0 4.743 7.773">
+                        <path id="navigate_before_FILL0_wght600_GRAD0_opsz24"
+                            d="M1.466.247,4.5,3.277a.793.793,0,0,1,.189.288.92.92,0,0,1,0,.643A.793.793,0,0,1,4.5,4.5l-3.03,3.03a.828.828,0,0,1-.609.247.828.828,0,0,1-.609-.247.875.875,0,0,1,0-1.219L2.668,3.886.247,1.466A.828.828,0,0,1,0,.856.828.828,0,0,1,.247.247.828.828,0,0,1,.856,0,.828.828,0,0,1,1.466.247Z"
+                            fill="#fff" opacity="1" />
+                    </svg>
+                </span>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="@if ($current_route == 'admin.awards.eotm') active @endif" href="{{ route('admin.awards.eotm') }}">{{ get_phrase('Employee Of The Month') }}</a></li>
+                <li><a class="@if ($current_route == 'admin.awards.eotq') active @endif" href="{{ route('admin.awards.eotq') }}">{{ get_phrase('Employee Of The Quarter') }}</a></li>
+                <li><a class="@if ($current_route == 'admin.awards.eoty') active @endif" href="{{ route('admin.awards.eoty') }}">{{ get_phrase('Employee Of The Year') }}</a></li>
+                <li><a class="@if ($current_route == 'admin.awards.lse') active @endif" href="{{ route('admin.awards.lse') }}">{{ get_phrase('Long Service Employee') }}</a></li>
             </ul>
         </li>
 
@@ -639,18 +664,6 @@
             </div>
         </li>
 
-        <li class="nav-links-li @if ($current_route == 'admin.eotm') showMenu @endif">
-            <div class="iocn-link">
-                <a class="w-100" href="{{ route('admin.eotm') }}">
-                    <div class="sidebar_icon">
-                    <svg xmlns="http://www.w3.org/2000/svg"  width="48" height="48" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M4.1 38.2C1.4 34.2 0 29.4 0 24.6C0 11 11 0 24.6 0H133.9c11.2 0 21.7 5.9 27.4 15.5l68.5 114.1c-48.2 6.1-91.3 28.6-123.4 61.9L4.1 38.2zm503.7 0L405.6 191.5c-32.1-33.3-75.2-55.8-123.4-61.9L350.7 15.5C356.5 5.9 366.9 0 378.1 0H487.4C501 0 512 11 512 24.6c0 4.8-1.4 9.6-4.1 13.6zM80 336a176 176 0 1 1 352 0A176 176 0 1 1 80 336zm184.4-94.9c-3.4-7-13.3-7-16.8 0l-22.4 45.4c-1.4 2.8-4 4.7-7 5.1L168 298.9c-7.7 1.1-10.7 10.5-5.2 16l36.3 35.4c2.2 2.2 3.2 5.2 2.7 8.3l-8.6 49.9c-1.3 7.6 6.7 13.5 13.6 9.9l44.8-23.6c2.7-1.4 6-1.4 8.7 0l44.8 23.6c6.9 3.6 14.9-2.2 13.6-9.9l-8.6-49.9c-.5-3 .5-6.1 2.7-8.3l36.3-35.4c5.6-5.4 2.5-14.8-5.2-16l-50.1-7.3c-3-.4-5.7-2.4-7-5.1l-22.4-45.4z"/></svg>
-                    </div>
-                    <span class="link_name">
-                        {{get_phrase('Employee Of The Month')}}
-                    </span>
-                </a>
-            </div>
-        </li>
 
         <li class="nav-links-li @if ($current_route == 'admin.quotes') showMenu @endif">
             <div class="iocn-link">

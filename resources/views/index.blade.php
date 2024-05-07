@@ -47,6 +47,9 @@
 
     <!--Main Jquery-->
     <script src="{{ asset('assets/vendors/jquery/jquery-3.7.1.min.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apextree"></script>
+
 </head>
 
 <body>

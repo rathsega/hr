@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
-use App\Models\{User, Payslip, Holidays, Allowances, Advances, Leave_application, Attendance};
+use App\Models\{User, Payslip, Holidays, Allowances, Advances, Leave_application, Attendance, IT_deduction};
 
 use App\Exports\PayslipsExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -387,6 +387,7 @@ class PayrollConfigurationController extends Controller
 
 
                 if(!($number_of_attendancedays || $sick_leave_days || $casual_leave_days)){
+                    $this->insert_empty_payroll($active_user->id, $selected_month, $selected_year, $total_working_days, $loss_of_pay_days, $active_user->salary_package);
                     continue;
                 }
                 //Check is payslip genearted for users for selected year and month
@@ -460,6 +461,15 @@ class PayrollConfigurationController extends Controller
                                 $advances_status = "completed";
                             }
                             Advances::where('id', $advance->id)->update(array("installments"=>json_encode($existed_installments),"recent_deducted_month"=>$selected_month, "status"=>$advances_status));
+                        }
+                    }
+
+                    //IT Deductions
+                    $all_it_deductions = IT_deduction::where('user_id', $active_user->id)->where('year', $selected_year)->where('month', $selected_month)->get();
+                    $it_deduction_amount = 0;
+                    if($all_it_deductions){
+                        foreach($all_it_deductions as $key => $it_deduction){
+                            $it_deduction_amount += $it_deduction->amount;
                         }
                     }
 
@@ -565,7 +575,7 @@ class PayrollConfigurationController extends Controller
                             $pt = 0;
                         }
 
-                        $total_deduction = floor($pf + $pt + $employee_esi + $total_advance_deduction_amount);
+                        $total_deduction = floor($pf + $pt + $employee_esi + $total_advance_deduction_amount + $it_deduction_amount);
                         $net_salary = floor($total_earnings - $total_deduction);
                         
 
@@ -590,10 +600,11 @@ class PayrollConfigurationController extends Controller
                         $data['user_id'] = $active_user->id;
                         $data['month_of_salary'] = date('Y-m-d 00:00:00', strtotime($selected_year.'-'.$selected_month.'-01'));
 
+                        $data['it_deduction'] = $it_deduction_amount;
                         $data['deductions'] = $total_deduction;
-                        $data['total_earnings'] = $total_earnings;
-                        $data['net_salary'] = $net_salary;
-                        $data['gross_salary'] = floor($gross_salary);
+                        $data['total_earnings'] = $total_earnings+ $deputation_allowance;
+                        $data['net_salary'] = $net_salary+ $deputation_allowance;
+                        $data['gross_salary'] = floor($gross_salary + $deputation_allowance);
                         $data['tds'] = 0;
                         $data['hostel_allowance'] = $hostel_allowance;
                         $data['meal_allowances'] = $meal_allowance;
@@ -658,6 +669,19 @@ class PayrollConfigurationController extends Controller
         return redirect()->back()->with('success_message', __('successfully'));
     }
 
+    public function insert_empty_payroll($user_id, $selected_month, $selected_year, $total_working_days, $loss_of_pay_days, $monthly_salary_amount){
+        $data = [];
+        $data['payroll_year'] = $selected_year;
+        $data['payroll_month'] = $selected_month;
+        $data['workingdays'] = $total_working_days - $loss_of_pay_days;
+        $data['loss_of_pay'] = $loss_of_pay_days;
+        $data['user_id'] = $user_id;
+        $data['month_of_salary'] = date('Y-m-d 00:00:00', strtotime($selected_year.'-'.$selected_month.'-01'));
+        $data['monthly_salary'] = $monthly_salary_amount ? $monthly_salary_amount : 0;
+        $data['total_working_days'] = $total_working_days;
+        Payslip::insert($data);
+    }
+
     public function configure_extra_modules(){
 
     }
@@ -672,6 +696,12 @@ class PayrollConfigurationController extends Controller
         $page_data['title'] = "Allowances";
         $page_data['allowances'] = DB::select("SELECT a.*, u.id as user_id, u.name from allowances as a left join users as u on u.id = a.user_id");
         return view(auth()->user()->role.'.payrollconfiguration.allowances', $page_data);
+    }
+
+    public function itdeductions(Request $request){
+        $page_data['title'] = "IT Deductions";
+        $page_data['itdeductions'] = DB::select("SELECT a.*, u.id as user_id, u.name from it_deduction as a left join users as u on u.id = a.user_id");
+        return view(auth()->user()->role.'.payrollconfiguration.itdeductions', $page_data);
     }
 
     public function add_allowances(Request $request){
@@ -771,6 +801,45 @@ class PayrollConfigurationController extends Controller
         return Excel::download(new PayslipsExport($selected_month, $selected_year), 'payroll.xlsx');
 
     }
-    
+
+    function add_itdeduction(Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+
+        $id = IT_deduction::insert($data);
+        return redirect()->back()->with('success_message', __('IT deduction added successfully'));
+    }
+
+    function delete_itdeduction($itdeduction_id = "")
+    {
+        IT_deduction::where('id', $itdeduction_id)->delete();
+        return redirect()->back()->with('success_message', __('IT deduction deleted successfully'));
+    }
+
+    function update_itdeduction($itdeduction_id="", Request $request){
+        $this->validate($request, [
+            'user_id' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $data['user_id'] = $request->user_id;
+        $data['year'] = $request->year;
+        $data['month'] = $request->month;
+        $data['amount'] = $request->amount;
+
+        $id = IT_deduction::where('id', $itdeduction_id)->update($data);
+        return redirect()->back()->with('success_message', __('IT deduction updated successfully'));
+    }    
 
 }

@@ -134,7 +134,7 @@ class LeaveApplicationController extends Controller
                 \Log::error('Email sending failed: ' . $e->getMessage());
             }
         }
-        try{
+        /*try{
             Mail::raw($message, function ($message) use ($subject, $to) {
                 $message->from(get_settings('system_email'), get_settings('website_title'))
                 ->to($to->email, $to->name)
@@ -143,7 +143,7 @@ class LeaveApplicationController extends Controller
             
         } catch (\Exception $e) {
             \Log::error('Email sending failed: ' . $e->getMessage());
-        }
+        }*/
 
         return redirect()->back()->with('success_message', get_phrase('Leave request cancelled successfully'));
     }

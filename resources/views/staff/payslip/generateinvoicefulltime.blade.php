@@ -165,7 +165,7 @@
                                 <th scope="row">Medical </th>
                                 <td>{{moneyFormatIndia($payslip[0]->medical)}}</td>
                                 <td><b>Income Tax</b></td>
-                                <td></td>
+                                <td>{{moneyFormatIndia($payslip[0]->it_deduction)}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">LTA</th>
