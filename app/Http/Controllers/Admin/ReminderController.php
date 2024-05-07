@@ -33,9 +33,13 @@ class ReminderController extends Controller
     public function sendReminders()
     {
         $today = Carbon::today();
-        $clients = Clients::all();
+        $daysInMonth = $today->daysInMonth;
+        $clients = Clients::all();        
 
         foreach ($clients as $client) {
+            if($daysInMonth == 30 && $client->reminder_type == 31){
+                $client->reminder_type = 30;
+            }
             if ($today->day >= ($client->reminder_type-2) && $today->day <= $client->reminder_type) {
                 $this->handleMonthlyReminder($client, $today);
             }
@@ -76,6 +80,12 @@ class ReminderController extends Controller
 
         $now = Carbon::now();
         $message = "";
+
+        $daysInMonth = $today->daysInMonth;
+        if($daysInMonth == 30 && $client->reminder_type == 31){
+            $client->reminder_type = 30;
+        }
+        
         // Checking if today is one of these days
         if ($today->day == $client->reminder_type - 2) {
             $message =  "Dear Associate, \n Please share us the Approved timesheets for the month of ". $now->format('m') ."-". $now->format('Y') ." on priority. \n\n  Regards,\nHR,\nZettamine Labs Pvt. Ltd.";
@@ -112,7 +122,7 @@ class ReminderController extends Controller
 
             if (!$timesheetSubmitted) {
                 // Send Reminder
-                Mail::to($user->email)->send(new ReminderEmail($message));
+                Mail::to("sekhar.r@zettamine.com")->send(new ReminderEmail($message));
 
                 // Log Reminder
                 Reminder_logs::create([
